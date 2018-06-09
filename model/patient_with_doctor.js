@@ -20,6 +20,6 @@ const schema = new Schema(
   }
 )
 
-const patientWithDoctor = mongoose.model('patient_with_doctor', schema, 'patient_with_doctor')
+const PatientWithDoctor = mongoose.model('patient_with_doctor', schema, 'patient_with_doctor')
 
-export { patientWithDoctor }
+export { PatientWithDoctor }

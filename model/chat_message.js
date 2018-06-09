@@ -18,6 +18,7 @@ const schema = new Schema(
     prescriptionId: { type: ObjectId, index: true, ref: 'perscription' }, // 检验id
     examId: { type: ObjectId, index: true, ref: 'exam' }, // 检查id
     laboraId: { type: ObjectId, index: true, ref: 'labora' }, // 处方id
+    consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 订单id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
@@ -29,6 +30,6 @@ const schema = new Schema(
 
 schema.index({ chatId: 1 })
 
-const chatMessage = mongoose.model('chat_message', schema, 'chat_message')
+const ChatMessage = mongoose.model('chat_message', schema, 'chat_message')
 
-export { chatMessage }
+export { ChatMessage }

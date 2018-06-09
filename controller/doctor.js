@@ -65,7 +65,7 @@ export const doctorDetail = async (req, res) => {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    let doctor = await Doctor.findById(doctorId).populate({ path: 'departmentId', select: 'deptName -_id' })
+    let doctor = await Doctor.findById(doctorId).populate('departmentId')
 
     doctor = formatObjId(doctor, ['department'])
     return result.success(res, doctor)
