@@ -65,11 +65,13 @@ export const patientDetail = async (req, res) => {
 }
 
 export const patientBindCard = async (req, res) => {
-  const { id } = req.body
-  if (!id) return result.failed(res, '参数错误')
+  const { id, patientIdNo } = req.body
+  if (!id || !patientIdNo) return result.failed(res, '参数错误')
   try {
     let patient = await Model.findOneById(Patient, { id })
-    return result.success(res, formatObjId(patient))
+    if (!patient) return result.failed(res, '就诊人不存在')
+    await Model.updateByOps(Patient, { ops: { _id: id }, sets: { patientIdNo } })
+    return result.success(res)
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
