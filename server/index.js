@@ -14,7 +14,7 @@ async function startServer() {
   const app = express().use('*', cors())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
-  await mongoose.connect(mongoUrl, { user, pass, useMongoClient: true })
+  await mongoose.connect(mongoUrl, { user, pass })
   console.log('connect to %s succeed!', mongoUrl)
 
   app.use('/api', router)
