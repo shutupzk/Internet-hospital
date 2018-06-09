@@ -30,6 +30,7 @@ class Model {
   }
 
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
+    console.log('ops', ops)
     limit = limit || 10
     skip = skip || 0
     if (!sort) sort = { created_at: -1 }

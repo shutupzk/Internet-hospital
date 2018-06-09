@@ -1,5 +1,6 @@
 import Model, { Department } from '../model'
 import result from './result'
+import { formatArrayId, formatObjId } from '../util'
 
 export const departmentCreate = async (req, res) => {
   const { deptName, deptCode, weight } = req.body
@@ -14,7 +15,7 @@ export const departmentCreate = async (req, res) => {
   }
 }
 
-export const departmentLists = async (req, res) => {
+export const departmentList = async (req, res) => {
   const { keyword, skip, limit } = req.body
   try {
     let ops = {
@@ -25,7 +26,8 @@ export const departmentLists = async (req, res) => {
       ops['$or'] = [{ deptName: { $regex: reg } }, { deptCode: { $regex: reg } }]
     }
     console.log('11111', ops)
-    const departmentList = await Model.findByOpsWithPage(Department, ops, limit, skip)
+    const departmentList = await Model.findByOpsWithPage(Department, {ops, limit, skip})
+    departmentList.items = formatArrayId(departmentList.items)
     return result.success(res, departmentList)
   } catch (e) {
     return result.failed(res, '-1', e.message)
@@ -40,6 +42,20 @@ export const departmentDelete = async (req, res) => {
   try {
     const resData = await Model.updateByOps(Department, { _id: departmentId, deleted_at: new Date() })
     return result.success(res, resData)
+  } catch (e) {
+    return result.failed(res, '-1', e.message)
+  }
+}
+
+export const departmentDetail = async (req, res) => {
+  const { departmentId } = req.body
+  if (!departmentId) {
+    return result.failed(res, '-1', '缺少参数')
+  }
+  try {
+    let department = await Model.findOneById(Department, {id: departmentId})
+    department = formatObjId(department)
+    return result.success(res, department)
   } catch (e) {
     return result.failed(res, '-1', e.message)
   }
