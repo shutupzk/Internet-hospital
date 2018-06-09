@@ -5,7 +5,7 @@ import { userSignup } from '../controller/user'
 const router = express.Router()
 
 router.all('/test', (req, res) => {
-    res.json({ok: '1'})
+  res.json({ ok: '1' })
 })
 
 router.all('/user/signup', userSignup)
