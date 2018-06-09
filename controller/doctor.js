@@ -39,7 +39,7 @@ export const doctorList = async (req, res) => {
     }
     console.log('ops', ops)
     const doctorList = await Model.findDoctorByOpsWithPage(Doctor, { ops, limit, skip })
-    doctorList.items = formatArrayId(doctorList.items)
+    doctorList.items = formatArrayId(doctorList.items, ['department'])
     return result.success(res, doctorList)
   } catch (e) {
     return result.failed(res, '-1', e.message)
@@ -65,9 +65,9 @@ export const doctorDetail = async (req, res) => {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    let doctor = await Doctor.findById(doctorId).populate({ path: 'department', select: 'deptName -_id' })
+    let doctor = await Doctor.findById(doctorId).populate({ path: 'departmentId', select: 'deptName -_id' })
 
-    doctor = formatObjId(doctor)
+    doctor = formatObjId(doctor, ['department'])
     return result.success(res, doctor)
   } catch (e) {
     return result.failed(res, '-1', e.message)

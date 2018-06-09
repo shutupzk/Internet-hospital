@@ -10,7 +10,7 @@ const schema = new Schema(
   {
     doctorSn: String, // 医生编码
     doctorName: String, // 医生姓名
-    department: { type: ObjectId, ref: 'department' }, // 所属科室
+    departmentId: { type: ObjectId, ref: 'department' }, // 所属科室
     weight: Number, // 医生权重
     avatar: String, // 医生头像地址
     imageAndTextOpen: {type: Boolean, default: false}, // 是否开通图文问诊
