@@ -11,7 +11,7 @@ const schema = new Schema(
     consultationNo: { type: String, index: true }, // 订单编号
     content: String, // 咨询内容
     images: [String], // 咨询图片
-    fee: Number, // 咨询费用
+    fee: Number, // 咨询费用 单位: 分
     status: String, // 01：待支付，02：已取消，03：待执行，04：执行中，05：已过期未退款，06：待执行退款申请，07：已完成，08：过期已退款，09:待执行订单已退款
     payTime: Date, // 支付时间
     excTime: Date, // 执行时间
