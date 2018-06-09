@@ -1,6 +1,4 @@
 var Result = {}
-var code_msg = []
-
 /**
  * 请求成功，但是操作失败，json数据
  * @param code 错误码
@@ -8,11 +6,11 @@ var code_msg = []
  * @param res
  * @returns {*}
  */
-Result.failed = function(res, code, msg) {
+Result.failed = function(res, msg, code) {
   return res.json({
-    code: Object.keys(code)[0] || -1,
+    code: code || -1,
     data: null,
-    msg: code_msg[Object.keys(code)[0]] || msg || '操作失败'
+    msg: msg || '操作失败'
   })
 }
 
@@ -24,12 +22,10 @@ Result.failed = function(res, code, msg) {
  */
 Result.success = function(res, data) {
   return res.json({
-    code: '200',
+    code: 200,
     data: data,
     msg: '操作成功'
   })
 }
-
-Result.REQ_METHOD_ERROR = { '10001': '请求方式错误' }
 
 export default Result
