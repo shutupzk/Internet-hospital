@@ -29,6 +29,6 @@ const schema = new Schema(
 
 schema.index({ chatId: 1 })
 
-const Consultation = mongoose.model('chat_message', schema, 'chat_message')
+const chatMessage = mongoose.model('chat_message', schema, 'chat_message')
 
-export { Consultation }
+export { chatMessage }

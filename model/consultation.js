@@ -32,6 +32,6 @@ const schema = new Schema(
 
 schema.index({ patientId: 1, doctorId: 1, consultationNo: 1 })
 
-const Consultation = mongoose.model('consultation', schema)
+const Consultation = mongoose.model('consultation', schema, 'consultation')
 
 export { Consultation }

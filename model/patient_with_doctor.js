@@ -20,8 +20,6 @@ const schema = new Schema(
   }
 )
 
-schema.index({ chatId: 1 })
+const patientWithDoctor = mongoose.model('patient_with_doctor', schema, 'patient_with_doctor')
 
-const Consultation = mongoose.model('chat_message', schema, 'chat_message')
-
-export { Consultation }
+export { patientWithDoctor }
