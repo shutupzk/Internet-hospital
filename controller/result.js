@@ -8,9 +8,9 @@ var code_msg = []
  * @param res
  * @returns {*}
  */
-Result.failed = function(code, res, msg) {
+Result.failed = function(res, code, msg) {
   return res.json({
-    code: code,
+    code: code || -1,
     data: null,
     msg: code_msg[code] || msg || '操作失败'
   })
@@ -22,7 +22,7 @@ Result.failed = function(code, res, msg) {
  * @param res
  * @returns {*}
  */
-Result.success = function(data, res) {
+Result.success = function(res, data) {
   return res.json({
     code: '200',
     data: data,
