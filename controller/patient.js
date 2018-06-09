@@ -1,4 +1,4 @@
-import Model, { User, Patient } from '../model'
+import { User, Patient } from '../model'
 import moment from 'moment'
 import result from './result'
 import { subBirthday, subSex, checkIdCard, checkPhoneNumber, formatArrayId, formatObjId } from '../util'
@@ -15,14 +15,13 @@ export const patientCreate = async (req, res) => {
   if (!birthday) birthday = subBirthday(certificateNo)
   if (!sex) birthday = subSex(subSex)
   try {
-    let user = await Model.findOneById(User, { id: userId })
+    let user = await User.findById(userId)
     if (!user) return res.json({ code: '-1', msg: '用户不存在' })
-    let op = await Model.findOneByOps(Patient, { ops: { userId, certificateNo, deleted_at: null } })
+    let op = await Patient.findOne({ user: userId, certificateNo, deleted_at: null })
     if (op) return res.json({ code: '-1', msg: '就诊人已存在' })
     birthday = moment(birthday).format('YYYY-MM-DD')
-    let doc = { userId, phone, certificateType, certificateNo, name, birthday, sex, patientIdNo }
-    let result = await Model.create(Patient, { doc })
-    return res.json({ code: '200', msg: '创建就诊人成功', data: formatObjId(result) })
+    let result = await Patient.create({ user: userId, phone, certificateType, certificateNo, name, birthday, sex, patientIdNo })
+    return res.json({ code: '200', msg: '创建就诊人成功', data: formatObjId(result, ['user']) })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
@@ -32,9 +31,9 @@ export const patientDelete = async (req, res) => {
   const { id } = req.body
   if (!id) return result.failed(res, '参数错我')
   try {
-    let patient = await Model.findOneById(Patient, { id })
+    let patient = await Patient.findById(id)
     if (!patient) return result.failed(res, '就诊人不存在')
-    await Model.updateByOps(Patient, { ops: { _id: id }, sets: { deleted_at: new Date() } })
+    await Patient.updateOne({ _id: id }, { deleted_at: new Date() })
     return result.success(res)
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
@@ -45,8 +44,8 @@ export const patientList = async (req, res) => {
   const { userId } = req.body
   if (!userId) return result.failed(res, '参数错误')
   try {
-    let patients = await Model.findByOps(Patient, { ops: { userId, deleted_at: null } })
-    let list = formatArrayId(patients)
+    let patients = await Patient.find({ user: userId, deleted_at: null })
+    let list = formatArrayId(patients, ['user'])
     return result.success(res, list)
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
@@ -57,8 +56,8 @@ export const patientDetail = async (req, res) => {
   const { id } = req.body
   if (!id) return result.failed(res, '参数错误')
   try {
-    let patient = await Model.findOneById(Patient, { id })
-    return result.success(res, formatObjId(patient))
+    let patient = await Patient.findById(id)
+    return result.success(res, formatObjId(patient, ['user']))
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
@@ -68,9 +67,9 @@ export const patientBindCard = async (req, res) => {
   const { id, patientIdNo } = req.body
   if (!id || !patientIdNo) return result.failed(res, '参数错误')
   try {
-    let patient = await Model.findOneById(Patient, { id })
+    let patient = await Patient.findById(id)
     if (!patient) return result.failed(res, '就诊人不存在')
-    await Model.updateByOps(Patient, { ops: { _id: id }, sets: { patientIdNo } })
+    await Patient.updateOne({ _id: id }, { patientIdNo })
     return result.success(res)
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
