@@ -120,10 +120,13 @@ export const getInsertId = upsertResult => {
 export const formatObjId = (obj, populates) => {
   let newObj = { id: obj._doc._id, ...obj._doc }
   delete newObj._id
-  for (let populate of populates) {
-    if (populate) delete newObj[populate]
-    newObj[populate + 'Id'] = obj._doc[populate]
+  if (populates && populates.length) {
+    for (let populate of populates) {
+      if (populate) delete newObj[populate + 'Id']
+      newObj[populate] = obj._doc[populate + 'Id']
+    }
   }
+
   return newObj
 }
 
