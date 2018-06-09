@@ -17,4 +17,14 @@ const ImConfig = {
   public_key_string: fs.readFileSync(path.join(__dirname, 'imkeys/public_key')).toString()
 }
 
-export { PORT, DB, ImConfig }
+const wechatNativeConfig = {
+  appid: 'wxe291762653c64caa',
+  mch_id: '1490235832', // 微信支付分配的商户号
+  partner_key: 'ndyfyndyfyndyfyndyfy201710171234', // 微信商户平台API密钥
+  pfx: fs.readFileSync(path.join(__dirname, 'wechatkeys/apiclient_cert.p12')), // 微信商户平台证书
+  pfxStr: path.join(__dirname, 'wechatkeys/apiclient_cert.p12'),
+  wechat_spbill_create_ip: '47.93.206.157',
+  wechat_notify_url: 'http://47.93.206.157:3000/payment/NATIVE/notify'
+}
+
+export { PORT, DB, ImConfig, wechatNativeConfig }

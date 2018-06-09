@@ -4,6 +4,7 @@ import moment from 'moment'
 import cors from 'cors'
 import router from '../router'
 import consultationRouter from '../router/consultation'
+import paymentRouter from '../router/payment'
 import mongoose from 'mongoose'
 import { PORT, DB, ImConfig } from '../config'
 import TencentIM from '../libs/tencent_im'
@@ -29,6 +30,7 @@ async function startServer() {
 
   app.use('/api', router)
   app.use('/consultation', consultationRouter)
+  app.use('/payment', paymentRouter)
 
   app.use('*', (req, res) => {
     res.json({

@@ -3,6 +3,7 @@ export * from './doctor'
 export * from './department'
 export * from './patient'
 export * from './consultation'
+export * from './payment'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
