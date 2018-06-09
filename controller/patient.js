@@ -52,3 +52,25 @@ export const patientList = async (req, res) => {
     return res.json({ code: '-1', msg: e.message })
   }
 }
+
+export const patientDetail = async (req, res) => {
+  const { id } = req.body
+  if (!id) return result.failed(res, '参数错误')
+  try {
+    let patient = await Model.findOneById(Patient, { id })
+    return result.success(res, formatObjId(patient))
+  } catch (e) {
+    return res.json({ code: '-1', msg: e.message })
+  }
+}
+
+export const patientBindCard = async (req, res) => {
+  const { id } = req.body
+  if (!id) return result.failed(res, '参数错误')
+  try {
+    let patient = await Model.findOneById(Patient, { id })
+    return result.success(res, formatObjId(patient))
+  } catch (e) {
+    return res.json({ code: '-1', msg: e.message })
+  }
+}
