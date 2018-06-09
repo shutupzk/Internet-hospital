@@ -6,6 +6,8 @@
     "fetch": true
   },
   "rules": {
-    "space-before-function-paren": [0, "always"]
+    "space-before-function-paren": [0, "always"],
+    "no-useless-escape": [0, { "properties": "never" }],
+    "camelcase": [0, { "properties": "never" }]
   }
 }

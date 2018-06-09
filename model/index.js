@@ -1,7 +1,8 @@
 export * from './user'
 export * from './doctor'
 export * from './department'
-export default class Model {
+
+class Model {
   findOneById(Model, { id }) {
     return Model.findOne({ _id: id })
   }
@@ -23,3 +24,7 @@ export default class Model {
     return Model.find(ops)
   }
 }
+
+const model = new Model()
+
+export default model
