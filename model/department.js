@@ -16,8 +16,6 @@ const schema = new Schema(
     deptLevel: String, // 部门等级
     deptAddress: String, // 部门地址
     weight: Number, // 部门权重
-    hospitalName: String, // 医院名称
-    hospitalCode: String, // 医院编码
     deptStrength: String, // 科室特色
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
@@ -28,6 +26,6 @@ const schema = new Schema(
   }
 )
 
-const Department = mongoose.model('department', schema)
+const Department = mongoose.model('department', schema, 'department')
 
 export { Department }
