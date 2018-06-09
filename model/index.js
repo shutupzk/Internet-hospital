@@ -1,5 +1,6 @@
 export * from './user'
-
+export * from './doctor'
+export * from './department'
 export default class Model {
   findOneById(Model, { id }) {
     return Model.findOne({ _id: id })
@@ -16,5 +17,9 @@ export default class Model {
 
   updateByOps(Model, { ops, sets }) {
     return Model.update(ops, sets)
+  }
+
+  findByOps(Model, { ops }) {
+    return Model.find(ops)
   }
 }
