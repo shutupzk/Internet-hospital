@@ -165,6 +165,8 @@ export const consultationReasonList = async (req, res) => {
   } catch (e) {
     return result.failed(res, '-1', e.message)
   }
+}
+
 // 发送咨询的初始消息
 export const consultationSendStartMessage = async consultationId => {
   const consultation = await Consultation.findById(consultationId)
