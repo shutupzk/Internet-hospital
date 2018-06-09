@@ -3,7 +3,7 @@ let Schema = mongoose.Schema
 let ObjectId = Schema.Types.ObjectId
 
 /**
- * 用户
+ * 系统-医生关联表
  * @type {Schema}
  */
 const schema = new Schema(

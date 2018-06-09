@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 /**
- * 用户
+ * 系统用户
  * @type {Schema}
  */
 const schema = new Schema(
