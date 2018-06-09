@@ -2,12 +2,12 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 /**
- * 用户
+ * 患者
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    userId: { type: ObjectId, index: true, ref: 'user' }, // 用户id
+    user: { type: ObjectId, index: true, ref: 'user' }, // 用户id
     phone: { type: Number, index: true }, // 手机号
     certificateType: String, // 证件类型，01身份证，02军人证，03户口本，04签证，05护照，06港澳通行证，07市民卡
     certificateNo: { type: String, index: true }, // 证件号

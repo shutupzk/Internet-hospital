@@ -117,16 +117,20 @@ export const getInsertId = upsertResult => {
   return insertId
 }
 
-export const formatObjId = obj => {
+export const formatObjId = (obj, populates) => {
   let newObj = { id: obj._doc._id, ...obj._doc }
   delete newObj._id
+  for (let populate of populates) {
+    if (populate) delete newObj[populate]
+    newObj[populate + 'Id'] = obj._doc[populate]
+  }
   return newObj
 }
 
-export const formatArrayId = array => {
+export const formatArrayId = (array, populates) => {
   let list = []
   for (let item of array) {
-    list.push(formatObjId(item))
+    list.push(formatObjId(item, populates))
   }
   return list
 }

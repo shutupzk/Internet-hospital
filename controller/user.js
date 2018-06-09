@@ -1,4 +1,4 @@
-import Model, { User } from '../model'
+import { User } from '../model'
 import jwt from 'jwt-simple'
 const KEY = '0.9434990896465933'
 
@@ -8,7 +8,7 @@ export const userSignup = async (req, res) => {
   const { TencentIM } = req.context
   try {
     await TencentIM.accountImport({ Identifier: openId })
-    await Model.save(User, { doc: { openId, phone } })
+    await User.create({ openId, phone })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
@@ -18,7 +18,7 @@ export const userSignup = async (req, res) => {
 export const userSignin = async (req, res) => {
   const { openId } = req.body
   const { TencentIM } = req.context
-  const user = await Model.findOneByOps(User, { ops: { openId } })
+  const user = await User.findOne({ openId })
   if (!user) return res.json({ code: '-1', msg: '用户不存在' })
   const exp = Math.floor(new Date().getTime() / 1000) + 60 * 60 * 24
   const userId = user._id.toString()
