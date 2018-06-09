@@ -6,6 +6,7 @@ export * from './consultation'
 export * from './patient_with_doctor'
 export * from './chat'
 export * from './chat_message'
+export * from './consultation_reason'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {

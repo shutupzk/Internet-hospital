@@ -20,6 +20,7 @@ const schema = new Schema(
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生Id
     paymentId: { type: ObjectId, index: true, ref: 'payment' }, // 支付订单id
+    consultationReasonId: { type: ObjectId, index: true, ref: 'consultation_reason' }, // 问诊原因id
     chatId: { type: ObjectId, index: true, ref: 'chat' }, // 关联的聊天Id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
