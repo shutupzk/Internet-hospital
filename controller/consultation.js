@@ -35,6 +35,7 @@ export const createConsultation = async (req, res) => {
   }
 }
 
+// 创建咨询支付订单
 export const createConsultationPayment = async (req, res) => {
   try {
     const { consultationId } = req.body
@@ -136,4 +137,9 @@ export const consultationChat = async (req, res) => {
   } catch (e) {
     return result.failed(res, '-1', e.message)
   }
+}
+
+// 发送咨询的初始消息
+export const consultationSendStartMessage = consultationId => {
+
 }
