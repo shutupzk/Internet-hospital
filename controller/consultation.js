@@ -7,8 +7,8 @@ import { formatArrayId, formatObjId } from '../util'
 // 创建咨询订单
 export const createConsultation = async (req, res) => {
   try {
-    const { content, images = [], patientId, doctorId } = req.body
-    if (!patientId || !content || !doctorId) return result.failed(res, '缺少参数')
+    const { content, images = [], patientId, doctorId, consultationReasonId } = req.body
+    if (!patientId || !content || !doctorId || !consultationReasonId) return result.failed(res, '缺少参数')
     const doctor = await Doctor.findById(doctorId)
     if (!doctor) return result.failed(res, '未找到指定的医生')
     const patient = await Patient.findById(patientId)
@@ -23,6 +23,7 @@ export const createConsultation = async (req, res) => {
       patientId,
       doctorId,
       status: '01',
+      consultationReasonId,
       fee: doctor.imageAndTextPrice
     }
     let consultation = await Consultation.create(insetDoc)
