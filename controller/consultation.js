@@ -11,6 +11,8 @@ export const createConsultation = async (req, res) => {
     const patient = await Patient.findById(patientId)
     if (!patient) return result.failed(res, '未找到指定的患者')
     const consultationNo = `H0${createTradeNo()}`
+    const exist = await Consultation.findOne({ patientId, doctorId, status: { $in: ['01', '03', '04'] } })
+    if (exist) return result.failed(res, '有未完成订单，无法继续下单')
     const insetDoc = {
       consultationNo,
       content,
@@ -20,7 +22,7 @@ export const createConsultation = async (req, res) => {
       status: '01',
       fee: doctor.imageAndTextPrice
     }
-    const consultation = Consultation.create(insetDoc)
+    const consultation = await Consultation.create(insetDoc)
     return result.success(res, consultation)
   } catch (e) {
     return result.failed(res, e.message)
