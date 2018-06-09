@@ -3,6 +3,8 @@ import result from './result'
 import { createTradeNo } from '../libs/utils'
 import { createPayment } from './payment'
 import { formatArrayId, formatObjId } from '../util'
+import moment from 'moment'
+import uuid from 'uuid'
 
 // 创建咨询订单
 export const createConsultation = async (req, res) => {
@@ -140,6 +142,53 @@ export const consultationChat = async (req, res) => {
 }
 
 // 发送咨询的初始消息
-export const consultationSendStartMessage = consultationId => {
+export const consultationSendStartMessage = async consultationId => {
+  const consultation = await Consultation.findById(consultationId)
+  let { images, content, chatId } = consultation
+  let consultationTime = moment(consultation.createdAt).format('MM月DD日 HH:mm')
+  let messageTime = new Date()
 
+  let smMessage = [
+    {
+      uuid: uuid.v4(),
+      type: '06',
+      text: {
+        doctorMsg: {
+          type: '咨询开始',
+          text: `患者于${consultationTime}购买了您的咨询服务，请在48小时内回复。`
+        },
+        userMsg: {
+          type: '咨询开始',
+          text: `您提交的病历信息已经发送给医生，请等待回复。`
+        }
+      },
+      direction: 'user->doctor',
+      chatId,
+      consultationId,
+      createdAt: messageTime,
+      updatedAt: messageTime
+    },
+    {
+      uuid: uuid.v4(),
+      type: '06',
+      text: {
+        userMsg: {
+          text: `温馨提示\n1. 订单在48小时内自动结束。如医生未在48小时之内回复，您所支付的费用将原路退还。\n2. 在48小时内，医生最多回复三次。`
+        }
+      },
+      direction: 'doctor->user',
+      chatId,
+      consultationId,
+      createdAt: messageTime,
+      updatedAt: messageTime
+    }
+  ]
+
+  console.log(smMessage)
+
+  if (content) {
+  }
+
+  if (images) {
+  }
 }
