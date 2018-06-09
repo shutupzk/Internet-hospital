@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
-const ObjectId = Schema.ObjectId
+const ObjectId = Schema.Types.ObjectId
 
 /**
  * 用户
@@ -17,7 +17,10 @@ const schema = new Schema(
     isRetract: Boolean, // 是否撤回
     prescriptionId: ObjectId, // 检验id
     examId: ObjectId, // 检查id
-    laboraId: ObjectId // 处方id
+    laboraId: ObjectId, // 处方id
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
+    deleted_at: { type: Date }
   },
   {
     versionKey: false // 这个就是处理掉自动插入文档的__v这个属性
@@ -26,6 +29,6 @@ const schema = new Schema(
 
 schema.index({ chatId: 1 })
 
-const Consultation = mongoose.model('consultation', schema)
+const Consultation = mongoose.model('C', schema)
 
 export { Consultation }

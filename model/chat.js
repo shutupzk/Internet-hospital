@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
-const ObjectId = Schema.ObjectId
+const ObjectId = Schema.Types.ObjectId
 
 /**
  * 用户
@@ -13,13 +13,15 @@ const schema = new Schema(
     systemWithUser: ObjectId, // 系统与医生的对话
     systemWithDoctor: ObjectId, // 统统与医生的对话
     status: { type: Boolean, default: true }, // 会话状态
-    created_at: { type: Date, default: Date.now }
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
+    deleted_at: { type: Date }
   },
   {
     versionKey: false // 这个就是处理掉自动插入文档的__v这个属性
   }
 )
 
-const Chat = mongoose.model('chat', schema)
+const Chat = mongoose.model('chat', schema).find
 
 export { Chat }

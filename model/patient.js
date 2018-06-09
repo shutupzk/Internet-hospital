@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
-const ObjectId = Schema.ObjectId
+const ObjectId = Schema.Types.ObjectId
 /**
  * 用户
  * @type {Schema}
@@ -15,8 +15,9 @@ const schema = new Schema(
     sex: Number, // 性别  0-女，1-男
     default: Boolean, // 默认就诊人
     patientIdNo: String, // 就诊卡号
-    deleted: Boolean, // 是否删除
-    created_at: { type: Date, default: Date.now }
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
+    deleted_at: { type: Date }
   },
   {
     versionKey: false // 这个就是处理掉自动插入文档的__v这个属性
