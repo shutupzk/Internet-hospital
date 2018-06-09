@@ -17,10 +17,10 @@ const schema = new Schema(
     excTime: Date, // 执行时间
     finishTime: Date, // 完成时间
     evaluated: { type: Boolean, default: false }, // 是否评价
-    patientId: { type: ObjectId, index: true }, // 患者id
-    doctorId: { type: ObjectId, index: true }, // 医生Id
-    paymentId: ObjectId, // 支付订单id
-    chatId: ObjectId, // 关联的聊天Id
+    patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
+    doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生Id
+    paymentId: { type: ObjectId, index: true, ref: 'payment' }, // 支付订单id
+    chatId: { type: ObjectId, index: true, ref: 'chat' }, // 关联的聊天Id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }

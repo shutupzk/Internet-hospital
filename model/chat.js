@@ -9,9 +9,9 @@ const ObjectId = Schema.Types.ObjectId
 const schema = new Schema(
   {
     type: String, // 01,patientWithDoctor, 02: systemWithUser, 03: systemWithDoctor
-    patientWithDoctor: ObjectId, // 用户与医生的对话
-    systemWithUser: ObjectId, // 系统与医生的对话
-    systemWithDoctor: ObjectId, // 统统与医生的对话
+    patientWithDoctorId: { type: ObjectId, index: true, ref: 'patient_with_doctor' }, // 用户与医生的对话
+    systemWithUserId: { type: ObjectId, index: true, ref: 'system_with_user' }, // 系统与医生的对话
+    systemWithDoctorId: { type: ObjectId, index: true, ref: 'system_with_doctor' }, // 统统与医生的对话
     status: { type: Boolean, default: true }, // 会话状态
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
@@ -22,6 +22,6 @@ const schema = new Schema(
   }
 )
 
-const Chat = mongoose.model('chat', schema).find
+const Chat = mongoose.model('chat', schema, 'chat')
 
 export { Chat }
