@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 let Schema = mongoose.Schema
+let ObjectId = Schema.Types.ObjectId
 
 /**
  * 医生
@@ -9,8 +10,7 @@ const schema = new Schema(
   {
     doctorSn: String, // 医生编码
     doctorName: String, // 医生姓名
-    deptName: String, // 部门名称
-    deptSn: String, // 医生所属科室
+    departmentId: { type: ObjectId, ref: 'department' }, // 所属科室id
     weight: Number, // 医生权重
     avatar: String, // 医生头像地址
     description: String, // 医生描述
@@ -33,6 +33,6 @@ const schema = new Schema(
   }
 )
 
-const Doctor = mongoose.model('doctor', schema)
+const Doctor = mongoose.model('doctor', schema, 'doctor')
 
 export { Doctor }
