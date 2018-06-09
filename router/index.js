@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { userSignup, userSignin } from '../controller/user'
-import { patientCreate, patientDelete, patientList, patientDetail } from '../controller/patient'
+import { patientCreate, patientDelete, patientList, patientDetail, patientBindCard } from '../controller/patient'
 
 const router = express.Router()
 
@@ -15,4 +15,5 @@ router.all('/patient/create', patientCreate)
 router.all('/patient/delete', patientDelete)
 router.all('/patient/list', patientList)
 router.all('/patient/detail', patientDetail)
+router.all('/patient/bindcard', patientBindCard)
 export default router
