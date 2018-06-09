@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import moment from 'moment'
 import cors from 'cors'
 import router from '../router'
+import consultationRouter from '../router/consultation'
 import mongoose from 'mongoose'
 import { PORT, DB, ImConfig } from '../config'
 import TencentIM from '../libs/tencent_im'
@@ -27,8 +28,9 @@ async function startServer() {
   console.log('connect to %s succeed!', mongoUrl)
 
   app.use('/api', router)
+  app.use('/consultation', consultationRouter)
 
-  app.use('/', (req, res) => {
+  app.use('*', (req, res) => {
     res.json({
       status: '0k',
       time: moment().format('YYYY-MM-DD HH:mm:ss')

@@ -2,6 +2,7 @@ export * from './user'
 export * from './doctor'
 export * from './department'
 export * from './patient'
+export * from './consultation'
 
 class Model {
   findOneById(Model, { id }) {
