@@ -3,14 +3,17 @@ import result from './result'
 import { formatArrayId, formatObjId } from '../util'
 
 export const doctorCreate = async (req, res) => {
-  const { departmentId, doctorSn, doctorName, weight, avatar, description } = req.body
+  const { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = true, imageAndTextPrice = 0, isHot } = req.body
   if (!departmentId || !doctorSn || !doctorName) {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    const department = await Model.findOneById(Department, { id: departmentId })
+    const doctorByCode = await Doctor.findOne({ doctorSn })
+    if (doctorByCode) return result.failed(res, '-1', '医生编码已存在')
+    const department = await Department.findById(departmentId)
     if (!department) return result.failed(res, '-1', '科室不存在')
-    const doctor = await Model.create(Doctor, { doc: { departmentId, doctorSn, doctorName, weight, avatar, description } })
+    let insertData = { department: departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot }
+    const doctor = await Doctor.create(insertData)
     return result.success(res, doctor)
   } catch (e) {
     return result.failed(res, '-1', e.message)
@@ -18,18 +21,24 @@ export const doctorCreate = async (req, res) => {
 }
 
 export const doctorList = async (req, res) => {
-  const { departmentId, keyword, skip, limit } = req.body
+  const { departmentId, isHot = null, keyword, skip, limit } = req.body
   try {
     let ops = {
       deleted_at: { $exists: false }
     }
     if (departmentId) ops.departmentId = departmentId
+    if (isHot != null) ops.isHot = isHot
     if (keyword) {
       const reg = new RegExp(keyword, 'i')
-      ops['$or'] = [{ doctorName: { $regex: reg } }, { doctorSn: { $regex: reg } }]
+      const departments = await Department.find({ deptName: { $regex: reg } })
+      let departmentIds = []
+      for (let department of departments) {
+        departmentIds.push(department._id)
+      }
+      ops['$or'] = [{ doctorName: { $regex: reg } }, { department: { $in: departmentIds } }]
     }
-    console.log('11111', ops)
-    const doctorList = await Model.findByOpsWithPage(Doctor, {ops, limit, skip})
+    console.log('ops', ops)
+    const doctorList = await Model.findDoctorByOpsWithPage(Doctor, { ops, limit, skip })
     doctorList.items = formatArrayId(doctorList.items)
     return result.success(res, doctorList)
   } catch (e) {
@@ -43,20 +52,21 @@ export const doctorDelete = async (req, res) => {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    const resData = await Model.updateByOps(Doctor, { _id: doctorId, deleted_at: new Date() })
+    const resData = await Doctor.updateOne({ _id: doctorId }, { deleted_at: new Date() })
     return result.success(res, resData)
   } catch (e) {
     return result.failed(res, '-1', e.message)
   }
 }
 
-export const departmentDetail = async (req, res) => {
+export const doctorDetail = async (req, res) => {
   const { doctorId } = req.body
   if (!doctorId) {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    let doctor = await Model.findOneById(Doctor, { id: doctorId })
+    let doctor = await Doctor.findById(doctorId).populate({ path: 'department', select: 'deptName -_id' })
+
     doctor = formatObjId(doctor)
     return result.success(res, doctor)
   } catch (e) {

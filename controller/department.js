@@ -4,11 +4,15 @@ import { formatArrayId, formatObjId } from '../util'
 
 export const departmentCreate = async (req, res) => {
   const { deptName, deptCode, weight } = req.body
-  if (!deptName) {
+  if (!deptName || !deptCode) {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    const department = await Model.create(Department, { doc: { deptCode, deptName, weight } })
+    const departmentByCode = await Department.findOne({ deptCode })
+    const departmentByName = await Department.findOne({ deptName })
+    if (departmentByCode) return result.failed(res, '-1', '科室编码已存在')
+    if (departmentByName) return result.failed(res, '-1', '科室名称已存在')
+    const department = await Department.create({ deptCode, deptName, weight })
     return result.success(res, department)
   } catch (e) {
     return result.failed(res, '-1', e.message)
@@ -23,10 +27,9 @@ export const departmentList = async (req, res) => {
     }
     if (keyword) {
       const reg = new RegExp(keyword, 'i')
-      ops['$or'] = [{ deptName: { $regex: reg } }, { deptCode: { $regex: reg } }]
+      ops.deptName = { $regex: reg }
     }
-    console.log('11111', ops)
-    const departmentList = await Model.findByOpsWithPage(Department, {ops, limit, skip})
+    const departmentList = await Model.findByOpsWithPage(Department, { ops, limit, skip })
     departmentList.items = formatArrayId(departmentList.items)
     return result.success(res, departmentList)
   } catch (e) {
@@ -40,7 +43,7 @@ export const departmentDelete = async (req, res) => {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    const resData = await Model.updateByOps(Department, { _id: departmentId, deleted_at: new Date() })
+    const resData = await Department.updateOne({ _id: departmentId }, { deleted_at: new Date() })
     return result.success(res, resData)
   } catch (e) {
     return result.failed(res, '-1', e.message)
@@ -53,7 +56,7 @@ export const departmentDetail = async (req, res) => {
     return result.failed(res, '-1', '缺少参数')
   }
   try {
-    let department = await Model.findOneById(Department, {id: departmentId})
+    let department = await Department.findById(departmentId)
     department = formatObjId(department)
     return result.success(res, department)
   } catch (e) {
