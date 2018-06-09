@@ -12,6 +12,7 @@ const schema = new Schema(
     outTradeNo: String, // 系统单号
     tradeNo: String, // （微信）订单号
     status: String, // 待支付:WAIT_FOR_PAY,已支付:TRADE_SUCCESS,已退款:REFUND_SUCCESS
+    orderInfo: String, // 支付的相关信息
     consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 订单Id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

@@ -1,8 +1,10 @@
 import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
+import { createPayment } from './payment'
 import { formatArrayId, formatObjId } from '../util'
 
+// 创建咨询订单
 export const createConsultation = async (req, res) => {
   try {
     const { content, images = [], patientId, doctorId } = req.body
@@ -27,6 +29,22 @@ export const createConsultation = async (req, res) => {
     consultation = formatObjId(consultation)
 
     return result.success(res, consultation)
+  } catch (e) {
+    return result.failed(res, e.message)
+  }
+}
+
+export const createConsultationPayment = async (req, res) => {
+  try {
+    const { consultationId } = req.body
+    if (!consultationId) return result.failed(res, '缺少参数')
+    const consultation = await Consultation.findById(consultationId)
+    if (!consultation) return result.failed(res, '未找到指定的订单')
+    if (consultation.status !== '01') return result.failed(res, '此订单状态无法创建支付订单')
+    let order = await createPayment(req, res)
+    let paymentId = order._id
+    Consultation.updateOne({ _id: consultationId }, { paymentId })
+    return result.success(res, order)
   } catch (e) {
     return result.failed(res, e.message)
   }
