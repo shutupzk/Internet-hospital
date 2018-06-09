@@ -7,8 +7,8 @@ import { formatArrayId, formatObjId } from '../util'
 // 创建咨询订单
 export const createConsultation = async (req, res) => {
   try {
-    const { content, images = [], patientId, doctorId } = req.body
-    if (!patientId || !content || !doctorId) return result.failed(res, '缺少参数')
+    const { content, images = [], patientId, doctorId, consultationReasonId } = req.body
+    if (!patientId || !content || !doctorId || !consultationReasonId) return result.failed(res, '缺少参数')
     const doctor = await Doctor.findById(doctorId)
     if (!doctor) return result.failed(res, '未找到指定的医生')
     const patient = await Patient.findById(patientId)
@@ -23,6 +23,7 @@ export const createConsultation = async (req, res) => {
       patientId,
       doctorId,
       status: '01',
+      consultationReasonId,
       fee: doctor.imageAndTextPrice
     }
     let consultation = await Consultation.create(insetDoc)
@@ -34,6 +35,7 @@ export const createConsultation = async (req, res) => {
   }
 }
 
+// 创建咨询支付订单
 export const createConsultationPayment = async (req, res) => {
   try {
     const { consultationId } = req.body
@@ -161,4 +163,7 @@ export const consultationReasonList = async (req, res) => {
   } catch (e) {
     return result.failed(res, '-1', e.message)
   }
+// 发送咨询的初始消息
+export const consultationSendStartMessage = consultationId => {
+
 }

@@ -1,6 +1,8 @@
 import { Payment, Consultation } from '../model'
 import { createTransactionNo } from '../libs/utils'
 import { wechatNativeConfig } from '../config'
+import { chatPatientWithDoctorCreate } from './chat'
+import { consultationSendStartMessage } from './consultation'
 import WechatPay from '../libs/wechat'
 const wechatPay = new WechatPay({ wechatNativeConfig })
 
@@ -46,7 +48,8 @@ const changPayment = async (tradeNo, outTradeNo, message) => {
   if (paymemt.consultationId) {
     let consultation = await Consultation.findById(paymemt.consultationId)
     if (!consultation) throw new Error('未找到指定的订单')
-    // let { patientId, doctorId } = consultation
-    Consultation.updateOne({ _id: paymemt.consultationId }, { status: '03', payTime: new Date() })
+    let chat = await chatPatientWithDoctorCreate(consultation)
+    await Consultation.updateOne({ _id: paymemt.consultationId }, { status: '03', payTime: new Date(), chatId: chat._id })
+    consultationSendStartMessage(paymemt.consultationId)
   }
 }
