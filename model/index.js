@@ -1,6 +1,6 @@
 export * from './user'
 
-export default class Model {
+class Model {
   findOneById(Model, { id }) {
     return Model.findOne({ _id: id })
   }
@@ -18,3 +18,7 @@ export default class Model {
     return Model.update(ops, sets)
   }
 }
+
+const model = new Model()
+
+export default model
