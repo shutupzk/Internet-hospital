@@ -1,6 +1,7 @@
 import express from 'express'
 
-import { userSignup } from '../controller/user'
+import { userSignup, userSignin } from '../controller/user'
+import { patientCreate } from '../controller/patient'
 
 const router = express.Router()
 
@@ -9,4 +10,6 @@ router.all('/test', (req, res) => {
 })
 
 router.all('/user/signup', userSignup)
+router.all('/user/signin', userSignin)
+router.all('/patient/create', patientCreate)
 export default router

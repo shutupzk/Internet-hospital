@@ -7,7 +7,7 @@ let Schema = mongoose.Schema
  */
 const schema = new Schema(
   {
-    openId: String,
+    openId: { type: String, index: true, unique: true },
     phone: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
@@ -18,6 +18,6 @@ const schema = new Schema(
   }
 )
 
-const User = mongoose.model('user', schema)
+const User = mongoose.model('user', schema, 'user')
 
 export { User }
