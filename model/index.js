@@ -3,6 +3,12 @@ export * from './doctor'
 export * from './department'
 export * from './patient'
 export * from './consultation'
+export * from './patient_with_doctor'
+export * from './system_with_doctor'
+export * from './system_with_patient'
+export * from './system_with_user'
+export * from './chat'
+export * from './system'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {

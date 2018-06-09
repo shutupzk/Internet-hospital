@@ -1,14 +1,15 @@
 import mongoose from 'mongoose'
 let Schema = mongoose.Schema
+let ObjectId = Schema.Types.ObjectId
 
 /**
- * 系统用户
+ * 系统-用户关联表
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    code: { type: String, index: true, unique: true }, // 编码 01 系统消息， 02： 导诊消息， 03： 支付消息，04： 服务评价消息
-    name: String,
+    userId: { type: ObjectId, index: true, ref: 'user' }, // 用户id
+    systemId: { type: ObjectId, index: true, ref: 'system' }, // 系统id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
@@ -18,6 +19,6 @@ const schema = new Schema(
   }
 )
 
-const System = mongoose.model('system', schema, 'system')
+const SystemWithUser = mongoose.model('system_with_user', schema, 'system_with_user')
 
-export { System }
+export { SystemWithUser }
