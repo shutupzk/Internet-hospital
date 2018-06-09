@@ -1,6 +1,7 @@
 export * from './user'
 export * from './doctor'
 export * from './department'
+export * from './patient'
 
 class Model {
   findOneById(Model, { id }) {
@@ -14,6 +15,10 @@ class Model {
   save(Model, { doc }) {
     let instance = new Model(doc)
     return instance.save()
+  }
+
+  create(Model, { doc }) {
+    return Model.create(doc)
   }
 
   updateByOps(Model, { ops, sets }) {

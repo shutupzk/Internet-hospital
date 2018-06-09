@@ -28,5 +28,5 @@ export const userSignin = async (req, res) => {
   }
   let usersig = TencentIM.genSig({ identifier: openId })
   const token = jwt.encode(payload, KEY)
-  res.json({ token, userId, usersig, identifier: openId })
+  res.json({ code: '200', token, userId, usersig, identifier: openId })
 }

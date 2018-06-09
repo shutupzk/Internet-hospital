@@ -7,11 +7,12 @@ const ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    userId: { type: ObjectId, index: true }, // 用户id
+    userId: { type: ObjectId, index: true, ref: 'user' }, // 用户id
     phone: { type: Number, index: true }, // 手机号
     certificateType: String, // 证件类型，01身份证，02军人证，03户口本，04签证，05护照，06港澳通行证，07市民卡
     certificateNo: { type: String, index: true }, // 证件号
     name: { type: String, index: true }, // 姓名
+    birthday: String, // 生日 YYYY-MM-DD
     sex: Number, // 性别  0-女，1-男
     default: Boolean, // 默认就诊人
     patientIdNo: String, // 就诊卡号
@@ -26,6 +27,6 @@ const schema = new Schema(
 
 schema.index({ userId: 1, certificateNo: 1, name: 1, phone: 1 })
 
-const Patient = mongoose.model('patient', schema)
+const Patient = mongoose.model('patient', schema, 'patient')
 
 export { Patient }
