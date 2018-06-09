@@ -17,11 +17,11 @@ export const patientCreate = async (req, res) => {
   try {
     let user = await User.findById(userId)
     if (!user) return res.json({ code: '-1', msg: '用户不存在' })
-    let op = await Patient.findOne({ user: userId, certificateNo, deleted_at: null })
+    let op = await Patient.findOne({ userId, certificateNo, deleted_at: null })
     if (op) return res.json({ code: '-1', msg: '就诊人已存在' })
     birthday = moment(birthday).format('YYYY-MM-DD')
-    let result = await Patient.create({ user: userId, phone, certificateType, certificateNo, name, birthday, sex, patientIdNo })
-    return res.json({ code: '200', msg: '创建就诊人成功', data: formatObjId(result, ['user']) })
+    let result = await Patient.create({ userId, phone, certificateType, certificateNo, name, birthday, sex, patientIdNo })
+    return res.json({ code: '200', msg: '创建就诊人成功', data: formatObjId(result) })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
@@ -44,8 +44,8 @@ export const patientList = async (req, res) => {
   const { userId } = req.body
   if (!userId) return result.failed(res, '参数错误')
   try {
-    let patients = await Patient.find({ user: userId, deleted_at: null })
-    let list = formatArrayId(patients, ['user'])
+    let patients = await Patient.find({ userId, deleted_at: null })
+    let list = formatArrayId(patients)
     return result.success(res, list)
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
@@ -57,7 +57,7 @@ export const patientDetail = async (req, res) => {
   if (!id) return result.failed(res, '参数错误')
   try {
     let patient = await Patient.findById(id)
-    return result.success(res, formatObjId(patient, ['user']))
+    return result.success(res, formatObjId(patient))
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
