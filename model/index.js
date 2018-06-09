@@ -1,4 +1,6 @@
 export * from './user'
+export * from './doctor'
+export * from './department'
 
 class Model {
   findOneById(Model, { id }) {
@@ -16,6 +18,10 @@ class Model {
 
   updateByOps(Model, { ops, sets }) {
     return Model.update(ops, sets)
+  }
+
+  findByOps(Model, { ops }) {
+    return Model.find(ops)
   }
 }
 
