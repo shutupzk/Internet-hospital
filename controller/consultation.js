@@ -1,4 +1,4 @@
-import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage } from '../model'
+import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage, ConsultationReason } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
 import { createPayment } from './payment'
@@ -141,6 +141,30 @@ export const consultationChat = async (req, res) => {
   }
 }
 
+export const consultationReasonCreate = async (req, res) => {
+  const reason = req.body.reason
+  if (!reason) return result.failed(res, '-1', '缺少参数')
+  try {
+    let consultationReason = await ConsultationReason.create({ reason })
+    consultationReason = formatObjId(consultationReason)
+    return result.success(res, consultationReason)
+  } catch (e) {
+    return result.failed(res, e.message)
+  }
+}
+
+export const consultationReasonList = async (req, res) => {
+  try {
+    let ops = {
+      deleted_at: { $exists: false }
+    }
+
+    let consultationReasonList = await ConsultationReason.find(ops)
+    consultationReasonList = formatArrayId(consultationReasonList)
+    return result.success(res, consultationReasonList)
+  } catch (e) {
+    return result.failed(res, '-1', e.message)
+  }
 // 发送咨询的初始消息
 export const consultationSendStartMessage = async consultationId => {
   const consultation = await Consultation.findById(consultationId)
