@@ -16,6 +16,9 @@ export * from './evaluate_quesion'
 export * from './evaluate'
 export * from './evaluate_detail'
 export * from './quick_reply'
+export * from './diagnosis_dictionary'
+export * from './diagnosis'
+
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
     console.log('ops', ops)
