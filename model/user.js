@@ -9,6 +9,7 @@ const schema = new Schema(
   {
     openId: { type: String, index: true, unique: true },
     phone: String,
+    identifier: String, // im identifier
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }

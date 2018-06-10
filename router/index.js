@@ -4,10 +4,12 @@ import { userSignup, userSignin } from '../controller/user'
 import { departmentCreate, departmentList, departmentDelete, departmentDetail } from '../controller/department'
 import { doctorCreate, doctorList, doctorDetail, doctorSignin, doctorBind } from '../controller/doctor'
 import { patientCreate, patientDelete, patientList, patientDetail, patientBindCard } from '../controller/patient'
-import { chatCreate, chatUserList } from '../controller/chat'
+import { chatCreate, chatUserList, chatDoctorList } from '../controller/chat'
 import { systemCreate } from '../controller/system'
 import { consultationReasonCreate, consultationReasonList } from '../controller/consultation_reason'
 import { evaluateQuesionCreate, evaluateQuesionList } from '../controller/evaluate_quesion'
+import { chatMessageCreate } from '../controller/chat_message'
+import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 
 const router = express.Router()
 
@@ -32,6 +34,7 @@ router.all('/doctor/bind', doctorBind)
 router.all('/chat/create', chatCreate)
 router.all('/system/create', systemCreate)
 router.all('/user/chat/list', chatUserList)
+router.all('/doctor/chat/list', chatDoctorList)
 router.all('/doctor/list', doctorList)
 router.all('/doctor/detail', doctorDetail)
 
@@ -39,4 +42,8 @@ router.all('/consultationReason/create', consultationReasonCreate)
 router.all('/consultationReason/list', consultationReasonList)
 router.all('/evaluateQuesion/create', evaluateQuesionCreate)
 router.all('/evaluateQuesion/list', evaluateQuesionList)
+router.all('/chat/message/create', chatMessageCreate)
+router.all('/quickReply/create', quickReplyCreate)
+router.all('/quickReply/delete', quickReplyDelete)
+router.all('/quickReply/list', quickReplyList)
 export default router
