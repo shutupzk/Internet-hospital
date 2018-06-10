@@ -7,6 +7,7 @@ import { patientCreate, patientDelete, patientList, patientDetail, patientBindCa
 import { chatCreate, chatUserList, chatDoctorList } from '../controller/chat'
 import { systemCreate } from '../controller/system'
 import { chatMessageCreate } from '../controller/chat_message'
+import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 
 const router = express.Router()
 
@@ -35,4 +36,7 @@ router.all('/doctor/chat/list', chatDoctorList)
 router.all('/doctor/list', doctorList)
 router.all('/doctor/detail', doctorDetail)
 router.all('/chat/message/create', chatMessageCreate)
+router.all('/quickReply/create', quickReplyCreate)
+router.all('/quickReply/delete', quickReplyDelete)
+router.all('/quickReply/list', quickReplyList)
 export default router
