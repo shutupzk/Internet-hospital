@@ -12,7 +12,8 @@ export const departmentCreate = async (req, res) => {
     const departmentByName = await Department.findOne({ deptName })
     if (departmentByCode) return result.failed(res, '科室编码已存在')
     if (departmentByName) return result.failed(res, '科室名称已存在')
-    const department = await Department.create({ deptCode, deptName, weight })
+    let department = await Department.create({ deptCode, deptName, weight })
+    department = formatObjId(department)
     return result.success(res, department)
   } catch (e) {
     return result.failed(res, e.message)

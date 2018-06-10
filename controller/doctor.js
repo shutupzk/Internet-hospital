@@ -6,11 +6,10 @@ import { TencentIM } from '../config'
 const KEY = '0.9434990896465933'
 
 export const doctorCreate = async (req, res) => {
-  let { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = true, imageAndTextPrice = 0, isHot, password, special, title, workExperience } = req.body
+  let { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = false, imageAndTextPrice = 0, isHot, password, special, title, workExperience } = req.body
   if (!departmentId || !doctorSn || !doctorName || !password) {
     return result.failed(res, '缺少参数')
   }
-  const { TencentIM } = req.context
 
   try {
     password = md5(password)
@@ -21,7 +20,8 @@ export const doctorCreate = async (req, res) => {
     await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
     let identifier = 'doctor-' + doctorSn
     let insertData = { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
-    const doctor = await Doctor.create(insertData)
+    let doctor = await Doctor.create(insertData)
+    doctor = formatObjId(doctor)
     return result.success(res, doctor)
   } catch (e) {
     return result.failed(res, e.message)
@@ -48,6 +48,9 @@ export const doctorList = async (req, res) => {
     console.log('ops', ops)
     const doctorList = await Model.findDoctorByOpsWithPage(Doctor, { ops, limit, skip })
     doctorList.items = formatArrayId(doctorList.items, ['department'])
+    for (let item of doctorList.items) {
+      item.department = formatObjId(item.department)
+    }
 
     return result.success(res, doctorList)
   } catch (e) {
@@ -74,9 +77,10 @@ export const doctorDetail = async (req, res) => {
     return result.failed(res, '缺少参数')
   }
   try {
-    let doctor = await Doctor.findById(doctorId).populate('departmentId')
+    let doctor = await Doctor.findById(doctorId).populate({path: 'departmentId', select: '-created_at -updated_at -deleted_at'})
 
     doctor = formatObjId(doctor, ['department'])
+    doctor.department = formatObjId(doctor.department)
     return result.success(res, doctor)
   } catch (e) {
     return result.failed(res, e.message)
