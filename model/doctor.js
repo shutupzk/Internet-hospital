@@ -8,7 +8,9 @@ let ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
+    openId: { type: String, index: true, unique: true },
     doctorSn: String, // 医生编码
+    password: String,
     doctorName: String, // 医生姓名
     departmentId: { type: ObjectId, ref: 'department' }, // 所属科室
     weight: Number, // 医生权重
