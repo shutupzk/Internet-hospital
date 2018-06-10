@@ -17,33 +17,40 @@ router.all('/test', (req, res) => {
   res.json({ ok: '1' })
 })
 
+router.all('/system/create', systemCreate)
+
 router.all('/user/signup', userSignup)
 router.all('/user/signin', userSignin)
+
 router.all('/patient/create', patientCreate)
 router.all('/patient/delete', patientDelete)
 router.all('/patient/list', patientList)
 router.all('/patient/detail', patientDetail)
 router.all('/patient/bindcard', patientBindCard)
+
 router.all('/department/create', departmentCreate)
 router.all('/department/list', departmentList)
 router.all('/department/detail', departmentDetail)
 router.all('/department/delete', departmentDelete)
+
 router.all('/doctor/create', doctorCreate)
 router.all('/doctor/signin', doctorSignin)
 router.all('/doctor/bind', doctorBind)
-router.all('/chat/create', chatCreate)
-router.all('/system/create', systemCreate)
-router.all('/user/chat/list', chatUserList)
-router.all('/doctor/chat/list', chatDoctorList)
 router.all('/doctor/list', doctorList)
 router.all('/doctor/detail', doctorDetail)
 
 router.all('/consultationReason/create', consultationReasonCreate)
 router.all('/consultationReason/list', consultationReasonList)
+
 router.all('/evaluateQuesion/create', evaluateQuesionCreate)
 router.all('/evaluateQuesion/list', evaluateQuesionList)
-router.all('/chat/message/create', chatMessageCreate)
+
 router.all('/quickReply/create', quickReplyCreate)
 router.all('/quickReply/delete', quickReplyDelete)
 router.all('/quickReply/list', quickReplyList)
+
+router.all('/chat/create', chatCreate)
+router.all('/chat/user/list', chatUserList)
+router.all('/chat/doctor/list', chatDoctorList)
+router.all('/chat/message/create', chatMessageCreate)
 export default router
