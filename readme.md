@@ -3,6 +3,142 @@
 
 **修订时间：2018-06-10**
 
+##9. 收藏模块
+
+###9.1 用户收藏医生
+```
+请求地址：/api/doctorCollection/create
+```
+**请求包示例**
+
+```
+ {
+    "userId": "5b1be1a7230afb14e4bfb3f0",
+    "doctorId": "5b1be1a9af32f1debbee94b8",
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| userId | String | ✅ |  用户id | |
+| doctorId | String | ✅ |  医生id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "_id": "5b1d1ad6f892f04c99dbf222",
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "userId": "5b1cbbcfe3d2c87d31bac936",
+    "created_at": "2018-06-10T12:34:30.704Z",
+    "updated_at": "2018-06-10T12:34:30.704Z"
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| userId | String | ✅ |  用户id | |
+| doctorId | String | ✅ |  医生id| |
+<br>
+
+###9.2 用户查询收藏的医生列表
+```
+请求地址：/api/doctorCollection/list
+```
+**请求包示例**
+
+```
+ {
+    "userId": "5b1cbbcfe3d2c87d31bac936",
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| userId | String | ✅ |  用户id | |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "id": "5b1cf2bb7641890a26af32ee",
+      "userId": "5b1cbbcfe3d2c87d31bac936",
+      "created_at": "2018-06-10T09:43:23.140Z",
+      "updated_at": "2018-06-10T09:43:23.141Z",
+      "doctor": {
+        "imageAndTextOpen": true,
+        "imageAndTextPrice": 1,
+        "isHot": true,
+        "_id": "5b1cc699cbd16bf9d96ae31b",
+        "doctorSn": "00001",
+        "doctorName": "华佗",
+        "weight": 1,
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "created_at": "2018-06-10T06:35:05.346Z",
+        "updated_at": "2018-06-10T06:35:05.346Z",
+        "identifier": "doctor-00001",
+        "openId": "o1XzUwxrGtfuM-jFfOloc0zxB8Fw",
+        "departmentId": "5b1bcc9c72ded1d66685f9c1"
+      }
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| userId | String | ✅ |  用户id | |
+| doctor | object | ✅ |  医生信息| |
+
+<br>
+###9.3 用户取消收藏医生
+```
+请求地址：/api/doctorCollection/delete
+```
+**请求包示例**
+
+```
+ {
+    "id": "5b1d1ad6f892f04c99dbf222",
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| id | String | ✅ |  患者id | 收藏id|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "n": 1,
+    "ok": 1
+  },
+  "msg": "操作成功"
+}
+```
+
+
+<br>
+<br>
+<br>
+<br>
 ##10. 订单模块
 
 ###10.1 创建咨询订单
