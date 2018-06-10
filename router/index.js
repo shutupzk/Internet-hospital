@@ -4,11 +4,11 @@ import { userSignup, userSignin } from '../controller/user'
 import { departmentCreate, departmentList, departmentDelete, departmentDetail } from '../controller/department'
 import { doctorCreate, doctorList, doctorDetail, doctorSignin, doctorBind } from '../controller/doctor'
 import { patientCreate, patientDelete, patientList, patientDetail, patientBindCard } from '../controller/patient'
-import { chatCreate, chatUserList, chatDoctorList } from '../controller/chat'
+import { chatCreate, chatUserList, chatDoctorList, chatDetail } from '../controller/chat'
 import { systemCreate } from '../controller/system'
 import { consultationReasonCreate, consultationReasonList } from '../controller/consultation_reason'
 import { evaluateQuesionCreate, evaluateQuesionList } from '../controller/evaluate_quesion'
-import { chatMessageCreate } from '../controller/chat_message'
+import { chatMessageCreate, chatMessageList } from '../controller/chat_message'
 import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 
 const router = express.Router()
@@ -52,5 +52,7 @@ router.all('/quickReply/list', quickReplyList)
 router.all('/chat/create', chatCreate)
 router.all('/chat/user/list', chatUserList)
 router.all('/chat/doctor/list', chatDoctorList)
+router.all('/chat/detail', chatDetail)
 router.all('/chat/message/create', chatMessageCreate)
+router.all('/chat/message/list', chatMessageList)
 export default router

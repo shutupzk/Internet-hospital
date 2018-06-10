@@ -4,7 +4,8 @@ import moment from 'moment'
 import { formatArrayId, formatObjId } from '../util'
 
 export const evaluateCreate = async (req, res) => {
-  const { anonymous = true, consultationId, doctorId, evaluateDetails } = req.body
+  let { anonymous = true, consultationId, doctorId, evaluateDetails } = req.body
+  evaluateDetails = JSON.parse(evaluateDetails)
   if (!consultationId || !doctorId || !evaluateDetails) return result.failed(res, '-1', '缺少参数')
   let patientId, userId
   if (consultationId) {
@@ -15,13 +16,11 @@ export const evaluateCreate = async (req, res) => {
     let pateint = await Patient.findById(consultation.patientId)
     userId = pateint.userId
   }
-
   let score = 0
   let content = '好评'
   for (let { value, evaluateQuesionId } of evaluateDetails) {
     let { type } = await EvaluateQuesion.findById(evaluateQuesionId)
     if (type === '01') {
-      console.log('分值```````', value)
       score += value * 1
     }
     if (type === '02') {
@@ -29,7 +28,7 @@ export const evaluateCreate = async (req, res) => {
     }
   }
   const evaluateInput = { score, anonymous, consultationId, doctorId, patientId, userId, content }
-  let evaluate = Evaluate.create(evaluateInput)
+  let evaluate = await Evaluate.create(evaluateInput)
   if (!evaluate || !evaluate._id) return result.failed(res, '-1', '评价失败')
   const evaluateId = evaluate._id
 
@@ -41,6 +40,8 @@ export const evaluateCreate = async (req, res) => {
     await Evaluate.removeById(evaluateId)
     return result.failed(res, '-1', '评价失败')
   }
+
+  await Consultation.updateOne({ _id: consultationId }, { evaluated: true })
   evaluate = formatObjId(evaluate)
 
   return result.success(res, evaluate)
@@ -50,7 +51,7 @@ export const evaluateList = async (req, res) => {
   const { doctorId, showAll = false, startDate, endDate, userId, isUserGet, skip, limit } = req.body
   try {
     let ops = {
-      created_at: {$gt: 0}
+      created_at: { $gt: 0 }
     }
     if (doctorId) ops.doctorId = doctorId
     if (!showAll) {
@@ -75,9 +76,11 @@ export const evaluateList = async (req, res) => {
       ).getTime()
       ops.created_at = { $gt: startTime, $lt: endTime }
     }
-    console.log('ops', ops)
-    const evaluateList = await Model.findByOpsWithPage(Evaluate, { ops, limit, skip })
-    evaluateList.items = formatArrayId(evaluateList.items, ['department'])
+    const evaluateList = await Model.findEvaluateByOpsWithPage(Evaluate, { ops, limit, skip })
+    evaluateList.items = formatArrayId(evaluateList.items, ['consultation'])
+    for (let item of evaluateList.items) {
+      item.consultation = formatObjId(item.consultation, ['patient'])
+    }
 
     return result.success(res, evaluateList)
   } catch (e) {

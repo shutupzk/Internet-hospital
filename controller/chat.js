@@ -1,6 +1,12 @@
 import { PatientWithDoctor, Patient, Doctor, Chat, SystemWithUser, System, User, SystemWithDoctor, SystemWithPatient } from '../model'
 import result from './result'
 
+const POPULATE = [
+  { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'doctorId', select: '_id doctorName' }, { path: 'patientId', select: '_id name' }] },
+  { path: 'systemWithUserId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] },
+  { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
+]
+
 export const chatCreate = async (req, res) => {
   const { type, patientId, doctorId, userId, code } = req.body
   try {
@@ -45,10 +51,7 @@ export const chatUserList = async (req, res) => {
           systemWithUserId: { $in: systemWithUserIds }
         }
       ]
-    }).populate([
-      { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'doctorId', select: '_id doctorSn doctorName' }, { path: 'patientId', select: '_id name' }] },
-      { path: 'systemWithUserId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
-    ])
+    }).populate(POPULATE)
     result.success(res, formatChats(chats))
   } catch (e) {
     console.log(e)
@@ -77,10 +80,7 @@ export const chatDoctorList = async (req, res) => {
           systemWithDoctorId: { $in: systemWithDoctorIds }
         }
       ]
-    }).populate([
-      { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'patientId', select: '_id name' }] },
-      { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
-    ])
+    }).populate(POPULATE)
     result.success(res, formatChats(chats))
   } catch (e) {
     console.log(e)
@@ -92,10 +92,7 @@ export const chatDetail = async (req, res) => {
   const { id } = req.body
   if (!id) return result.failed(res, '参数错误')
   try {
-    let chat = await Chat.findById(id).populate([
-      { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'patientId', select: '_id name' }] },
-      { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
-    ])
+    let chat = await Chat.findById(id).populate(POPULATE)
     result.success(res, formatChat(chat))
   } catch (e) {
     console.log(e)
@@ -188,7 +185,8 @@ export const chatSystemWithPatientCreate = async ({ patientId, code }) => {
 
 export const formatChat = (chat, needAccount) => {
   let obj = chat._doc
-  let newObj = { id: obj._id, type: obj.type, status: obj.status }
+  let { type, status, lastMsgContent = '', lastMsgTime = null } = obj
+  let newObj = { id: obj._id, type, status, lastMsgContent, lastMsgTime }
   delete newObj._id
 
   let key = ''
@@ -196,31 +194,29 @@ export const formatChat = (chat, needAccount) => {
   if (newObj.type === '02') key = 'systemWithUserId'
   if (newObj.type === '03') key = 'systemWithDoctorId'
 
-  console.log(obj[key])
-
   if (obj[key].patientId) {
     let { _id, name } = obj[key].patientId
     newObj.patient = { patientId: _id, name }
   }
   if (obj[key].doctorId) {
-    let { _id, doctorName, doctorSn } = obj[key].doctorId
+    let { _id, doctorName, identifier } = obj[key].doctorId
     newObj.doctor = { doctorId: _id, doctorName }
     if (needAccount) {
-      newObj.doctorAccount = doctorSn
+      newObj.doctorAccount = identifier
     }
   }
   if (obj[key].userId) {
-    let { _id, openId } = obj[key].userId
+    let { _id, openId, identifier } = obj[key].userId
     newObj.user = { userId: _id, openId }
     if (needAccount) {
-      newObj.userAccount = openId
+      newObj.userAccount = identifier
     }
   }
   if (obj[key].systemId) {
-    let { _id, code, name, imAccount } = obj[key].systemId
+    let { _id, code, name, identifier } = obj[key].systemId
     newObj.system = { systemId: _id, code, name }
     if (needAccount) {
-      newObj.systemAccount = imAccount
+      newObj.systemAccount = identifier
     }
   }
   return newObj
