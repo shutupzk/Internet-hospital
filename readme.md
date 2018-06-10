@@ -9,7 +9,7 @@
 --------
 
 </br>
-###1.1 用户注册###
+<h3>1.1 用户注册
 
 ```
 请求地址：/api/user/signup
@@ -49,7 +49,7 @@
 
 </br>
 
-###1.2 用户登录
+<h3>1.2 用户登录
 
 ```
 请求地址：/api/user/signin
@@ -103,7 +103,7 @@
 --------
 
 
-###2.1 创建就诊人
+<h3>2.1 创建就诊人
 
 ```
 请求地址：/api/patient/create
@@ -181,7 +181,7 @@
 
 </br>
 
-###2.2 删除就诊人
+<h3>2.2 删除就诊人
 
 ```
 请求地址：/api/patient/delete
@@ -221,7 +221,7 @@
 
 </br>
 
-###2.3 就诊人列表
+<h3>2.3 就诊人列表
 
 ```
 请求地址：/api/patient/list
@@ -288,7 +288,7 @@
 
 </br>
 
-###2.4 就诊人详情
+<h3>2.4 就诊人详情
 
 ```
 请求地址：/api/patient/detail
@@ -348,13 +348,12 @@
 | data.created_at | String | ✅ | 创建时间 | |
 | data.updated_at | String | ✅ | 修改时间 | |
 
---
 
 
 
 </br>
 
-###2.5 绑定就诊卡
+<h3>2.5 绑定就诊卡
 
 ```
 请求地址：/api/patient/bindcard
@@ -375,7 +374,7 @@
 | id | String | ✅ |  就诊人id| |
 | patientIdNo | String | ✅ |  就诊卡号 | |
 
---
+
 **应答包示例**
 
 ```
@@ -391,14 +390,13 @@
 | code | String | ✅ |  返回码， 200 成功| |
 | msg | String | ✅ |  返回信息 | |
 
---
+<br>
+<br>
+<br>
+3. 科室模块
+----
 
-<br>
-<br>
-<br>
-##3. 科室模块
-
-###3.1 创建科室
+<h3>3.1 创建科室
 
 ```
 请求地址：/api/department/create
@@ -450,9 +448,8 @@
 | data.created_at | Date | ✅ |  创建时间| |
 | data.updated_at | Date | ✅ |  更新时间| |
 | msg | String | ✅ |  错误信息 | |
---
 
-###3.2 查询科室列表
+<h3>3.2 查询科室列表
 
 ```
 请求地址：/api/department/list
@@ -523,7 +520,7 @@
 | msg | String | ✅ |  错误信息 | |
 --
 
-###3.3 查询科室详情
+<h3>3.3 查询科室详情
 
 ```
 请求地址：/api/department/detail
@@ -571,9 +568,9 @@
 | data.created_at | Date | ✅ |  创建时间| |
 | data.updated_at | Date | ✅ |  更新时间| |
 | msg | String | ✅ |  错误信息 | |
---
 
-###3.4 删除科室
+
+<h3>3.4 删除科室
 
 ```
 请求地址：/api/department/delete
@@ -607,15 +604,15 @@
 | code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
 | data | Object | ❌ |  请求结果| |
 | msg | String | ✅ |  错误信息 | |
---
 
 <br>
 <br>
 <br>
 <br>
-##4. 医生模块
+4. 医生模块
+----
 
-###4.1 创建医生
+<h3>4.1 创建医生
 
 ```
 请求地址：/api/doctor/create
@@ -699,7 +696,7 @@
 | msg | String | ✅ |  错误信息 | |
 --
 
-###4.2 医生列表
+<h3>4.2 医生列表
 
 ```
 请求地址：/api/doctor/list
@@ -794,7 +791,7 @@
 | msg | String | ✅ |  错误信息 | |
 --
 
-###4.3 医生详情
+<h3>4.3 医生详情
 
 ```
 请求地址：/api/doctor/detail
@@ -865,10 +862,10 @@
 | data.created_at | Date | ✅ |  创建时间| |
 | data.updated_at | Date | ✅ |  更新时间| |
 | msg | String | ✅ |  错误信息 | |
---
+
 
 <br>
-###4.4 医生绑定账号
+<h3>4.4 医生绑定账号
 
 ```
 请求地址：/api/doctor/bind
@@ -908,7 +905,7 @@
 
 
 <br>
-###4.5 医生登录
+<h3>4.5 医生登录
 
 ```
 请求地址：/api/doctor/signin
@@ -959,7 +956,7 @@
 --------
 
 </br>
-###5.1 问诊原因列表
+<h3>5.1 问诊原因列表
 
 ```
 请求地址：/api/consultationReason/list
@@ -1013,15 +1010,10 @@
 </br>
 </br>
 
-<<<<<<< HEAD
-6 评价问题
---------
-=======
-##6 订单评价模块
->>>>>>> aa5976bc79a23b2550303e139447469e80ab7818
-
+6 评价模板
+-----
 </br>
-###6.1 评价问题列表
+<h3>6.1 评价问题列表
 
 ```
 请求地址：/api/evaluateQuesion/list
@@ -1071,7 +1063,7 @@
 --
 
 <br>
-###6.2 创建订单评价
+<h3>6.2 创建订单评价
 
 ```
 请求地址：/consultation/evaluate/create
@@ -1150,7 +1142,7 @@
 --------
 
 </br>
-###7.1 创建快捷回复
+<h3>7.1 创建快捷回复
 
 ```
 请求地址：/api/quickReply/create
@@ -1203,11 +1195,10 @@
 | data.created_at | Date | ✅ | 创建时间 | |
 | data.updated_at | Date | ✅ | 修改时间 | |
 
---
 
 
 </br>
-###7.2 删除快捷回复
+<h3>7.2 删除快捷回复
 
 ```
 请求地址：/api/quickReply/delete
@@ -1241,11 +1232,10 @@
 | code | String | ✅ |  返回码， 200 成功| |
 | msg | String | ✅ |  返回信息 | |
 
---
 
 
 </br>
-###7.3 快捷回复列表
+<h3>7.3 快捷回复列表
 
 ```
 请求地址：/api/quickReply/list
@@ -1326,7 +1316,7 @@
 --------
 
 
-###8.1 用户聊天列表
+<h3>8.1 用户聊天列表
 
 ```
 请求地址：/api/chat/user/list'
@@ -1345,7 +1335,7 @@
 | :-: | :-: | :-:  | :--: | :--: |
 | userId | String | ✅ |  用户id | |
 
---
+
 **应答包示例**
 
 ```
@@ -1409,7 +1399,7 @@
 --
 
 </br>
-###8.2 医生聊天列表
+<h3>8.2 医生聊天列表
 
 ```
 请求地址：/api/chat/doctor/list'
@@ -1493,7 +1483,7 @@
 
 
 </br>
-###8.3 获取单条聊天，聊天详情
+<h3>8.3 获取单条聊天，聊天详情
 
 ```
 请求地址：/api/chat/detail'
@@ -1563,7 +1553,7 @@
 
 
 </br>
-###8.4 获取聊天消息
+<h3>8.4 获取聊天消息
 
 ```
 请求地址：/api/chat/message/list
@@ -1697,7 +1687,7 @@
 
 
 </br>
-###8.5 发送订单聊天消息
+<h3>8.5 发送订单聊天消息
 
 ```
 请求地址：/api/consultation/chat/message/create
@@ -1774,7 +1764,7 @@
 
 
 </br>
-###8.6 订单聊天消息 撤回
+<h3>8.6 订单聊天消息 撤回
 
 ```
 请求地址：/api/consultation/chat/message/retract
@@ -1848,7 +1838,7 @@
 9. 收藏模块
 --------
 
-###9.1 用户收藏医生
+<h3>9.1 用户收藏医生
 ```
 请求地址：/api/doctorCollection/create
 ```
@@ -1891,7 +1881,7 @@
 | doctorId | String | ✅ |  医生id| |
 <br>
 
-###9.2 用户查询收藏的医生列表
+<h3>9.2 用户查询收藏的医生列表
 ```
 请求地址：/api/doctorCollection/list
 ```
@@ -1947,10 +1937,12 @@
 | doctor | object | ✅ |  医生信息| |
 
 <br>
-###9.3 用户取消收藏医生
+<h3>9.3 用户取消收藏医生
+
 ```
 请求地址：/api/doctorCollection/delete
 ```
+
 **请求包示例**
 
 ```
@@ -1985,7 +1977,7 @@
 10. 订单模块
 --------
 
-###10.1 创建咨询订单
+<h3>10.1 创建咨询订单
 
 ```
 请求地址：/consultation/create
@@ -2055,7 +2047,7 @@
 --
 
 <br>
-###10.2 修改订单信息
+<h3>10.2 修改订单信息
 
 ```
 请求地址：/consultation/update
@@ -2120,7 +2112,7 @@
 --
 
 <br>
-###10.3 订单列表查询
+<h3>10.3 订单列表查询
 
 ```
 请求地址：/consultation/list
@@ -2231,7 +2223,7 @@
 --
 
 <br>
-###10.4 查询订单的聊天消息
+<h3>10.4 查询订单的聊天消息
 
 ```
 请求地址：/consultation/chatmessage
@@ -2290,7 +2282,7 @@
 | direction |string | ✅ |  消息方向| |
 
 <br>
-###10.5 创建订单的支付订单
+<h3>10.5 创建订单的支付订单
 
 ```
 请求地址：/consultation/payment/create
@@ -2401,7 +2393,7 @@
 
 
 <br>
-###11.1 开诊断
+<h3>11.1 开诊断
 
 ```
 请求地址：/treatment/diagnisis/upsert
@@ -2463,7 +2455,7 @@
 | doctorId | String | ✅ |  医生id| |
 
 <br>
-###11.2 诊断查询
+<h3>11.2 诊断查询
 ```
 请求地址：/treatment/diagnisis/queryByConsultation
 ```
