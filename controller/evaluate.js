@@ -87,3 +87,17 @@ export const evaluateList = async (req, res) => {
     return result.failed(res, e.message)
   }
 }
+
+export const evaluateUpdate = async (req, res) => {
+  const { evaluateId, isShield } = req.body
+  if (!evaluateId) return result.failed(res, '缺少参数')
+
+  try {
+    let evaluate = await Evaluate.findById(evaluateId)
+    if (!evaluate) return result.failed(res, '所选评价不存在')
+    await Evaluate.updateOne({_id: evaluateId}, {isShield})
+    return result.success(res)
+  } catch (e) {
+    return result.failed(res, e.message)
+  }
+}

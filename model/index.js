@@ -69,7 +69,7 @@ class Model {
     let items = await Model.find(ops)
       .populate({
         path: 'consultationId',
-        select: '-_id',
+        select: '_id -_id',
         populate: { path: 'patientId', select: 'name -_id' }
       })
       .sort(sort)
