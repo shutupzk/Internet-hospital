@@ -3,33 +3,33 @@
 
 **修订时间：2018-06-10**
 
+##10. 订单模块
 
-交互方式
--------
-
-双方通过HTTP / POST（application/x-www-form-urlencoded） 接口进行交互。
-接口响应结构为JSON字符串：
+###10.1 创建咨询订单
 
 ```
-{ code: 200, data:null, msg: '操作成功' }   
+请求地址：/consultation/create
 ```
-
-响应结构中`code`为 200 时为正确码，其他均为错误码。`data`为返回的JSON结构数据
-
-接口说明
--------
-
-###用户注册###
+**请求包示例**
 
 ```
-请求地址：/api/user/signup
+ {
+    "content": "肚子痛",
+    "patientId": "5b1be1a7230afb14e4bfb3f0",
+    "doctorId": "5b1be1a9af32f1debbee94b8",
+    "consultationReason": "发处方",
+    "images": "[\"https://a.jpg\",\"https://b.jpg\"]"
+ }
 ```
 **请求包参数说明**
 
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
-| openId | String | ✅ |  用户微信id| |
-| phone | Nebmer | ❌ |  手机号 | |
+| content | String | ✅ |  咨询内容| |
+| patientId | String | ✅ |  患者id | |
+| doctorId | String | ✅ |  医生id| |
+| consultationReason | String | ✅ |  问诊原因 | |
+| images |[string] | ❌ |  咨询图片| []|
 
 **应答包示例**
 
@@ -44,52 +44,6 @@
 | openId | String | ✅ |  用户微信id| |
 | phone | Nebmer | ❌ |  手机号 | |
 --
-
-###用户登录###
-
-```
-请求地址：/api/user/signup
-```
-**请求包字段说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| openId | String | ✅ |  用户微信id| |
-
-**应答包示例**
-
-```
-{ code: '200', token, userId, usersig, identifier }
-```
-**应答包参数说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| openId | String | ✅ |  用户微信id| |
-| phone | Nebmer | ❌ |  手机号 | |
-
---
-
-###创建就诊人###
-
-```
-请求地址：/api/patient/create
-```
-**请求包字段说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| userId | String | ✅ |  用户id| |
-| phone | String | ✅ |  手机号| |
-| certificateType | String | ❌ |  证件类型 01身份证，02军人证，03户口本，04签证，05护照，06港澳通行证| 01 |
-| certificateNo | String | ✅ |  证件号码| |
-| name | String | ✅ |  姓名 YYYY-MM-DD|  |
-| birthday | String | ❌ |  生日| 由身份证号算出|
-| sex | String | ❌ |  性别 0-女，1-男| 由身份证号算出|
-| patientIdNo |  String | ❌|  就诊卡号| |
-
---
-
 
 
     
