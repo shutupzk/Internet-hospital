@@ -39,7 +39,7 @@ class Model {
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate('departmentId')
+      .populate({path: 'departmentId', select: 'deptName -_id'})
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -67,7 +67,7 @@ class Model {
     let items = await Model.find(ops)
       .populate({
         path: 'consultationId',
-        select: '_id -_id',
+        select: '-_id',
         populate: { path: 'patientId', select: 'name -_id' }
       })
       .sort(sort)

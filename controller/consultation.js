@@ -201,3 +201,17 @@ export const consultationSendStartMessage = async consultationId => {
   console.log('smMessage ======', smMessage)
   sendMessages(smMessage)
 }
+
+export const consultationDetail = async (req, res) => {
+  const { consultationId } = req.body
+  if (!consultationId) return result.failed(res, '缺少参数')
+
+  try {
+    let consultationDetail = await Consultation.findById(consultationId).populate({path: 'doctorId', select: 'doctorName title', populate: {path: 'departmentId', select: 'deptName -_id'}}).populate({path: 'patientId', select: 'name -_id'})
+    consultationDetail = formatObjId(consultationDetail, ['doctor', 'patient'])
+    consultationDetail.doctor = formatObjId(consultationDetail.doctor, ['departmentId'])
+    return result.success(res, consultationDetail)
+  } catch (e) {
+    return result.failed(res, '-1', e.message)
+  }
+}

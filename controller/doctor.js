@@ -20,7 +20,7 @@ export const doctorCreate = async (req, res) => {
     if (!department) return result.failed(res, '-1', '科室不存在')
     await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
     let identifier = 'doctor-' + doctorSn
-    let insertData = { department: departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
+    let insertData = { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
     const doctor = await Doctor.create(insertData)
     return result.success(res, doctor)
   } catch (e) {
@@ -48,6 +48,7 @@ export const doctorList = async (req, res) => {
     console.log('ops', ops)
     const doctorList = await Model.findDoctorByOpsWithPage(Doctor, { ops, limit, skip })
     doctorList.items = formatArrayId(doctorList.items, ['department'])
+
     return result.success(res, doctorList)
   } catch (e) {
     return result.failed(res, '-1', e.message)
