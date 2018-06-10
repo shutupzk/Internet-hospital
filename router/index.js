@@ -10,6 +10,7 @@ import { consultationReasonCreate, consultationReasonList } from '../controller/
 import { evaluateQuesionCreate, evaluateQuesionList } from '../controller/evaluate_quesion'
 import { chatMessageCreate, chatMessageList } from '../controller/chat_message'
 import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
+import { doctorCollectionCreate, doctorCollectionDelete, doctorCollectionList } from '../controller/doctor_collection'
 
 const router = express.Router()
 
@@ -55,4 +56,9 @@ router.all('/chat/doctor/list', chatDoctorList)
 router.all('/chat/detail', chatDetail)
 router.all('/chat/message/create', chatMessageCreate)
 router.all('/chat/message/list', chatMessageList)
+
+router.all('/doctorCollection/create', doctorCollectionCreate)
+router.all('/doctorCollection/delete', doctorCollectionDelete)
+router.all('/doctorCollection/list', doctorCollectionList)
+
 export default router
