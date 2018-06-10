@@ -1,0 +1,9 @@
+{
+  "apps" : [{
+    "name"        : "api-server",
+    "script"      : "server/index.js",
+    "watch"       : false,
+    "log_date_format": "YYYY-MM-DD HH:mm:ss",
+    "exec_interpreter" : "babel-node"
+  }]
+}
