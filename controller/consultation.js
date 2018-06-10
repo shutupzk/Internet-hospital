@@ -77,7 +77,7 @@ export const consultationList = async (req, res) => {
     consultationList.items = formatArrayId(consultationList.items, ['patient', 'doctor'])
     return result.success(res, consultationList)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
@@ -131,13 +131,13 @@ export const consultationChat = async (req, res) => {
     }
 
     let consultation = await Consultation.findOne(ops)
-    if (!consultation) return result.failed(res, '-1', '订单不存在')
+    if (!consultation) return result.failed(res, '订单不存在')
     const { chatId } = consultation
     let chatMessages = await ChatMessage.find({ chatId })
     chatMessages = formatArrayId(chatMessages)
     return result.success(res, chatMessages)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
@@ -207,11 +207,13 @@ export const consultationDetail = async (req, res) => {
   if (!consultationId) return result.failed(res, '缺少参数')
 
   try {
-    let consultationDetail = await Consultation.findById(consultationId).populate({path: 'doctorId', select: 'doctorName title', populate: {path: 'departmentId', select: 'deptName -_id'}}).populate({path: 'patientId', select: 'name -_id'})
+    let consultationDetail = await Consultation.findById(consultationId)
+      .populate({ path: 'doctorId', select: 'doctorName title', populate: { path: 'departmentId', select: 'deptName -_id' } })
+      .populate({ path: 'patientId', select: 'name -_id' })
     consultationDetail = formatObjId(consultationDetail, ['doctor', 'patient'])
     consultationDetail.doctor = formatObjId(consultationDetail.doctor, ['departmentId'])
     return result.success(res, consultationDetail)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }

@@ -6,12 +6,12 @@ import { formatArrayId, formatObjId } from '../util'
 export const evaluateCreate = async (req, res) => {
   let { anonymous = true, consultationId, doctorId, evaluateDetails } = req.body
   evaluateDetails = JSON.parse(evaluateDetails)
-  if (!consultationId || !doctorId || !evaluateDetails) return result.failed(res, '-1', '缺少参数')
+  if (!consultationId || !doctorId || !evaluateDetails) return result.failed(res, '缺少参数')
   let patientId, userId
   if (consultationId) {
     const consultation = await Consultation.findById(consultationId)
-    if (!consultation) return result.failed(res, '-1', '订单不存在')
-    if (consultation.evaluated) return result.failed(res, '-1', '订单已评价,不能重复评价')
+    if (!consultation) return result.failed(res, '订单不存在')
+    if (consultation.evaluated) return result.failed(res, '订单已评价,不能重复评价')
     patientId = consultation.patientId
     let pateint = await Patient.findById(consultation.patientId)
     userId = pateint.userId
@@ -29,7 +29,7 @@ export const evaluateCreate = async (req, res) => {
   }
   const evaluateInput = { score, anonymous, consultationId, doctorId, patientId, userId, content }
   let evaluate = await Evaluate.create(evaluateInput)
-  if (!evaluate || !evaluate._id) return result.failed(res, '-1', '评价失败')
+  if (!evaluate || !evaluate._id) return result.failed(res, '评价失败')
   const evaluateId = evaluate._id
 
   try {
@@ -38,7 +38,7 @@ export const evaluateCreate = async (req, res) => {
     }
   } catch (e) {
     await Evaluate.removeById(evaluateId)
-    return result.failed(res, '-1', '评价失败')
+    return result.failed(res, '评价失败')
   }
 
   await Consultation.updateOne({ _id: consultationId }, { evaluated: true })
@@ -84,6 +84,6 @@ export const evaluateList = async (req, res) => {
 
     return result.success(res, evaluateList)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
