@@ -13,6 +13,7 @@ export * from './system'
 export * from './chat_message'
 export * from './consultation_reason'
 export * from './evaluate_quesion'
+export * from './evaluate'
 export * from './quick_reply'
 
 class Model {

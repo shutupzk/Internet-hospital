@@ -23,6 +23,6 @@ const schema = new Schema(
   }
 )
 
-const EvaluateQuesion = mongoose.model('evaluate_quesion', schema, 'evaluate_quesion')
+const Evaluate = mongoose.model('evaluate', schema, 'evaluate')
 
-export { EvaluateQuesion }
+export { Evaluate }
