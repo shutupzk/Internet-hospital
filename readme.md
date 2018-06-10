@@ -2456,6 +2456,7 @@
 
 <br>
 <h3>11.2 诊断查询
+
 ```
 请求地址：/treatment/diagnisis/queryByConsultation
 ```
