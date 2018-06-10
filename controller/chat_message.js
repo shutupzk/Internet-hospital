@@ -19,7 +19,7 @@ export const consultationChatMessageCreate = async (req, res) => {
   const { consultationId, direction, type, chatId } = req.body
   if (!consultationId || !direction || !type || !chatId) return result.failed(res, '参数错误')
   try {
-    let { status } = Consultation.findById(consultationId)
+    let { status } = await Consultation.findById(consultationId)
     if (status !== '03' && status !== '04') {
       return result.failed(res, '订单状态不正确')
     }
@@ -33,6 +33,7 @@ export const consultationChatMessageCreate = async (req, res) => {
         }
       } else if (direction === 'doctor->user') {
         let doctorCount = await ChatMessage.count({ consultationId, direction: 'doctor->user', type: '01' })
+        console.log('doctorCount ======= ', doctorCount)
         if (doctorCount >= chatFinishCountByDoctor) {
           await Consultation.updateOne({ _id: consultationId }, { status: '07' })
           await Chat.updateOne({ _id: chatId }, { status: false })
