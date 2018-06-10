@@ -13,8 +13,8 @@ export const quickReplyCreate = async (req, res) => {
 export const quickReplyDelete = async (req, res) => {
   const { id } = req.body
   if (!id) return result.failed(res, '缺少参数')
-  let data = await QuickReply.deleteOne({_id: id})
-  return result.success(res, data)
+  await QuickReply.deleteOne({_id: id})
+  return result.success(res)
 }
 
 export const quickReplyList = async (req, res) => {
