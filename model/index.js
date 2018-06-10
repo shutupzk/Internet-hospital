@@ -12,6 +12,7 @@ export * from './chat'
 export * from './system'
 export * from './chat_message'
 export * from './consultation_reason'
+export * from './evaluate_quesion'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {

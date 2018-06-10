@@ -105,8 +105,8 @@ export const doctorBind = async (req, res) => {
   if (doctor.openId) return result.failed(res, '-1', '该账号已绑定，请直接登录')
 
   try {
-    await TencentIM.accountImport({ Identifier: 'identifier' + doctorSn })
-    let identifier = 'identifier' + doctorSn
+    await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
+    let identifier = 'doctor-' + doctorSn
     await Doctor.updateOne({ doctorSn }, { openId, identifier })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
