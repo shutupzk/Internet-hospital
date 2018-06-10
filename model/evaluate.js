@@ -10,10 +10,11 @@ const schema = new Schema(
   {
     score: String, // 评价分数
     anonymous: Boolean, // 是否匿名
-    isShow: Boolean, // 是否显示
+    isShield: { type: Boolean, default: false }, // 是否屏蔽
     content: String, // 评价内容
     consultationId: { type: ObjectId, ref: 'consultation' },
     doctorId: { type: ObjectId, ref: 'doctor' },
+    userId: { type: ObjectId, ref: 'user' },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
