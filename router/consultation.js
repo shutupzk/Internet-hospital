@@ -4,10 +4,11 @@ import { evaluateCreate, evaluateList } from '../controller/evaluate'
 const router = express.Router()
 
 router.all('/create', createConsultation)
-router.all('/payment/create', createConsultationPayment)
 router.all('/update', updateConsultation)
 router.all('/list', consultationList)
 router.all('/chatmessage', consultationChat)
+router.all('/payment/create', createConsultationPayment)
+
 router.all('/evaluate/create', evaluateCreate)
 router.all('/evaluate/list', evaluateList)
 

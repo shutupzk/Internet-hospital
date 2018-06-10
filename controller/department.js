@@ -20,7 +20,7 @@ export const departmentCreate = async (req, res) => {
 }
 
 export const departmentList = async (req, res) => {
-  const { keyword, skip, limit } = req.body
+  const { keyword, skip, limit, isHot = null } = req.body
   try {
     let ops = {
       deleted_at: { $exists: false }
@@ -29,6 +29,7 @@ export const departmentList = async (req, res) => {
       const reg = new RegExp(keyword, 'i')
       ops.deptName = { $regex: reg }
     }
+    if (isHot != null) ops.isHot = isHot
     const departmentList = await Model.findByOpsWithPage(Department, { ops, limit, skip })
     departmentList.items = formatArrayId(departmentList.items)
     return result.success(res, departmentList)

@@ -6,17 +6,21 @@ import { TencentIM } from '../config'
 const KEY = '0.9434990896465933'
 
 export const doctorCreate = async (req, res) => {
-  let { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = true, imageAndTextPrice = 0, isHot, password } = req.body
+  let { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = true, imageAndTextPrice = 0, isHot, password, special, title, workExperience } = req.body
   if (!departmentId || !doctorSn || !doctorName || !password) {
     return result.failed(res, '-1', '缺少参数')
   }
+  const { TencentIM } = req.context
+
   try {
     password = md5(password)
     const doctorByCode = await Doctor.findOne({ doctorSn })
     if (doctorByCode) return result.failed(res, '-1', '医生编码已存在')
     const department = await Department.findById(departmentId)
     if (!department) return result.failed(res, '-1', '科室不存在')
-    let insertData = { department: departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password }
+    await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
+    let identifier = 'doctor-' + doctorSn
+    let insertData = { department: departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
     const doctor = await Doctor.create(insertData)
     return result.success(res, doctor)
   } catch (e) {
@@ -104,9 +108,7 @@ export const doctorBind = async (req, res) => {
   if (doctor.openId) return result.failed(res, '-1', '该账号已绑定，请直接登录')
 
   try {
-    await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
-    let identifier = 'doctor-' + doctorSn
-    await Doctor.updateOne({ doctorSn }, { openId, identifier })
+    await Doctor.updateOne({ doctorSn }, { openId })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
