@@ -20,6 +20,6 @@ const schema = new Schema(
   }
 )
 
-const EvaluateQuesion = mongoose.model('evaluate_quesion', schema, 'evaluate_quesion')
+const EvaluateDetail = mongoose.model('evaluate_detail', schema, 'evaluate_detail')
 
-export { EvaluateQuesion }
+export { EvaluateDetail }

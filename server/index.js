@@ -5,6 +5,8 @@ import cors from 'cors'
 import router from '../router'
 import consultationRouter from '../router/consultation'
 import paymentRouter from '../router/payment'
+import dictionaryRouter from '../router/dictionary'
+import treatmentRouter from '../router/treatment'
 import mongoose from 'mongoose'
 import { PORT, DB, ImConfig } from '../config'
 import TencentIM from '../libs/tencent_im'
@@ -31,6 +33,8 @@ async function startServer() {
   app.use('/api', router)
   app.use('/consultation', consultationRouter)
   app.use('/payment', paymentRouter)
+  app.use('/dictionary', dictionaryRouter)
+  app.use('/treatment', treatmentRouter)
 
   app.use('*', (req, res) => {
     res.json({
