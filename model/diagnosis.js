@@ -1,0 +1,26 @@
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
+
+/**
+ * 诊断记录 （开诊断）
+ * @type {Schema}
+ */
+const schema = new Schema(
+  {
+    doctorId: { type: ObjectId, index: true, ref: 'doctor' },
+    patientId: { type: ObjectId, index: true, ref: 'patient' },
+    consultationId: { type: ObjectId, index: true, ref: 'consultation' },
+    mainDiagnosis: { type: String, index: true }, // 医生主诊断
+    secondDiagnosis: { type: [String] }, // 副诊断
+    created_at: { type: Date, default: Date.now },
+    deleted_at: { type: Date }
+  },
+  {
+    versionKey: false // 这个就是处理掉自动插入文档的__v这个属性
+  }
+)
+
+const Diagnosis = mongoose.model('diagnosis', schema, 'diagnosis')
+
+export { Diagnosis }

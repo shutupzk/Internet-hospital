@@ -13,6 +13,8 @@ export * from './system'
 export * from './chat_message'
 export * from './consultation_reason'
 export * from './quick_reply'
+export * from './diagnosis_dictionary'
+export * from './diagnosis'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
