@@ -8,7 +8,7 @@ import { chatCreate, chatUserList, chatDoctorList, chatDetail } from '../control
 import { systemCreate } from '../controller/system'
 import { consultationReasonCreate, consultationReasonList } from '../controller/consultation_reason'
 import { evaluateQuesionCreate, evaluateQuesionList } from '../controller/evaluate_quesion'
-import { chatMessageCreate, chatMessageList, consultationChatMessageCreate } from '../controller/chat_message'
+import { chatMessageCreate, chatMessageList, consultationChatMessageCreate, retractChatMessage } from '../controller/chat_message'
 import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 import { doctorCollectionCreate, doctorCollectionDelete, doctorCollectionList } from '../controller/doctor_collection'
 
@@ -57,6 +57,7 @@ router.all('/chat/detail', chatDetail)
 router.all('/chat/message/create', chatMessageCreate)
 router.all('/chat/message/list', chatMessageList)
 router.all('/consultation/chat/message/create', consultationChatMessageCreate)
+router.all('/consultation/chat/message/retract', retractChatMessage)
 
 router.all('/doctorCollection/create', doctorCollectionCreate)
 router.all('/doctorCollection/delete', doctorCollectionDelete)
