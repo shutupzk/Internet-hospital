@@ -1,5 +1,6 @@
-var fs = require('fs')
-var path = require('path')
+import IM from '../libs/tencent_im'
+import fs from 'fs'
+import path from 'path'
 const PORT = '3000'
 const DB = {
   mongoUrl: 'mongodb://47.93.206.157:27017/internet_hospital',
@@ -17,6 +18,8 @@ const ImConfig = {
   public_key_string: fs.readFileSync(path.join(__dirname, 'imkeys/public_key')).toString()
 }
 
+const TencentIM = new IM(ImConfig)
+
 const wechatNativeConfig = {
   appid: 'wxe291762653c64caa',
   mch_id: '1490235832', // 微信支付分配的商户号
@@ -27,4 +30,9 @@ const wechatNativeConfig = {
   wechat_notify_url: 'http://47.93.206.157:3000/payment/NATIVE/notify'
 }
 
-export { PORT, DB, ImConfig, wechatNativeConfig }
+const SystemParam = {
+  chatFinishCountByDoctor: 3,
+  chatFinishCountByUser: 20
+}
+
+export { PORT, DB, ImConfig, wechatNativeConfig, TencentIM, SystemParam }

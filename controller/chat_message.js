@@ -1,12 +1,91 @@
-import { ChatMessage, Chat } from '../model'
+import { ChatMessage, Chat, Consultation } from '../model'
 import { formatChat } from './chat'
 import result from './result'
+import { TencentIM, SystemParam } from '../config'
+import moment from 'moment'
+
+const { chatFinishCountByDoctor, chatFinishCountByUser } = SystemParam
 
 export const chatMessageCreate = async (req, res) => {
-  const { TencentIM } = req.context
   try {
-    let chatMessage = await sendMessage(TencentIM, req.body)
+    let chatMessage = await sendMessage(req.body)
     return result.success(res, chatMessage)
+  } catch (e) {
+    return result.failed(res, e.message)
+  }
+}
+
+export const consultationChatMessageCreate = async (req, res) => {
+  const { consultationId, direction, type, chatId } = req.body
+  if (!consultationId || !direction || !type || !chatId) return result.failed(res, '参数错误')
+  try {
+    let { status } = Consultation.findById(consultationId)
+    if (status !== '03' && status !== '04') {
+      return result.failed(res, '订单状态不正确')
+    }
+    let endMsgFlag = false // 是否是最后一条消息
+    let firstDocMsg = false // 是否是第一次回复消息
+    if (type === '01') {
+      if (direction === 'user->doctor' && type === '01') {
+        let userCount = await ChatMessage.count({ consultationId, direction: 'user->doctor', type: '01' })
+        if (userCount >= chatFinishCountByUser) {
+          return result.failed(res, '已超过最大发送条数')
+        }
+      } else if (direction === 'doctor->user') {
+        let doctorCount = await ChatMessage.count({ consultationId, direction: 'doctor->user', type: '01' })
+        if (doctorCount >= chatFinishCountByDoctor) {
+          await Consultation.updateOne({ _id: consultationId }, { status: '07' })
+          await Chat.updateOne({ _id: chatId }, { status: false })
+          return result.failed(res, '该会话已结束')
+        }
+        if (doctorCount + 1 === chatFinishCountByDoctor) endMsgFlag = true
+        if (doctorCount === 0) firstDocMsg = true
+      }
+    }
+
+    if (firstDocMsg) {
+      const firstMsg = {
+        type: '06',
+        text: {
+          doctorMsg: {
+            text: `因不能面诊患者，无法全面了解病情，以下建议仅供参考，具体诊疗请一定到院在医生指导下进行！`
+          },
+          userMsg: {
+            text: `因不能面诊患者，无法全面了解病情，以下建议仅供参考，具体诊疗请一定到院在医生指导下进行！`
+          }
+        },
+        direction: 'user->doctor',
+        chatId,
+        consultationId
+      }
+      await sendMessage(firstMsg)
+    }
+
+    let chatMessage = await sendMessage(req.body)
+    result.success(res, chatMessage)
+
+    // 结束订单
+    if (endMsgFlag) {
+      const endMsg = {
+        type: '06',
+        text: {
+          doctorMsg: {
+            type: `咨询结束`,
+            text: `已于${moment().format('MM月DD日 HH:mm')}回复完${chatFinishCountByUser}次问题。`
+          },
+          userMsg: {
+            type: `咨询结束`,
+            text: `医生已回复您三次问题。`
+          }
+        },
+        direction: 'user->doctor',
+        chatId,
+        consultationId
+      }
+      await sendMessage(endMsg)
+      await Consultation.updateOne({ _id: consultationId }, { status: '07' })
+      await Chat.updateOne({ _id: chatId }, { status: false })
+    }
   } catch (e) {
     return result.failed(res, e.message)
   }
@@ -27,7 +106,18 @@ export const chatMessageList = async (req, res) => {
   }
 }
 
-export const sendMessage = async (TencentIM, { chatId, consultationId, type, text, image, audio, direction, prescriptionId, examId, laboraId }) => {
+export const sendMessages = async (messages = []) => {
+  try {
+    for (let message of messages) {
+      await sendMessage(message)
+    }
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
+}
+
+export const sendMessage = async ({ chatId, consultationId, type, text, image, audio, direction, prescriptionId, examId, laboraId }) => {
   if (!chatId || !type || !direction) throw new Error('参数错误')
   if (!text && !image && !audio) throw new Error('发送内容不能为空')
   let chatOrigin = await Chat.findById(chatId).populate([
@@ -41,14 +131,13 @@ export const sendMessage = async (TencentIM, { chatId, consultationId, type, tex
   ])
   let chat = formatChat(chatOrigin, true)
   let chatMessage = await ChatMessage.create({ chatId, consultationId, type, text, image, audio, direction, prescriptionId, examId, laboraId })
-  sendImMsg(TencentIM, chat, chatMessage)
+  sendImMsg(chat, chatMessage)
   return chatMessage
 }
 
-async function sendImMsg(TencentIM, chat, chatMessage) {
+async function sendImMsg(chat, chatMessage) {
   try {
     const { id, userAccount, systemAccount, doctorAccount, patient, doctor, system } = chat
-    console.log('chatId ======', chat)
     const { direction, type, image, audio, text } = chatMessage
     let From_Account, To_Account, Title, Content, lastMsgContent
     if (direction === 'user->doctor') {
@@ -70,22 +159,21 @@ async function sendImMsg(TencentIM, chat, chatMessage) {
     }
 
     let Text = JSON.stringify(chatMessage)
-
     if (type === '01') {
       if (text) Content = text
       if (image) Content = '[图片]'
       if (audio) Content = '[语音]'
       lastMsgContent = Content
-      TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+      await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '06') {
       lastMsgContent = type
       if (text && text.userMsg) {
         Content = text.userMsg.text
-        TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+        await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
       if (text && text.doctorMsg) {
         Content = text.doctorMsg.text
-        TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+        await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
     }
     await Chat.updateOne({ _id: id }, { lastMsgContent, lastMsgTime: new Date() })
