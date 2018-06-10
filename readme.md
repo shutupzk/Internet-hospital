@@ -357,7 +357,24 @@
 | consultationId | object | ✅ |  订单id| |
 | orderInfo | object | ✅ |  微信相关信息，前端用以吊起微信| |
 
+<br>
+<br>
+<br>
+<br>
+##11. 诊断模块
 
+###11.1 查询诊断字典
+
+```
+请求地址：/dictionary/diagnosis/list
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "",
+ }
+```
 
 
 
