@@ -8,7 +8,7 @@ export const userSignup = async (req, res) => {
   const { TencentIM } = req.context
   try {
     await TencentIM.accountImport({ Identifier: openId })
-    await User.create({ openId, phone })
+    await User.create({ openId, phone, identifier: openId })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }
@@ -26,7 +26,8 @@ export const userSignin = async (req, res) => {
     userId,
     exp
   }
-  let usersig = TencentIM.genSig({ identifier: openId })
+  const { identifier } = user
+  let usersig = TencentIM.genSig({ identifier })
   const token = jwt.encode(payload, KEY)
-  res.json({ code: '200', token, userId, usersig, identifier: openId })
+  res.json({ code: '200', token, userId, usersig, identifier })
 }
