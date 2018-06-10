@@ -3,13 +3,14 @@ import { formatChat } from './chat'
 import result from './result'
 import { TencentIM, SystemParam } from '../config'
 import moment from 'moment'
+import { formatObjId, formatArrayId } from '../util'
 
 const { chatFinishCountByDoctor, chatFinishCountByUser } = SystemParam
 
 export const chatMessageCreate = async (req, res) => {
   try {
     let chatMessage = await sendMessage(req.body)
-    return result.success(res, chatMessage)
+    return result.success(res, formatObjId(chatMessage))
   } catch (e) {
     return result.failed(res, e.message)
   }
@@ -59,11 +60,11 @@ export const consultationChatMessageCreate = async (req, res) => {
         chatId,
         consultationId
       }
-      await sendMessage(firstMsg)
+      sendMessage(firstMsg)
     }
 
     let chatMessage = await sendMessage(req.body)
-    result.success(res, chatMessage)
+    result.success(res, formatObjId(chatMessage))
 
     // 结束订单
     if (endMsgFlag) {
@@ -83,11 +84,40 @@ export const consultationChatMessageCreate = async (req, res) => {
         chatId,
         consultationId
       }
-      await sendMessage(endMsg)
-      await Consultation.updateOne({ _id: consultationId }, { status: '07' })
-      await Chat.updateOne({ _id: chatId }, { status: false })
+      sendMessage(endMsg)
+      Consultation.updateOne({ _id: consultationId }, { status: '07' })
+      Chat.updateOne({ _id: chatId }, { status: false })
     }
   } catch (e) {
+    return result.failed(res, e.message)
+  }
+}
+
+export const retractChatMessage = async (req, res) => {
+  const { id } = req.body
+  if (!id) return result.failed(res, '参数错误')
+  try {
+    let chatMessage = await ChatMessage.findById(id)
+    if (!chatMessage) return result.failed(res, '消息不存在')
+    const { consultationId, created_at } = chatMessage
+    let consultation = await Consultation.findById(consultationId)
+    if (!consultation) return result.failed(res, '订单不存在')
+    const { status } = consultation
+    if (status !== '03' && status !== '04') {
+      return result.failed(res, '订单状态不正确')
+    }
+    let time = 5
+    let validTime =
+      moment()
+        .add(time * -1, 'm')
+        .format('x') * 1
+    let createTime = moment(created_at).format('x') * 1
+    if (createTime < validTime) return result.failed(res, `超过${time}分钟无法撤回`)
+    await ChatMessage.updateOne({ _id: id }, { isRetract: true, updated_at: new Date() })
+    let data = await ChatMessage.findById(id)
+    return result.success(res, formatObjId(data))
+  } catch (e) {
+    console.log(e)
     return result.failed(res, e.message)
   }
 }
@@ -101,7 +131,7 @@ export const chatMessageList = async (req, res) => {
       .sort({ _id: -1 })
       .skip(skip)
       .limit(limit)
-    return result.success(res, chatMessages)
+    return result.success(res, formatArrayId(chatMessages))
   } catch (e) {
     return result.failed(res, e.message)
   }
