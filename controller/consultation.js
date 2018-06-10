@@ -180,7 +180,7 @@ export const consultationSendStartMessage = async consultationId => {
     smMessage.push({
       type: '01',
       text: content,
-      direction: 'doctor->user',
+      direction: 'user->doctor',
       chatId,
       consultationId
     })
@@ -191,7 +191,7 @@ export const consultationSendStartMessage = async consultationId => {
         smMessage.push({
           type: '01',
           image,
-          direction: 'doctor->user',
+          direction: 'user->doctor',
           chatId,
           consultationId
         })
