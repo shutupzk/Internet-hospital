@@ -12,6 +12,6 @@ export const diagnosisDictionaryList = async (req, res) => {
   const { keyword, skip, limit } = req.body
   let ops = {}
   if (keyword) ops.name = { $regex: keyword, $options: 'i' }
-  let data = await Model.findByOpsWithPage({ ops, limit, skip })
+  let data = await Model.findByOpsWithPage(DiagnosisDictionary, { ops, limit, skip })
   return result.success(res, data)
 }
