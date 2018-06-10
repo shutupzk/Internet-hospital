@@ -13,6 +13,8 @@ const schema = new Schema(
     consultationId: { type: ObjectId, index: true, ref: 'consultation' },
     mainDiagnosis: { type: String, index: true }, // 医生主诊断
     secondDiagnosis: { type: [String] }, // 副诊断
+    chiefComplaint: String, // 主诉
+    historyOfPastIllness: String, // 既往史
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },
