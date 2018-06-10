@@ -4,7 +4,7 @@ import { createTradeNo } from '../libs/utils'
 import { createPayment } from './payment'
 import { formatArrayId, formatObjId } from '../util'
 import moment from 'moment'
-import uuid from 'uuid'
+import { sendMessages } from './chat_message'
 
 // 创建咨询订单
 export const createConsultation = async (req, res) => {
@@ -47,7 +47,7 @@ export const createConsultationPayment = async (req, res) => {
     if (consultation.status !== '01') return result.failed(res, '此订单状态无法创建支付订单')
     let order = await createPayment(req, res)
     let paymentId = order._id
-    Consultation.updateOne({ _id: consultationId }, { paymentId })
+    await Consultation.updateOne({ _id: consultationId }, { paymentId })
     return result.success(res, order)
   } catch (e) {
     return result.failed(res, e.message)
@@ -146,11 +146,9 @@ export const consultationSendStartMessage = async consultationId => {
   const consultation = await Consultation.findById(consultationId)
   let { images, content, chatId } = consultation
   let consultationTime = moment(consultation.createdAt).format('MM月DD日 HH:mm')
-  let messageTime = new Date()
 
   let smMessage = [
     {
-      uuid: uuid.v4(),
       type: '06',
       text: {
         doctorMsg: {
@@ -164,12 +162,9 @@ export const consultationSendStartMessage = async consultationId => {
       },
       direction: 'user->doctor',
       chatId,
-      consultationId,
-      createdAt: messageTime,
-      updatedAt: messageTime
+      consultationId
     },
     {
-      uuid: uuid.v4(),
       type: '06',
       text: {
         userMsg: {
@@ -178,17 +173,31 @@ export const consultationSendStartMessage = async consultationId => {
       },
       direction: 'doctor->user',
       chatId,
-      consultationId,
-      createdAt: messageTime,
-      updatedAt: messageTime
+      consultationId
     }
   ]
-
-  console.log(smMessage)
-
   if (content) {
+    smMessage.push({
+      type: '01',
+      text: content,
+      direction: 'user->doctor',
+      chatId,
+      consultationId
+    })
   }
-
   if (images) {
+    for (let image of images) {
+      if (content) {
+        smMessage.push({
+          type: '01',
+          image,
+          direction: 'user->doctor',
+          chatId,
+          consultationId
+        })
+      }
+    }
   }
+  console.log('smMessage ======', smMessage)
+  sendMessages(smMessage)
 }

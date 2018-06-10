@@ -8,8 +8,7 @@ import paymentRouter from '../router/payment'
 import dictionaryRouter from '../router/dictionary'
 import treatmentRouter from '../router/treatment'
 import mongoose from 'mongoose'
-import { PORT, DB, ImConfig } from '../config'
-import TencentIM from '../libs/tencent_im'
+import { PORT, DB } from '../config'
 
 const { mongoUrl, user, pass } = DB
 
@@ -17,13 +16,8 @@ mongoose.Promise = global.Promise
 
 async function startServer() {
   const app = express().use('*', cors())
-  const im = new TencentIM(ImConfig)
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
-  app.use((req, res, next) => {
-    req.context = { TencentIM: im }
-    next()
-  })
   await mongoose.connect(
     mongoUrl,
     { user, pass }

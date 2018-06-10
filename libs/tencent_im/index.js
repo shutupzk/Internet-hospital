@@ -41,13 +41,12 @@ export default class TencentIM {
       body: JSON.stringify(json)
     }
     try {
-      console.log('json =========\n', json)
       let resStr = await rp(options)
       let res = JSON.parse(resStr)
-      console.log('res ===========\n', res)
       if (res.ActionStatus === 'OK') {
         return res
       }
+      console.log('res ===========\n', res)
       throw new Error('请求失败')
     } catch (e) {
       console.log(e)

@@ -2,6 +2,7 @@ import Model, { Doctor, Department } from '../model'
 import result from './result'
 import { formatArrayId, formatObjId, md5 } from '../util'
 import jwt from 'jwt-simple'
+import { TencentIM } from '../config'
 const KEY = '0.9434990896465933'
 
 export const doctorCreate = async (req, res) => {
@@ -83,7 +84,6 @@ export const doctorDetail = async (req, res) => {
 
 export const doctorSignin = async (req, res) => {
   const { openId } = req.body
-  const { TencentIM } = req.context
   const doctor = await Doctor.findOne({ openId })
   if (!doctor) return res.json({ code: '-1', msg: '用户不存在' })
   const exp = Math.floor(new Date().getTime() / 1000) + 60 * 60 * 24

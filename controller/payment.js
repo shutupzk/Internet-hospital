@@ -40,11 +40,11 @@ export const noticePayment = async (req, res) => {
   }
 }
 
-const changPayment = async (tradeNo, outTradeNo, message) => {
+export const changPayment = async (tradeNo, outTradeNo, message) => {
   let paymemt = await Payment.findOne({ outTradeNo })
   if (!paymemt) throw new Error('未找到指定的的支付订单')
   if (paymemt.status !== 'WAIT_FOR_PAY') throw new Error('支付订单已执行过回调')
-  Payment.updateOne({ outTradeNo }, { tradeNo, updated_at: new Date(), status: 'TRADE_SUCCESS', payNotifyData: message })
+  await Payment.updateOne({ outTradeNo }, { tradeNo, updated_at: new Date(), status: 'TRADE_SUCCESS', payNotifyData: JSON.stringify(message || '') })
   if (paymemt.consultationId) {
     let consultation = await Consultation.findById(paymemt.consultationId)
     if (!consultation) throw new Error('未找到指定的订单')

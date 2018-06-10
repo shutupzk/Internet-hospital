@@ -1,10 +1,10 @@
 import { System } from '../model'
 import result from './result'
 import { formatObjId } from '../util'
+import { TencentIM } from '../config'
 
 export const systemCreate = async (req, res) => {
   const { code, name } = req.body
-  const { TencentIM } = req.context
   if (!code || !name) return result.failed(res, '参数错误')
   try {
     let system = await System.findOne({ code })
