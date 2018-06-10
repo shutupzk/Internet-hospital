@@ -9,6 +9,7 @@ const schema = new Schema(
   {
     code: { type: String, index: true, unique: true }, // 编码 01 系统消息， 02： 导诊消息， 03： 支付消息，04： 服务评价消息
     name: String,
+    identifier: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
