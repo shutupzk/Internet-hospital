@@ -393,6 +393,561 @@
 
 --
 
+<br>
+<br>
+<br>
+##3. 科室模块
+
+###3.1 创建科室
+
+```
+请求地址：/api/department/create
+```
+**请求包示例**
+
+```
+ {
+	"deptName":"内科",
+	"deptCode:"00001",
+	"weight":"1",
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| deptName | String | ✅ |  科室名称| |
+| deptCode | String | ✅ |  科室编码 | |
+| weight | Number | ❌ |  权重| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "id": "5b1d027232d8da0f64590e8c",
+    "deptCode": "00003",
+    "deptName": "心内科",
+    "weight": 3,
+    "created_at": "2018-06-10T10:50:26.724Z",
+    "updated_at": "2018-06-10T10:50:26.724Z"
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ❌ |  请求结果| |
+| data.id | String | ✅ |  科室id| |
+| data.deptName | String | ✅ |  科室名称| |
+| data.deptCode | String | ✅ |  科室编码 | |
+| data.weight | Number | ❌ |  权重| |
+| data.created_at | Date | ✅ |  创建时间| |
+| data.updated_at | Date | ✅ |  更新时间| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+###3.2 查询科室列表
+
+```
+请求地址：/api/department/list
+```
+**请求包示例**
+
+```
+ {
+	"keyword":"内科",
+	"skip":0,
+	"limit":10,
+	"isHot":false
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  关键字| |
+| skip | Number | ❌|  分页使用、当前页码减一 | 0|
+| limit | Number | ❌ | 分页使用、每页数量 | 10|
+| isHot | Boolean | ❌ |  是否热门| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1d027232d8da0f64590e8c",
+        "deptCode": "00003",
+        "deptName": "心内科",
+        "weight": 3,
+        "created_at": "2018-06-10T10:50:26.724Z",
+        "updated_at": "2018-06-10T10:50:26.724Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.items | Array | ✅ |  返回的科室信息| |
+| data.items.id | String | ✅ |  科室id| |
+| data.items.deptCode | String | ✅ |  科室编码| |
+| data.items.deptName | String | ✅ |  科室名称| |
+| data.items.weight | Number | ✅ |  科室权重| |
+| data.items.created_at | Date | ✅ |  创建时间| |
+| data.items.updated_at | Date | ✅ |  更新时间| |
+| data.page_info | Object | ✅ |  返回的页码和总数| |
+| data.page_info.skip | Number | ✅ |  分页使用、当前页码减一| |
+| data.page_info.limit | Number | ✅ |  分页使用、每页数量| |
+| data.page_info.total | Number | ✅ |  分页使用、总数量| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+###3.3 查询科室详情
+
+```
+请求地址：/api/department/detail
+```
+**请求包示例**
+
+```
+ {
+	"departmentId":"5b1bcc9c72ded1d66685f9c1"
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| departmentId | String | ✅ | 科室id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "id": "5b1bcc9c72ded1d66685f9c1",
+    "deptCode": "00001",
+    "deptName": "内科",
+    "weight": 1,
+    "created_at": "2018-06-09T12:48:28.044Z",
+    "updated_at": "2018-06-09T12:48:28.044Z"
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.id | String | ✅ |  科室id| |
+| data.deptCode | String | ✅ |  科室编码| |
+| data.deptName | String | ✅ |  科室名称| |
+| data.weight | Number | ✅ |  科室权重| |
+| data.created_at | Date | ✅ |  创建时间| |
+| data.updated_at | Date | ✅ |  更新时间| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+###3.4 删除科室
+
+```
+请求地址：/api/department/delete
+```
+**请求包示例**
+
+```
+ {
+	"departmentId":"5b1bcc9c72ded1d66685f9c1"
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| departmentId | String | ✅ | 科室id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ❌ |  请求结果| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+<br>
+<br>
+<br>
+<br>
+##4. 医生模块
+
+###4.1 创建医生
+
+```
+请求地址：/api/doctor/create
+```
+**请求包示例**
+
+```
+ {
+    "departmentId": "5b1bcc9c72ded1d66685f9c1",
+    "doctorSn": "00004",
+    "doctorName": "李时珍",
+    "imageAndTextOpen": true,
+    "imageAndTextPrice": 200,
+    "weight": 3,
+    "password": "123456",
+    "special": "主治各种疑难杂症",
+    "title": "神医",
+    "workExperience": "" 
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| departmentId | String | ✅ |  科室id| |
+| doctorSn | String | ✅ |  医生工号 | |
+| doctorName | String | ✅ |  医生姓名| |
+| password | String | ✅ |  密码| |
+| imageAndTextOpen | Boolean | ❌ |  是否开通问诊服务| false |
+| imageAndTextPrice | Number | ❌ |  问诊服务费用| 0|
+| weight | Number | ❌ |  权重| |
+| special | String | ❌ |  擅长| |
+| title | String | ❌ |  职称| |
+| workExperience | String | ❌ |  工作经历| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "imageAndTextOpen": true,
+    "imageAndTextPrice": 200,
+    "isHot": true,
+    "id": "5b1d12aad20f4015cd30a5d9",
+    "departmentId": "5b1bcc9c72ded1d66685f9c1",
+    "doctorSn": "00004",
+    "doctorName": "李时珍",
+    "weight": 3,
+    "password": "e10adc3949ba59abbe56e057f20f883e",
+    "identifier": "doctor-00004",
+    "special": "主治各种疑难杂症",
+    "title": "神医",
+    "workExperience": "",
+    "created_at": "2018-06-10T11:59:38.891Z",
+    "updated_at": "2018-06-10T11:59:38.891Z"
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.id | String | ✅ |  医生id| |
+| data.departmentId | String | ✅ |  科室id| |
+| data.doctorSn | String | ✅ |  医生工号 | |
+| data.doctorName | String | ✅ |  医生姓名| |
+| data.password | String | ✅ |  密码| |
+| data.imageAndTextOpen | Boolean | ✅ |  是否开通问诊服务| false |
+| data.imageAndTextPrice | Number | ✅ |  问诊服务费用| 0|
+| data.weight | Number | ❌ |  权重| |
+| data.special | String | ❌ |  擅长| |
+| data.title | String | ❌ |  职称| |
+| data.workExperience | String | ❌ |  工作经历| |
+| data.created_at | Date | ✅ |  创建时间| |
+| data.updated_at | Date | ✅ |  更新时间| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+###4.2 医生列表
+
+```
+请求地址：/api/doctor/list
+```
+**请求包示例**
+
+```
+ {
+ 	 "departmentId": "5b1bcc9c72ded1d66685f9c1",
+	 "keyword":"内科",
+	 "skip":0,
+	 "limit":10,
+	 "isHot":false
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| departmentId | String | ❌|  科室id| |
+| keyword | String | ❌ |  关键字| |
+| skip | Number | ❌|  分页使用、当前页码减一 | 0|
+| limit | Number | ❌ | 分页使用、每页数量 | 10|
+| isHot | Boolean | ❌ |  是否热门| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1cc699cbd16bf9d96ae31b",
+        "imageAndTextOpen": true,
+        "imageAndTextPrice": 1,
+        "isHot": true,
+        "doctorSn": "00001",
+        "doctorName": "华佗",
+        "weight": 1,
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "created_at": "2018-06-10T06:35:05.346Z",
+        "updated_at": "2018-06-10T06:35:05.346Z",
+        "identifier": "doctor-00001",
+        "openId": "o1XzUwxrGtfuM-jFfOloc0zxB8Fw",
+        "department": {
+          "id": "5b1bcc9c72ded1d66685f9c1",
+          "deptCode": "00001",
+          "deptName": "内科",
+          "weight": 1
+        }
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.items | Array | ✅ |  返回的科室信息| |
+| data.items.id | String | ✅ |  医生id| |
+| data.items.doctorSn | String | ✅ |  医生编码| |
+| data.items.doctorName | String | ✅ |  医生名称| |
+| data.items.password | String | ✅ |  密码| |
+| data.items.imageAndTextOpen | Boolean | ✅ |  是否开通问诊服务|false |
+| data.imageAndTextPrice | Number | ✅ |  问诊服务费用| 0|
+| data.items.isHot | Boolean | ✅ |  是否热门| |
+| data.items. openId | String | ✅ |  医生绑定的openid| |
+| data.items.identifier | String | ✅ |  医生通信账号| |
+| data.items.department | Object | ✅ |  医生所属科室| |
+| data.items.department.id | String | ✅ |  医生所属科室id| |
+| data.items.department.deptName | String | ✅ |  医生所属科室名称| |
+| data.items.department.deptCode | String | ✅ |  医生所属科室编码| |
+| data.items.department. weight | String | ❌ |  医生所属科室名称| |
+| data.items.weight | Number | ❌ |  医生权重| |
+| data.items.created_at | Date | ✅ |  创建时间| |
+| data.items.updated_at | Date | ✅ |  更新时间| |
+| data.page_info | Object | ✅ |  返回的页码和总数| |
+| data.page_info.skip | Number | ✅ |  分页使用、当前页码减一| |
+| data.page_info.limit | Number | ✅ |  分页使用、每页数量| |
+| data.page_info.total | Number | ✅ |  分页使用、总数量| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+###4.3 医生详情
+
+```
+请求地址：/api/doctor/detail
+```
+**请求包示例**
+
+```
+ {
+ 	 "doctorId": "5b1be1a9af32f1debbee94b8"
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| doctorId | String | ✅|  医生id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "id": "5b1cc699cbd16bf9d96ae31b",
+    "imageAndTextOpen": true,
+    "imageAndTextPrice": 1,
+    "isHot": true,
+    "doctorSn": "00001",
+    "doctorName": "华佗",
+    "weight": 1,
+    "password": "e10adc3949ba59abbe56e057f20f883e",
+    "created_at": "2018-06-10T06:35:05.346Z",
+    "updated_at": "2018-06-10T06:35:05.346Z",
+    "identifier": "doctor-00001",
+    "openId": "o1XzUwxrGtfuM-jFfOloc0zxB8Fw",
+    "department": {
+      "id": "5b1bcc9c72ded1d66685f9c1",
+      "deptCode": "00001",
+      "deptName": "内科",
+      "weight": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.id | String | ✅ |  医生id| |
+| data.doctorSn | String | ✅ |  医生编码| |
+| data.doctorName | String | ✅ |  医生名称| |
+| data.password | String | ✅ |  密码| |
+| data.imageAndTextOpen | Boolean | ✅ |  是否开通问诊服务|false |
+| data.imageAndTextPrice | Number | ✅ |  问诊服务费用| 0|
+| data.isHot | Boolean | ✅ |  是否热门| |
+| data.openId | String | ✅ |  医生绑定的openid| |
+| data.identifier | String | ✅ |  医生通信账号| |
+| data.department | Object | ✅ |  医生所属科室| |
+| data.department.id | String | ✅ |  医生所属科室id| |
+| data.department.deptName | String | ✅ |  医生所属科室名称| |
+| data.department.deptCode | String | ✅ |  医生所属科室编码| |
+| data.department. weight | String | ❌ |  医生所属科室名称| |
+| data.weight | Number | ❌ |  医生权重| |
+| data.created_at | Date | ✅ |  创建时间| |
+| data.updated_at | Date | ✅ |  更新时间| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+<br>
+###4.4 医生绑定账号
+
+```
+请求地址：/api/doctor/bind
+```
+**请求包示例**
+
+```
+ {
+	"openId":"o1XzUwxrGtfuM-jFfOloc0zxB8Fw",
+	"doctorSn":"00001",
+	"password":"123456"
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| openId | String | ✅|  医生openId| |
+| doctorSn | String | ✅|  医生工号| |
+| password | String | ✅|  医生密码| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "msg": "绑定成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| msg | String | ✅ |  错误信息 | |
+
+
+<br>
+###4.5 医生登录
+
+```
+请求地址：/api/doctor/signin
+```
+**请求包示例**
+
+```
+ {
+	"openId":"o1XzUwxrGtfuM-jFfOloc0zxB8Fw"
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| openId | String | ✅|  医生openId| |
+
+**应答包示例**
+
+```
+{
+  "code": "200",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkb2N0b3JJZCI6IjViMWNjNjk5Y2JkMTZiZjlkOTZhZTMxYiIsImV4cCI6MTUyODcyMTExMH0.HJ_KIDYVy7FHo9PYUb3K3Q_DhMG_3DEBhxHihOQU-Vw",
+  "doctorId": "5b1cc699cbd16bf9d96ae31b",
+  "usersig": "eJxNjclOwzAURf-FWyYPcdsgdUMpJApNhwxgNpaJnWCGJHJMJ8S-Y0VR4S3Pufe*b5A*JJeiKJqv2nJ7aBW4BhCc91hLVVtdamUclE1hG3MB3aHBi7bVkgvLiZH-ap18571yDHku7-tjfzJItW*1UVyUtl9FlFLsIoPdKtPppnYCQzSCHvbhn7T6U-UVPBkRb4xO-3Tl8GKezcL1bcjyipnk7Cm-z2O6jpM8InfRdlNCunxdBYF5O97kJNhf4V1YpXHLuk20jO2xZI-dYpaksRBkR0QoK5zRtMAfzzB7ObD5FPz8AgTAWQI_",
+  "identifier": "doctor-00001"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| token | String | ✅ |  用户登录凭证 | |
+| doctorId | String | ✅ |  医生id | |
+| usersig | String | ✅ |  云通信登录凭证 | |
+| identifier | String | ✅ |  云通信登录用户名| |
+
 
 
 </br>
@@ -458,8 +1013,12 @@
 </br>
 </br>
 
+<<<<<<< HEAD
 6 评价问题
 --------
+=======
+##6 订单评价模块
+>>>>>>> aa5976bc79a23b2550303e139447469e80ab7818
 
 </br>
 ###6.1 评价问题列表
@@ -503,7 +1062,7 @@
 | code | String | ✅ |  返回码， 200 成功| |
 | msg | String | ✅ |  返回信息 | |
 | data | Array | ✅ |  返回值 | |
-| data.id | String | ✅ |  id | |
+| data.id | String | ✅ |  评价问题id | |
 | data.quesion | String | ✅ |  内容 | |
 | data.type | String | ✅ |  01, 打分评价， 02，文字评价 | |
 | data.created_at | Date | ✅ | 创建时间 | |
@@ -511,6 +1070,75 @@
 
 --
 
+<br>
+###6.2 创建订单评价
+
+```
+请求地址：/consultation/evaluate/create
+```
+**请求包示例**
+
+```
+ {
+ 	"consultationId":"5b1cd449cb062d004316ca12",
+	"doctorId":"5b1cc699cbd16bf9d96ae31b",
+	"evaluateDetails":[
+		{"value":"5","evaluateQuesionId":"5b1cc83ab50b51fa5bb955cf"},
+		{"value":"4","evaluateQuesionId":"5b1cc85fb50b51fa5bb955d0"},
+		{"value":"5","evaluateQuesionId":"5b1cc86eb50b51fa5bb955d1"},
+		{"value":"4","evaluateQuesionId":"5b1cc877b50b51fa5bb955d2"},
+		{"value":"很好的医生哟","evaluateQuesionId":"5b1cc886b50b51fa5bb955d3"}
+	]
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+| doctorId | String | ✅ |  医生id| |
+| evaluateDetails | Array | ✅ |  评价详情| |
+| evaluateDetails.value | String | ✅ |  评价分数、评价内容| |
+| evaluateDetails. evaluateQuesionId | String | ✅ |  评价问题id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "id": "5b1d20b2634948180334d06f",
+    "isShield": false,
+    "score": "18",
+    "anonymous": true,
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "userId": "5b1cbbcfe3d2c87d31bac936",
+    "content": "很好的医生哟",
+    "created_at": "2018-06-10T12:59:30.925Z",
+    "updated_at": "2018-06-10T12:59:30.925Z"
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.id | String | ✅ |  评价id| |
+| data.isShield | Boolean | ✅ |  是否隐藏| |
+| data.score | String | ✅ |  评价分数| |
+| data.anonymous | Boolean | ✅ |  是否匿名| |
+| data.consultationId | String | ✅ |  订单id| |
+| data.doctorId | String | ✅ |  医生id| |
+| data.userId | String | ✅ |  订单用户id| |
+| data.content | String | ✅ |  问字评价| |
+| data.created_at | Date | ✅ |  创建时间| |
+| data.updated_at | Date | ✅ |  更新时间| |
+| msg | String | ✅ |  错误信息 | |
 
 
 </br>
