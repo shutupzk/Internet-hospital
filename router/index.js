@@ -6,6 +6,7 @@ import { doctorCreate, doctorList, doctorDetail } from '../controller/doctor'
 import { patientCreate, patientDelete, patientList, patientDetail, patientBindCard } from '../controller/patient'
 import { chatCreate, chatUserList } from '../controller/chat'
 import { systemCreate } from '../controller/system'
+import { quickReplyCreate, quickReplyDelete, quickReplyList} from '../controller/quickReply'
 
 const router = express.Router()
 
@@ -30,4 +31,8 @@ router.all('/system/create', systemCreate)
 router.all('/user/chat/list', chatUserList)
 router.all('/doctor/list', doctorList)
 router.all('/doctor/detail', doctorDetail)
+
+router.all('/quickReply/create', quickReplyCreate)
+router.all('/quickReply/delete', quickReplyDelete)
+router.all('/quickReply/list', quickReplyList)
 export default router
