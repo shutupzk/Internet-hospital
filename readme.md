@@ -22,7 +22,6 @@
 **1，用户注册**
 
 ```
-请求说明：用户采用微信openid登录
 请求地址：/api/user/signup
 ```
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
@@ -34,7 +33,6 @@
 **用户登录**
 
 ```
-请求说明：用户采用微信openid登录
 请求地址：/api/user/signup
 ```
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
@@ -42,6 +40,23 @@
 | openId | String | ✅ |  用户微信id| |
 --
 
+**创建就诊人**
+
+```
+请求地址：/api/patient/create
+```
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| userId | String | ✅ |  用户id| |
+| phone | String | ✅ |  手机号| |
+| certificateType | String | ❌ |  证件类型 01身份证，02军人证，03户口本，04签证，05护照，06港澳通行证| 01 |
+| certificateNo | String | ✅ |  证件号码| |
+| name | String | ✅ |  姓名 YYYY-MM-DD|  |
+| birthday | String | ❌ |  生日| 由身份证号算出|
+| sex | String | ❌ |  性别 0-女，1-男| 由身份证号算出|
+| patientIdNo |  String | ❌|  就诊卡号| |
+
+--
 
 
 
