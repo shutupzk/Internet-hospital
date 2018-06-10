@@ -22,8 +22,9 @@ export * from './doctor_collection'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
-    limit = limit || 10
-    skip = skip || 0
+    console.log(ops)
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
@@ -34,12 +35,12 @@ class Model {
   }
 
   async findDoctorByOpsWithPage(Model, { ops, limit, skip, sort }) {
-    limit = limit || 10
-    skip = skip || 0
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate({path: 'departmentId', select: 'deptName -_id'})
+      .populate({ path: 'departmentId', select: 'deptName -_id' })
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -47,12 +48,13 @@ class Model {
   }
 
   async findConsultationByOpsWithPage(Model, { ops, limit, skip, sort }) {
-    limit = limit || 10
-    skip = skip || 0
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate('patientId').populate('doctorId')
+      .populate('patientId')
+      .populate('doctorId')
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -60,8 +62,8 @@ class Model {
   }
 
   async findEvaluateByOpsWithPage(Model, { ops, limit, skip, sort }) {
-    limit = limit || 10
-    skip = skip || 0
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
