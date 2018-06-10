@@ -88,9 +88,9 @@ export const doctorSignin = async (req, res) => {
     doctorId,
     exp
   }
-  let usersig = TencentIM.genSig({ identifier: doctor.doctorSn })
+  let usersig = TencentIM.genSig({ identifier: doctor.identifier })
   const token = jwt.encode(payload, KEY)
-  res.json({ code: '200', token, doctorId, usersig, identifier: doctor.doctorSn })
+  res.json({ code: '200', token, doctorId, usersig, identifier: doctor.identifier })
 }
 
 export const doctorBind = async (req, res) => {
@@ -102,11 +102,12 @@ export const doctorBind = async (req, res) => {
   const doctor = await Doctor.findOne({ doctorSn })
   if (!doctor) return res.json({ code: '-1', msg: '账号不存在' })
   if (password !== doctor.password) return res.json({ code: '-1', msg: '密码不正确' })
-  // if (doctor.openId) return result.failed(res, '-1', '该账号已绑定，请直接登录')
+  if (doctor.openId) return result.failed(res, '-1', '该账号已绑定，请直接登录')
 
   try {
-    await TencentIM.accountImport({ Identifier: doctorSn })
-    await Doctor.updateOne({ doctorSn }, { openId })
+    await TencentIM.accountImport({ Identifier: 'identifier' + doctorSn })
+    let identifier = 'identifier' + doctorSn
+    await Doctor.updateOne({ doctorSn }, { openId, identifier })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }

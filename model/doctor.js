@@ -12,6 +12,7 @@ const schema = new Schema(
     doctorSn: String, // 医生编码
     password: String,
     doctorName: String, // 医生姓名
+    identifier: String, //
     departmentId: { type: ObjectId, ref: 'department' }, // 所属科室
     weight: Number, // 医生权重
     avatar: String, // 医生头像地址
