@@ -372,13 +372,163 @@
 
 ```
  {
-    "keyword": "",
+    "keyword": "疼",
  }
 ```
 
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "_id": "5b1d0f1e6d6b4c479fe9c614",
+        "name": "头疼",
+        "created_at": "2018-06-10T11:44:30.090Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.name | string | ✅ |  诊断名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.limit | number | ✅ |  总数| | 
 
 
+<br>
+###11.1 开诊断
 
+```
+请求地址：/treatment/diagnisis/upsert
+```
+**请求包示例**
 
-    
+```
+{
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "mainDiagnosis": "偏头痛",
+    "secondDiagnosis": "[\"痛\",\"痒\"]",
+    "chiefComplaint": "我的头好疼",
+    "historyOfPastIllness": "没什么既往史"
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+| mainDiagnosis | String | ✅ |  主诊断| |
+| secondDiagnosis | [String] | ❌ |  副诊断|  []|
+| chiefComplaint | String | ✅ |  主诉| |
+| historyOfPastIllness | String | ✅ |  既往史| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "secondDiagnosis": [
+      "痛",
+      "痒"
+    ],
+    "created_at": "2018-06-10T12:06:01.665Z",
+    "_id": "5b1d13cfd6c651987b095ca6",
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "chiefComplaint": "我的头好疼",
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "historyOfPastIllness": "没什么既往史",
+    "mainDiagnosis": "偏头痛",
+    "patientId": "5b1cbc00e3d2c87d31bac937"
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+| mainDiagnosis | String | ✅ |  主诊断| |
+| secondDiagnosis | [String] | ✅ |  副诊断|  []|
+| chiefComplaint | String | ✅ |  主诉| |
+| historyOfPastIllness | String | ✅ |  既往史| |
+| patientId | String | ✅ |  患者id| |
+| doctorId | String | ✅ |  医生id| |
+
+<br>
+###11.2 诊断查询
+```
+请求地址：/treatment/diagnisis/queryByConsultation
+```
+**请求包示例**
+
+```
+{
+    "consultationId": "5b1cd449cb062d004316ca12",
+}
+```
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+ 
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "secondDiagnosis": [
+      "痛",
+      "痒"
+    ],
+    "created_at": "2018-06-10T12:06:01.665Z",
+    "_id": "5b1d13cfd6c651987b095ca6",
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "chiefComplaint": "我的头好疼",
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "historyOfPastIllness": "没什么既往史",
+    "mainDiagnosis": "偏头痛",
+    "patientId": "5b1cbc00e3d2c87d31bac937"
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+| mainDiagnosis | String | ✅ |  主诊断| |
+| secondDiagnosis | [String] | ✅ |  副诊断|  []|
+| chiefComplaint | String | ✅ |  主诉| |
+| historyOfPastIllness | String | ✅ |  既往史| |
+| patientId | String | ✅ |  患者id| |
+| doctorId | String | ✅ |  医生id| |
 
