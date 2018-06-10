@@ -2,8 +2,8 @@ import { Diagnosis, Consultation } from '../model'
 import result from './result'
 
 export const diagnosisUpsert = async (req, res) => {
-  let { consultationId, mainDiagnosis, secondDiagnosis = [] } = req.body
-  if (!consultationId || !mainDiagnosis) return result.fail(res, '缺少参数')
+  let { consultationId, mainDiagnosis, secondDiagnosis = [], chiefComplaint, historyOfPastIllness } = req.body
+  if (!consultationId || !mainDiagnosis || !chiefComplaint) return result.fail(res, '缺少参数')
   let consultation = await Consultation.findById(consultationId)
   if (!consultation) return result.fail(res, '未找到指定的订单')
   let { doctorId, patientId } = consultation
@@ -12,7 +12,9 @@ export const diagnosisUpsert = async (req, res) => {
     patientId,
     consultationId,
     mainDiagnosis,
-    secondDiagnosis
+    secondDiagnosis,
+    chiefComplaint,
+    historyOfPastIllness
   }
   let data = Diagnosis.findOneAndUpdate({ consultationId }, doc, { upsert: true })
   return result.success(res, data)
