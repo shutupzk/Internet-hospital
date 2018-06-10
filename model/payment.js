@@ -14,6 +14,7 @@ const schema = new Schema(
     status: String, // 待支付:WAIT_FOR_PAY,已支付:TRADE_SUCCESS,已退款:REFUND_SUCCESS
     orderInfo: String, // 支付的相关信息
     consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 订单Id
+    payNotifyData: String, // 通知参数
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
