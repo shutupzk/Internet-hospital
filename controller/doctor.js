@@ -8,23 +8,23 @@ const KEY = '0.9434990896465933'
 export const doctorCreate = async (req, res) => {
   let { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen = true, imageAndTextPrice = 0, isHot, password, special, title, workExperience } = req.body
   if (!departmentId || !doctorSn || !doctorName || !password) {
-    return result.failed(res, '-1', '缺少参数')
+    return result.failed(res, '缺少参数')
   }
   const { TencentIM } = req.context
 
   try {
     password = md5(password)
     const doctorByCode = await Doctor.findOne({ doctorSn })
-    if (doctorByCode) return result.failed(res, '-1', '医生编码已存在')
+    if (doctorByCode) return result.failed(res, '医生编码已存在')
     const department = await Department.findById(departmentId)
-    if (!department) return result.failed(res, '-1', '科室不存在')
+    if (!department) return result.failed(res, '科室不存在')
     await TencentIM.accountImport({ Identifier: 'doctor-' + doctorSn })
     let identifier = 'doctor-' + doctorSn
-    let insertData = { department: departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
+    let insertData = { departmentId, doctorSn, doctorName, weight, avatar, description, imageAndTextOpen, imageAndTextPrice, isHot, password, identifier, special, title, workExperience }
     const doctor = await Doctor.create(insertData)
     return result.success(res, doctor)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
@@ -48,29 +48,30 @@ export const doctorList = async (req, res) => {
     console.log('ops', ops)
     const doctorList = await Model.findDoctorByOpsWithPage(Doctor, { ops, limit, skip })
     doctorList.items = formatArrayId(doctorList.items, ['department'])
+
     return result.success(res, doctorList)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
 export const doctorDelete = async (req, res) => {
   const { doctorId } = req.body
   if (!doctorId) {
-    return result.failed(res, '-1', '缺少参数')
+    return result.failed(res, '缺少参数')
   }
   try {
     const resData = await Doctor.updateOne({ _id: doctorId }, { deleted_at: new Date() })
     return result.success(res, resData)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
 export const doctorDetail = async (req, res) => {
   const { doctorId } = req.body
   if (!doctorId) {
-    return result.failed(res, '-1', '缺少参数')
+    return result.failed(res, '缺少参数')
   }
   try {
     let doctor = await Doctor.findById(doctorId).populate('departmentId')
@@ -78,7 +79,7 @@ export const doctorDetail = async (req, res) => {
     doctor = formatObjId(doctor, ['department'])
     return result.success(res, doctor)
   } catch (e) {
-    return result.failed(res, '-1', e.message)
+    return result.failed(res, e.message)
   }
 }
 
