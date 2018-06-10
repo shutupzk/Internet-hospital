@@ -10,7 +10,7 @@ const schema = new Schema(
   {
     chatId: { type: ObjectId, index: true, ref: 'chat' }, // 会话id
     type: String, // 01: 图文，02： 处方, 03: 检查 04 检验， 06: 咨询申明
-    text: String, // 文字
+    text: Object, // 文字
     image: String, // 图片
     audio: String, // 语音
     direction: String, // user->doctor, doctor->user, system->user, system->doctor

@@ -64,6 +64,7 @@ export const consultationChatMessageCreate = async (req, res) => {
     let chatMessage = await sendMessage(req.body)
     result.success(res, chatMessage)
 
+    // 结束订单
     if (endMsgFlag) {
       const endMsg = {
         type: '06',
@@ -111,6 +112,7 @@ export const sendMessages = async (messages = []) => {
       await sendMessage(message)
     }
   } catch (e) {
+    console.log(e)
     throw e
   }
 }
@@ -136,7 +138,6 @@ export const sendMessage = async ({ chatId, consultationId, type, text, image, a
 async function sendImMsg(chat, chatMessage) {
   try {
     const { id, userAccount, systemAccount, doctorAccount, patient, doctor, system } = chat
-    console.log('chatId ======', chat)
     const { direction, type, image, audio, text } = chatMessage
     let From_Account, To_Account, Title, Content, lastMsgContent
     if (direction === 'user->doctor') {
@@ -158,22 +159,21 @@ async function sendImMsg(chat, chatMessage) {
     }
 
     let Text = JSON.stringify(chatMessage)
-
     if (type === '01') {
       if (text) Content = text
       if (image) Content = '[图片]'
       if (audio) Content = '[语音]'
       lastMsgContent = Content
-      TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+      await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '06') {
       lastMsgContent = type
       if (text && text.userMsg) {
         Content = text.userMsg.text
-        TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+        await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
       if (text && text.doctorMsg) {
         Content = text.doctorMsg.text
-        TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+        await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
     }
     await Chat.updateOne({ _id: id }, { lastMsgContent, lastMsgTime: new Date() })

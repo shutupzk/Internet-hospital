@@ -198,5 +198,6 @@ export const consultationSendStartMessage = async consultationId => {
       }
     }
   }
+  console.log('smMessage ======', smMessage)
   sendMessages(smMessage)
 }
