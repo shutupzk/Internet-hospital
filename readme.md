@@ -1131,6 +1131,138 @@
 | data.created_at | Date | ✅ |  创建时间| |
 | data.updated_at | Date | ✅ |  更新时间| |
 | msg | String | ✅ |  错误信息 | |
+--
+
+<br>
+###6.3 查询评价列表
+
+```
+请求地址：/consultation/evaluate/list
+```
+**请求包示例**
+
+```
+ {
+ 	"doctorId":"5b1cc699cbd16bf9d96ae31b",
+	"showAll":"false",
+	"startDate":"2018-06-01",
+	"endDate":"2018-06-01",
+	"userId":"5b1cbbcfe3d2c87d31bac936",
+	"isUserGet":false,
+	"skip":0,
+	"limit":10
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| doctorId | String |  ❌ |  医生 id| |
+| showAll | Boolean | ❌ |  是否显示全部评价| |
+| startDate | Date |  ❌ |  开始时间| |
+| endDate | Date | ❌ |  结束时间| |
+| isUserGet| Boolean |  ❌ |  是否屏蔽用户评价| |
+| userId | String |  ❌ |  屏蔽的用户id| |
+| skip | Number | ❌|  分页使用、当前页码减一 | 0|
+| limit | Number | ❌ | 分页使用、每页数量 | 10|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1d20b2634948180334d06f",
+        "isShield": false,
+        "score": "18",
+        "anonymous": true,
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "userId": "5b1cbbcfe3d2c87d31bac936",
+        "content": "很好的医生哟",
+        "created_at": "2018-06-10T12:59:30.925Z",
+        "updated_at": "2018-06-10T12:59:30.925Z",
+        "consultation": {
+          "patient": {
+            "name": "查康"
+          }
+        }
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| data | Object | ✅ |  请求结果| |
+| data.items | Array | ✅ |  返回的科室信息| |
+| data.items.id | String | ✅ |  评价id| |
+| isShield | Boolean | ✅ | 是否屏蔽| |
+| data.items.score | String | ✅ | 评价分数| |
+| data.items.anonymous | Boolean | ✅ |  是否匿名| |
+| data.items.doctorId | String | ✅ |  医生id| |
+| data.items.userId | String | ✅ |  订单用户id| |
+| data.items.consultation | Object | ✅ |  评价所属订单| |
+| data.items.consultation.patient | Object | ✅ |  订单就诊人| |
+| data.items.consultation.patient.name | String | ✅ |  订单就诊人名称| |
+| data.items.created_at | Date | ✅ |  创建时间| |
+| data.items.updated_at | Date | ✅ |  更新时间| |
+| data.page_info | Object | ✅ |  返回的页码和总数| |
+| data.page_info.skip | Number | ✅ |  分页使用、当前页码减一| |
+| data.page_info.limit | Number | ✅ |  分页使用、每页数量| |
+| data.page_info.total | Number | ✅ |  分页使用、总数量| |
+| msg | String | ✅ |  错误信息 | |
+--
+
+<br>
+###6.4 屏蔽评价
+
+```
+请求地址：/consultation/evaluate/update
+```
+**请求包示例**
+
+```
+ {
+	"evaluateId":"5b1d20b2634948180334d06f",
+	"isShield":false
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| evaluateId | String |  ✅ |  评价id| |
+| isShield | Boolean | ❌ |  是否屏蔽| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  请求处理的结果，200表示处理成功，其它表示失败| |
+| msg | String | ✅ |  错误信息 | |
+--
 
 
 </br>
