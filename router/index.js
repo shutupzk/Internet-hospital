@@ -6,7 +6,7 @@ import { doctorCreate, doctorList, doctorDetail, doctorSignin, doctorBind } from
 import { patientCreate, patientDelete, patientList, patientDetail, patientBindCard } from '../controller/patient'
 import { chatCreate, chatUserList, chatDoctorList } from '../controller/chat'
 import { systemCreate } from '../controller/system'
-import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quickReply'
+import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 
 const router = express.Router()
 
