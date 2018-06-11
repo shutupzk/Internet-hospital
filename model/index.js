@@ -19,6 +19,11 @@ export * from './quick_reply'
 export * from './diagnosis_dictionary'
 export * from './diagnosis'
 export * from './doctor_collection'
+export * from './dose_form'
+export * from './dose_unit'
+export * from './frequency'
+export * from './route_of_administration'
+export * from './drug'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {

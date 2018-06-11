@@ -7,6 +7,7 @@ import consultationRouter from '../router/consultation'
 import paymentRouter from '../router/payment'
 import dictionaryRouter from '../router/dictionary'
 import treatmentRouter from '../router/treatment'
+import dataImportRouter from '../router/dataimport'
 import mongoose from 'mongoose'
 import { PORT, DB } from '../config'
 
@@ -29,6 +30,7 @@ async function startServer() {
   app.use('/payment', paymentRouter)
   app.use('/dictionary', dictionaryRouter)
   app.use('/treatment', treatmentRouter)
+  app.use('/dataimport', dataImportRouter)
 
   app.use('*', (req, res) => {
     res.json({
