@@ -103,7 +103,7 @@ export const doctorSignin = async (req, res) => {
 }
 
 export const doctorBind = async (req, res) => {
-  let { openId, doctorSn, password } = req.body
+  let { openId, doctorSn, password, avatar } = req.body
   if (!openId || !doctorSn || !password) return result.failed(res, '-1', '缺少参数')
   password = md5(password)
 
@@ -111,9 +111,9 @@ export const doctorBind = async (req, res) => {
   if (!doctor) return res.json({ code: '-1', msg: '账号不存在' })
   if (password !== doctor.password) return res.json({ code: '-1', msg: '密码不正确' })
   if (doctor.openId) return result.failed(res, '-1', '该账号已绑定，请直接登录')
-
+  avatar = doctor.avatar || avatar
   try {
-    await Doctor.updateOne({ doctorSn }, { openId })
+    await Doctor.updateOne({ doctorSn }, { openId, avatar })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }

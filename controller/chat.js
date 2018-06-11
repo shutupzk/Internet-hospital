@@ -2,7 +2,7 @@ import { PatientWithDoctor, Patient, Doctor, Chat, SystemWithUser, System, User,
 import result from './result'
 
 const POPULATE = [
-  { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'doctorId', select: '_id doctorName' }, { path: 'patientId', select: '_id name' }] },
+  { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'doctorId', populate: [{ path: 'departmentId' }] }, { path: 'patientId', select: '_id name' }, { path: 'userId' }] },
   { path: 'systemWithUserId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] },
   { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
 ]
@@ -199,15 +199,21 @@ export const formatChat = (chat, needAccount) => {
     newObj.patient = { patientId: _id, name }
   }
   if (obj[key].doctorId) {
-    let { _id, doctorName, identifier } = obj[key].doctorId
-    newObj.doctor = { doctorId: _id, doctorName }
+    let { _id, doctorName, identifier, avatar, title, departmentId } = obj[key].doctorId
+    let doctor = { doctorId: _id, doctorName, avatar, title }
+    if (departmentId) {
+      const { _id, deptName } = departmentId
+      doctor.departmentId = _id
+      doctor.deptName = deptName
+    }
+    newObj.doctor = doctor
     if (needAccount) {
       newObj.doctorAccount = identifier
     }
   }
   if (obj[key].userId) {
-    let { _id, openId, identifier } = obj[key].userId
-    newObj.user = { userId: _id, openId }
+    let { _id, identifier, avatar, name } = obj[key].userId
+    newObj.user = { userId: _id, avatar, name }
     if (needAccount) {
       newObj.userAccount = identifier
     }

@@ -119,7 +119,9 @@
 
 ```
 {
-    "openId": "8765431278754452356"
+    "openId": "987654256578574674",
+    "avatar": "http://img0.imgtn.bdimg.com/it/u=1781615267,834481015&fm=27&gp=0.jpg",
+    "name": "哈哈哈"
 }
 ```
 **请求包参数说明**
@@ -128,6 +130,8 @@
 | :-: | :-: | :-:  | :--: | :--: |
 | openId | String | ✅ |  用户微信id| |
 | phone | Nebmer | ❌ |  手机号 | |
+| avatar | String | ❌ |  头像地址（可以是 微信 头像地址） | |
+| name | String | ❌ |  姓名（可以是 微信 昵称） | |
 
 **应答包示例**
 
@@ -951,6 +955,7 @@
 | openId | String | ✅|  医生openId| |
 | doctorSn | String | ✅|  医生工号| |
 | password | String | ✅|  医生密码| |
+| avatar | String | ❌ |  头像地址（可以是 微信 头像地址）, 如果 医生已经设置头像，该字段不起作用，仍用原来的头像 | |
 
 **应答包示例**
 
@@ -1540,23 +1545,31 @@
     "code": 200,
     "data": [
         {
-            "id": "5b1ceb05d6c651987b08f8c9",
+            "id": "5b1e38f7d6c651987b09dc71",
             "type": "01",
             "status": true,
-            "lastMsgContent": "backargagdrg",
-            "lastMsgTime": "2018-06-10T09:59:11.803Z",
+            "lastMsgContent": "06",
+            "lastMsgTime": "2018-06-11T08:55:39.917Z",
             "patient": {
-                "patientId": "5b1ce9402e1645c67bbaf723",
-                "name": "测试"
+                "patientId": "5b1e217ee77d790f002d46f0",
+                "name": "张三"
             },
             "doctor": {
                 "doctorId": "5b1cc699cbd16bf9d96ae31b",
-                "doctorName": "华佗"
+                "doctorName": "华佗",
+                "avatar": "http://img3.imgtn.bdimg.com/it/u=3057512949,2471002942&fm=27&gp=0.jpg",
+                "departmentId": "5b1bcc9c72ded1d66685f9c1",
+                "deptName": "内科"
+            },
+            "user": {
+                "userId": "5b1e2134e77d790f002d46ef",
+                "avatar": "http://img0.imgtn.bdimg.com/it/u=1781615267,834481015&fm=27&gp=0.jpg",
+                "name": "哈哈哈"
             }
         },
         {
-            "id": "5b1cbd2ed6c651987b086399",
-            "type": "02",
+            "id": "5b1d0b5dd6c651987b094a7e",
+            "type": "03",
             "status": true,
             "lastMsgContent": "",
             "lastMsgTime": null,
@@ -1565,7 +1578,7 @@
                 "code": "01",
                 "name": "系统消息"
             }
-        },
+        }
     ],
     "msg": "操作成功"
 }
@@ -1592,6 +1605,13 @@
 | data.doctor | String | ❌ |  医生 | |
 | data.doctor.doctorId | String | ✅ |  医生id | |
 | data.doctor.doctorName | String | ✅ |  医生姓名 | |
+| data.doctor.avatar | String | ❌ |  医生头像 | |
+| data.doctor.departmentId | String | ✅ |  科室id | |
+| data.doctor.deptName | String | ✅ |  科室名称 | |
+| data.user | String | ❌ |  用户 | |
+| data.user.userId | String | ✅ |  用户id | |
+| data.user.avatar | String | ❌ |  用户头像 | |
+| data.user.name | String | ❌ |  用户姓名 | |
 
 --
 
@@ -1661,7 +1681,7 @@
 | msg | String | ✅ |  返回信息 | |
 | data | Array | ✅ |  返回值 | |
 | data.id | String | ✅ |  聊天id | |
-| data.type | String | ✅ |  聊天类型 01：就诊人和医生, 03: 系统与医生 | |
+| data.type | String | ✅ |  聊天类型 01：就诊人和医生, 02: 系统与用户 | |
 | data.status | boolean | ✅ |  是否可以交流 true: 可以，false: 不可以 | |
 | data.lastMsgContent | String | ✅ |  最后一条聊天消息展示 ，如果是 图片  lastMsgContent = [图片]，</br> 如果是语言 lastMsgContent = [语音] | |
 | data.lastMsgTime | Date | ✅ |  最后一条聊天消息发送时间 | |
@@ -1675,7 +1695,13 @@
 | data.doctor | String | ❌ |  医生 | |
 | data.doctor.doctorId | String | ✅ |  医生id | |
 | data.doctor.doctorName | String | ✅ |  医生姓名 | |
-
+| data.doctor.avatar | String | ❌ |  医生头像 | |
+| data.doctor.departmentId | String | ✅ |  科室id | |
+| data.doctor.deptName | String | ✅ |  科室名称 | |
+| data.user | String | ❌ |  用户 | |
+| data.user.userId | String | ✅ |  用户id | |
+| data.user.avatar | String | ❌ |  用户头像 | |
+| data.user.name | String | ❌ |  用户姓名 | |
 --
 
 
@@ -1693,6 +1719,7 @@
 }
 ```
 
+
 **请求包字段说明**
 
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
@@ -1706,18 +1733,26 @@
 {
     "code": 200,
     "data": {
-        "id": "5b1ccc2fd6c651987b089d4c",
+        "id": "5b1e38f7d6c651987b09dc71",
         "type": "01",
         "status": true,
-        "lastMsgContent": "hahahahhahaahah",
-        "lastMsgTime": "2018-06-10T07:52:27.084Z",
+        "lastMsgContent": "06",
+        "lastMsgTime": "2018-06-11T08:55:39.917Z",
         "patient": {
-            "patientId": "5b1cbc00e3d2c87d31bac937",
-            "name": "查康"
+            "patientId": "5b1e217ee77d790f002d46f0",
+            "name": "张三"
         },
         "doctor": {
             "doctorId": "5b1cc699cbd16bf9d96ae31b",
-            "doctorName": "华佗"
+            "doctorName": "华佗",
+            "avatar": "http://img3.imgtn.bdimg.com/it/u=3057512949,2471002942&fm=27&gp=0.jpg",
+            "departmentId": "5b1bcc9c72ded1d66685f9c1",
+            "deptName": "内科"
+        },
+        "user": {
+            "userId": "5b1e2134e77d790f002d46ef",
+            "avatar": "http://img0.imgtn.bdimg.com/it/u=1781615267,834481015&fm=27&gp=0.jpg",
+            "name": "哈哈哈"
         }
     },
     "msg": "操作成功"
@@ -1731,7 +1766,7 @@
 | msg | String | ✅ |  返回信息 | |
 | data | Array | ✅ |  返回值 | |
 | data.id | String | ✅ |  聊天id | |
-| data.type | String | ✅ |  聊天类型 01：就诊人和医生, 03: 系统与医生 | |
+| data.type | String | ✅ |  聊天类型 01：就诊人和医生, 02: 系统与用户 | |
 | data.status | boolean | ✅ |  是否可以交流 true: 可以，false: 不可以 | |
 | data.lastMsgContent | String | ✅ |  最后一条聊天消息展示 ，如果是 图片  lastMsgContent = [图片]，</br> 如果是语言 lastMsgContent = [语音] | |
 | data.lastMsgTime | Date | ✅ |  最后一条聊天消息发送时间 | |
@@ -1745,7 +1780,13 @@
 | data.doctor | String | ❌ |  医生 | |
 | data.doctor.doctorId | String | ✅ |  医生id | |
 | data.doctor.doctorName | String | ✅ |  医生姓名 | |
-
+| data.doctor.avatar | String | ❌ |  医生头像 | |
+| data.doctor.departmentId | String | ✅ |  科室id | |
+| data.doctor.deptName | String | ✅ |  科室名称 | |
+| data.user | String | ❌ |  用户 | |
+| data.user.userId | String | ✅ |  用户id | |
+| data.user.avatar | String | ❌ |  用户头像 | |
+| data.user.name | String | ❌ |  用户姓名 | |
 --
 
 

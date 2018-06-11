@@ -4,11 +4,11 @@ import { TencentIM } from '../config'
 const KEY = '0.9434990896465933'
 
 export const userSignup = async (req, res) => {
-  const { openId, phone } = req.body
+  const { openId, phone, avatar, name } = req.body
   if (!openId) return res.json({ code: '-1', msg: 'openId 为空' })
   try {
     await TencentIM.accountImport({ Identifier: openId })
-    await User.create({ openId, phone, identifier: openId })
+    await User.create({ openId, phone, identifier: openId, avatar, name })
   } catch (e) {
     return res.json({ code: '-1', msg: e.message })
   }

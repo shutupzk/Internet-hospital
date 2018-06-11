@@ -8,6 +8,9 @@ let Schema = mongoose.Schema
 const schema = new Schema(
   {
     openId: { type: String, index: true, unique: true },
+    avatar: String,
+    name: String,
+    sex: Number, // 性别  0-女，1-男
     phone: String,
     identifier: String, // im identifier
     created_at: { type: Date, default: Date.now },
