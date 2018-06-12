@@ -1,4 +1,4 @@
-import Model, { Doctor, Department } from '../model'
+import Model, { Doctor, Department, Consultation } from '../model'
 import result from './result'
 import { formatArrayId, formatObjId, md5 } from '../util'
 import jwt from 'jwt-simple'
@@ -50,6 +50,8 @@ export const doctorList = async (req, res) => {
     doctorList.items = formatArrayId(doctorList.items, ['department'])
     for (let item of doctorList.items) {
       item.department = formatObjId(item.department)
+      let serviceTotal = await Consultation.count({doctorId: item.id, status: {$in: ['07']}})
+      item.serviceTotal = serviceTotal
     }
 
     return result.success(res, doctorList)

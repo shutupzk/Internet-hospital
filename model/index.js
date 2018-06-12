@@ -25,6 +25,11 @@ export * from './frequency'
 export * from './route_of_administration'
 export * from './drug'
 export * from './manu_factory'
+export * from './examination_dictionary'
+export * from './examination_organ_dictionary'
+export * from './examination_type_doctionary'
+export * from './exam'
+export * from './exam_item'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
@@ -46,7 +51,7 @@ class Model {
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate({path: 'departmentId', select: '-created_at -updated_at -deleted_at'})
+      .populate({ path: 'departmentId', select: '-created_at -updated_at -deleted_at' })
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -59,8 +64,9 @@ class Model {
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate('patientId')
-      .populate('doctorId')
+      .populate({path: 'patientId', select: '-created_at -updated_at'})
+      .populate({path: 'doctorId', select: '-created_at -updated_at -password'})
+      .populate({path: 'chatId', select: '-created_at -updated_at'})
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -77,6 +83,22 @@ class Model {
         path: 'consultationId',
         select: '_id -_id',
         populate: { path: 'patientId', select: 'name -_id' }
+      })
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+    return { items, page_info: { skip, limit, total } }
+  }
+
+  async findExamByOpsWithPage(Model, { ops, limit, skip, sort }) {
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
+    if (!sort) sort = { created_at: -1 }
+    let total = await Model.count(ops)
+    let items = await Model.find(ops)
+      .populate({
+        path: 'patientId',
+        select: 'name -_id birthday sex'
       })
       .sort(sort)
       .skip(skip)
