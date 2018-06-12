@@ -52,6 +52,9 @@ export const examinationTypeDictionargCreate = async (req, res) => {
 }
 
 export const examinationTypeDictionargList = async (req, res) => {
-  let data = await ExaminationTypeDictionary.find({}, ['_id', 'name', 'code', 'pyCode'])
+  const { keyword } = req.body
+  let query = {}
+  if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
+  let data = await ExaminationTypeDictionary.find(query, ['_id', 'name', 'code', 'pyCode'])
   return result.success(res, data)
 }
