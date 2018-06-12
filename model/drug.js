@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
+const { ObjectId } = Schema.Types
 
 /**
  * 单位字典
@@ -15,6 +16,7 @@ const schema = new Schema(
     printName: String, // 商品名
     specification: String, // 规格
     manuFactoryName: String, // 生产厂商
+    drugClassId: { type: ObjectId, ref: 'drugClass' },
     doseFormName: String, // 剂型
     licenseNo: String, // 国药准字、文号
     onceDose: Number, // 单次剂量
@@ -27,6 +29,8 @@ const schema = new Schema(
     routeAdministrationName: String, // 用药途径id/默认用法
     frequencyName: String, // 用药频率/默认频次
     defaultRemark: String, // 默认用量用法说明
+    retPrice: Number, // 零售价
+    buyPrice: Number, // 成本价
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },
