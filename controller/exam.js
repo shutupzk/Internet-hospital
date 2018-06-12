@@ -95,8 +95,6 @@ export const examItemQuery = async (req, res) => {
     item.examinationDictionary = item.examinationDictionaryid
     delete item.examinationOrganDictionaryids
     delete item.examinationDictionaryid
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
-    item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)
 }

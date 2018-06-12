@@ -1,7 +1,13 @@
 互联网医院接口文档
 ===========
 
-**修订时间：2018-06-11**
+**创建时间：2018-06-11**
+
+修改记录
+--------
+| 修定日期 | 修改内容 | 修改人 | 
+| :-: | :-: | :-:  | 
+|2018-06-13 | 添加检查模块 |  | 
 
 接口列表
 --------
@@ -97,6 +103,19 @@
 >>11.2 开诊断
 >>
 >>11.3 诊断查询
+
+>12 检查模块
+>>12.1 查询检查类型字典
+>>
+>>12.2 查询检查项目字典
+>>
+>>12.3 查询检查脏器字典
+>>
+>>13.4 开检查
+>>
+>>11.5 检查申请记录主表表
+>>
+>>12.6 检查申请子表
 
 
 
@@ -2758,7 +2777,12 @@
     "doctorId": "5b1cc699cbd16bf9d96ae31b",
     "historyOfPastIllness": "没什么既往史",
     "mainDiagnosis": "偏头痛",
-    "patientId": "5b1cbc00e3d2c87d31bac937"
+    "patient": {
+      "name": "查康",
+      "birthday": "1992-12-28",
+      "sex": 1,
+      "patientIdNo": "123456765"
+    }
   },
   "msg": "操作成功"
 }
@@ -2772,6 +2796,426 @@
 | secondDiagnosis | [String] | ✅ |  副诊断|  []|
 | chiefComplaint | String | ✅ |  主诉| |
 | historyOfPastIllness | String | ✅ |  既往史| |
-| patientId | String | ✅ |  患者id| |
+| patient | String | ✅ |  患者信息| |
 | doctorId | String | ✅ |  医生id| |
 
+<br>
+<br>
+<br>
+<br>
+12. 检查模块
+--------
+
+###12.1 查询检查项目类型字典
+
+
+```
+请求地址：/dictionary/examination/type/list
+```
+
+**请求包示例**
+
+```
+{
+    "keyword": "超声",
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
+ 
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "59a8e85c0a084310686fdd28",
+      "code": "66",
+      "name": "特需超声多普勒",
+      "pyCode": "TXCSDPL"
+    },
+    {
+      "_id": "59a8e85c0a084310686fdccc",
+      "code": "01",
+      "name": "超声多普勒",
+      "pyCode": "CSDPL"
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  编码| |
+| name | String | ✅ |  名称| |
+| pyCode | [String] | ✅ |  拼音编码|  |
+
+
+<br>
+###12.2 查询检查项目字典
+
+
+```
+请求地址：/dictionary/examination/list
+```
+
+**请求包示例**
+
+```
+{
+    "keyword": "ct",
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
+| exanminationTypeDictianaryId | String | ❌ |  检查项目类型id| |
+| limit | String | ❌ |  查询限制条数| |
+| skip | String | ❌ | 查询跳过条数 | |
+ 
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "_id": "5b1f9cc10061c4711526f325",
+        "name": "头CTA+颅脑CTP(限神内外介入)",
+        "code": "10004",
+        "pyCode": "XEXBZWX1",
+        "radiation": true,
+        "exeDept": "门诊二楼",
+        "chargeTotal": 9000,
+        "exanminationTypeDictianaryId": "59a8e85c0a084310686fdce5",
+        "created_at": "2018-06-12T10:13:21.174Z",
+        "updated_at": "2018-06-12T10:13:21.174Z"
+      },
+      {
+        "_id": "5b1f9b0c0061c4711526f321",
+        "name": "腹部CT(增强)-肝脏",
+        "code": "10001",
+        "pyCode": "FBZQCTGZ",
+        "radiation": true,
+        "exeDept": "门诊一楼",
+        "chargeTotal": 12000,
+        "exanminationTypeDictianaryId": "59a8e85c0a084310686fdcde",
+        "created_at": "2018-06-12T10:06:04.877Z",
+        "updated_at": "2018-06-12T10:06:04.877Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| name | String | ✅ |  检查项目名称| |
+| code | String | ✅ |  检查项目编码| |
+| pyCode | String | ✅ |  拼音编码|  |
+| radiation | Boolean | ✅ |  特殊标识 为true时，需填写特殊内容（例如：碘过敏）|  |
+| exeDept | String | ❌ |  执行科室|  |
+| chargeTotal | String | ✅ |  费用（单位：分）|  |
+
+<br>
+###12.3 查询脏器字典
+
+
+```
+请求地址：/dictionary/examination/organ/list
+```
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "59ad1a33113df95e358b9f59",
+      "code": "027",
+      "name": "前列腺（经腹）",
+      "pyCode": "QLXXJFF"
+    },
+    {
+      "_id": "59ad1a33113df95e358b9f56",
+      "code": "024",
+      "name": "肾",
+      "pyCode": "S"
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  编码| |
+| name | String | ✅ |  名称| |
+| pyCode | [String] | ✅ |  拼音编码| |
+
+<br>
+###12.4 开检查
+
+
+
+```
+请求地址：/treatment/exam/create
+```
+
+**请求包示例**
+
+```
+{
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "exams": [
+      {
+         examinationDictionaryid: '5b1f9b0c0061c4711526f321',
+         examinationOrganDictionaryids: [
+            '59ad1a32113df95e358b9f43', 
+            '59ad1a32113df95e358b9f43'
+         ],
+         leavingMessage: '检查一下',
+         height: '172',
+         weight: '65',
+         liverNormal: 1,
+         iodineAllergy: 0,
+         hasHeavyMetal: 1
+      },
+      {
+         examinationDictionaryid: '5b1f9b9d0061c4711526f322'
+      }
+   ]
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  咨询id| |
+| exams | String | ✅ |  检查项目组 （JSON数组字符串）| |
+| examinationDictionaryid | String | ✅ |  检查项目id）| |
+| examinationOrganDictionaryids | [String] | ❌ |  脏器字典 id组|
+| leavingMessage | String | ❌ |  留言|
+| height | String | ❌ |  身高|
+| weight | String | ❌ |  体重|
+| liverNormal |Number | ❌ |  是否肝功能不全 （-1：否 0：不详 1：是）|
+| iodineAllergy |Number | ❌ |  否肝碘过敏 （-1：否 0：不详 1：是）|
+| hasHeavyMetal |Number | ❌ |  体内是否有金属 （-1：否  1：是|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "examinationDictionaryNames": [
+      "腹部CT(增强)-肝脏",
+      "足正斜位(右)"
+    ],
+    "_id": "5b1fd26826d9727fc4966ee8",
+    "examNo": "H1-IWOLWZO72GTMLVCT",
+    "status": 1,
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "created_at": "2018-06-12T14:02:16.906Z"
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| examinationDictionaryNames | String | ✅ |  检查项目名称| |
+| examNo | String | ✅ |  检查单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+
+ 
+ <br>
+###12.5 检查申请记录表
+
+```
+请求地址：/treatment/exam/list
+```
+
+**请求包示例**
+
+```
+{
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| patientId | String | ❌ |  患者id| |
+| doctorId | String | ❌ |  | 医生id|
+| consultationId | String | ❌ |  订单id| |
+| limit | String | ❌ |  查询限制条数| 10|
+| skip | String | ❌ | 查询跳过条数 | 0|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "examinationDictionaryNames": [
+          "腹部CT(增强)-肝脏",
+          "足正斜位(右)"
+        ],
+        "_id": "5b1fd26826d9727fc4966ee8",
+        "examNo": "H1-IWOLWZO72GTMLVCT",
+        "status": 1,
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "consultationId": "5b1cd449cb062d004316ca12",
+        "created_at": "2018-06-12T14:02:16.906Z",
+        "patient": {
+          "name": "查康",
+          "birthday": "1992-12-28",
+          "sex": 1
+        },
+        "diagnosis": ""
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| examinationDictionaryNames | String | ✅ |  检查项目名称| |
+| examNo | String | ✅ |  检查单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| diagnosis | String | ✅ |  主诊断| |
+
+ <br>
+###12.6 检查申请子表
+```
+请求地址：/treatment/exam/item/list
+```
+
+**请求包示例**
+
+```
+{
+    "examId": "5b1fd26826d9727fc4966ee8",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| examId | String | ❌ |  检查记录id| |
+
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "5b1fd26826d9727fc4966ee9",
+      "status": 1,
+      "examNo": "H1-IWOLWZO72GTMLVCT",
+      "doctorId": "5b1cc699cbd16bf9d96ae31b",
+      "patientId": "5b1cbc00e3d2c87d31bac937",
+      "consultationId": "5b1cd449cb062d004316ca12",
+      "leavingMessage": "检查一下",
+      "execDept": "门诊一楼",
+      "height": "172",
+      "weight": "65",
+      "liverNormal": 1,
+      "iodineAllergy": 0,
+      "hasHeavyMetal": 1,
+      "examId": "5b1fd26826d9727fc4966ee8",
+      "created_at": "2018-06-12T14:02:16.917Z",
+      "examinationOrganDictionarys": [
+        {
+          "name": "肝"
+        },
+        {
+          "name": "肝"
+        }
+      ],
+      "examinationDictionary": {
+        "name": "腹部CT(增强)-肝脏",
+        "radiation": true
+      }
+    },
+    {
+      "_id": "5b1fd26826d9727fc4966eea",
+      "status": 1,
+      "examNo": "H1-IWOLWZO72GTMLVCT",
+      "doctorId": "5b1cc699cbd16bf9d96ae31b",
+      "patientId": "5b1cbc00e3d2c87d31bac937",
+      "consultationId": "5b1cd449cb062d004316ca12",
+      "leavingMessage": "",
+      "execDept": "门诊二楼",
+      "height": "",
+      "weight": "",
+      "liverNormal": null,
+      "iodineAllergy": null,
+      "hasHeavyMetal": null,
+      "examId": "5b1fd26826d9727fc4966ee8",
+      "created_at": "2018-06-12T14:02:16.919Z",
+      "examinationOrganDictionarys": [],
+      "examinationDictionary": {
+        "name": "足正斜位(右)",
+        "radiation": false
+      }
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| status | Number | ✅ |  状态 1:, 待缴费，2: 待执行 ，3：已执行, 4：已失效| |
+| examNo | String | ✅ |  检查单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| execDept | String | ✅ |  执行科室|
+| leavingMessage | String | ❌ |  留言|
+| height | String | ❌ |  身高|
+| weight | String | ❌ |  体重|
+| liverNormal |Number |  ❌|  是否肝功能不全 （-1：否 0：不详 1：是）|
+| iodineAllergy |Number | ❌ |  否肝碘过敏 （-1：否 0：不详 1：是）|
+| hasHeavyMetal |Number | ❌ |  体内是否有金属 （-1：否  1：是）|
+| examinationOrganDictionarys |[Object] | ❌ |  检查脏器|
+| examinationDictionary |[Object] | ✅ |  检查项目信息|
