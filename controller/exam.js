@@ -84,3 +84,19 @@ export const examQuery = async (req, res) => {
   }
   return result.success(res, list)
 }
+
+export const examItemQuery = async (req, res) => {
+  const { examId } = req.body
+  if (!examId) return result.failed(res, '缺少参数')
+  let list = await ExamItem.find({ examId }).populate('examinationOrganDictionaryids', 'name -_id').populate('examinationDictionaryid', 'name -_id radiation')
+  list = JSON.parse(JSON.stringify(list))
+  for (let item of list) {
+    item.examinationOrganDictionarys = item.examinationOrganDictionaryids
+    item.examinationDictionary = item.examinationDictionaryid
+    delete item.examinationOrganDictionaryids
+    delete item.examinationDictionaryid
+    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
+  }
+  return result.success(res, list)
+}
