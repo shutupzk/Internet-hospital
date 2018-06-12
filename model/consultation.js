@@ -9,6 +9,7 @@ const ObjectId = Schema.Types.ObjectId
 const schema = new Schema(
   {
     consultationNo: { type: String, index: true }, // 订单编号
+    type: { type: String, default: '020101' },  // 020101：专家咨询，020102：快速咨询，020103：复诊，020104：药师咨询; 020201：视频
     content: String, // 咨询内容
     images: [String], // 咨询图片
     fee: Number, // 咨询费用 单位: 分
