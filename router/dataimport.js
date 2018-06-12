@@ -246,8 +246,7 @@ router.all('/drug', async (req, res) => {
         frequencyName, // 用药频率/默认频次
         retPrice,
         buyPrice,
-        created_at: new Date(),
-        deleted_at: new Date()
+        created_at: new Date()
       }
       console.log(i)
       await Drug.findOneAndUpdate({ code }, drug, { upsert: true, rawResult: true, new: true })

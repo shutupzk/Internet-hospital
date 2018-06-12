@@ -16,7 +16,7 @@ const schema = new Schema(
     printName: String, // 商品名
     specification: String, // 规格
     manuFactoryName: String, // 生产厂商
-    drugClassId: { type: ObjectId, ref: 'drugClass' },
+    drugClassId: { type: ObjectId, ref: 'drug_class' },
     doseFormName: String, // 剂型
     licenseNo: String, // 国药准字、文号
     onceDose: Number, // 单次剂量
