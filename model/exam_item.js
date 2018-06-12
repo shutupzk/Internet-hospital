@@ -15,7 +15,7 @@ const schema = new Schema(
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' },
     examinationDictionaryid: { type: ObjectId, index: true, ref: 'examination_dictionary' },
-    examinationOrganDictionaryids: { type: [ObjectId], index: true, ref: 'examination_organ_dictionary' },
+    examinationOrganDictionaryids: [{ type: ObjectId, index: true, ref: 'examination_organ_dictionary' }],
     leavingMessage: String, // 留言
     execDept: String, // 执行科室
     height: String, // 身高(cm)
