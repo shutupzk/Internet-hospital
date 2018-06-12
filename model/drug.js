@@ -9,7 +9,7 @@ const { ObjectId } = Schema.Types
 const schema = new Schema(
   {
     type: Number, // 类型 0-西药 1-中药
-    code: String, // 编码
+    code: { type: String, index: true }, // 编码
     name: String, // 名称
     pyCode: String, // 拼音码
     barcode: String, // 条形码

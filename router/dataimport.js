@@ -134,10 +134,10 @@ router.all('/drug', async (req, res) => {
   console.log(filePath)
   const docs = xlsx.parse(filePath)[0].data
   try {
-    for (let i = 2; i < docs.length; i++) {
+    for (let i = 3; i < docs.length; i++) {
       const obj = docs[i]
       let type
-      if (obj[21] && (obj[24] + '').trim() && obj[21] !== 'NULL') {
+      if (obj[24] && (obj[24] + '').trim() && obj[24] !== 'NULL') {
         if ((obj[24] + '').trim() === '3') {
           type = 1
         } else {
@@ -147,78 +147,86 @@ router.all('/drug', async (req, res) => {
         continue
       }
       let code
-      if (obj[3] && (obj[3] + '').trim() && obj[3] !== 'NULL') {
-        code = (obj[3] + '').trim()
+      if (obj[0] && (obj[0] + '').trim() && obj[0] !== 'NULL') {
+        code = (obj[0] + '').trim()
       } else {
         continue
       }
       let name
-      if (obj[1] && obj[1] !== 'NULL') {
-        name = obj[1]
+      if (obj[5] && obj[5] !== 'NULL') {
+        name = obj[5]
       } else {
         continue
       }
       let pyCode
-      if (obj[3] && obj[3] !== 'NULL') {
-        pyCode = obj[3]
+      if (obj[1] && obj[1] !== 'NULL') {
+        pyCode = obj[1]
       }
       let specification
-      if (obj[16] && obj[16] !== 'NULL') {
-        specification = obj[16]
+      if (obj[15] && obj[15] !== 'NULL') {
+        specification = obj[15]
       }
       let manuFactoryName
-      if (obj[2] && (obj[2] + '').trim() && obj[2] !== 'NULL') {
-        let code = (obj[2] + '').trim()
+      if (obj[40] && (obj[40] + '').trim() && obj[40] !== 'NULL') {
+        let code = (obj[40] + '').trim()
         let mf = await ManuFactory.findOne({ code })
         if (mf) manuFactoryName = mf.name
       }
       let doseFormName
-      if (obj[7] && (obj[7] + '').trim() && obj[7] !== 'NULL') {
-        let code = (obj[7] + '').trim()
+      if (obj[6] && (obj[6] + '').trim() && obj[6] !== 'NULL') {
+        let code = (obj[6] + '').trim()
         let df = await DoseForm.findOne({ code })
         if (df) doseFormName = df.name
       }
       let licenseNo
-      if (obj[0] && (obj[0] + '').trim() && obj[0] !== 'NULL') {
-        licenseNo = (obj[0] + '').trim()
+      if (obj[40] && (obj[40] + '').trim() && obj[40] !== 'NULL') {
+        licenseNo = (obj[40] + '').trim()
       }
       let onceDose
-      if (obj[24] && (obj[24] + '').trim() && obj[24] !== 'NULL') {
-        onceDose = (obj[24] + '').trim()
+      if (obj[33] && (obj[33] + '').trim() && obj[33] !== 'NULL') {
+        onceDose = (obj[33] + '').trim()
       }
       let onceDoseUnitName
-      if (obj[25] && (obj[25] + '').trim() && obj[25] !== 'NULL') {
-        let code = (obj[25] + '').trim()
+      if (obj[34] && (obj[34] + '').trim() && obj[34] !== 'NULL') {
+        let code = (obj[34] + '').trim()
         let du = await DoseUnit.findOne({ code })
         if (du) onceDoseUnitName = du.name
       }
       let dosage
-      if (obj[14] && obj[14] !== 'NULL') {
-        dosage = obj[14]
+      if (obj[13] && obj[13] !== 'NULL') {
+        dosage = obj[13]
       }
       let dosageUnitName
-      if (obj[13] && (obj[13] + '').trim() && obj[13] !== 'NULL') {
-        let code = (obj[13] + '').trim()
+      if (obj[12] && (obj[12] + '').trim() && obj[12] !== 'NULL') {
+        let code = (obj[12] + '').trim()
         let du = await DoseUnit.findOne({ code })
         if (du) dosageUnitName = du.name
       }
       let packingUnitName
-      if (obj[15] && (obj[15] + '').trim() && obj[15] !== 'NULL') {
-        let code = (obj[15] + '').trim()
+      if (obj[14] && (obj[14] + '').trim() && obj[14] !== 'NULL') {
+        let code = (obj[14] + '').trim()
         let du = await DoseUnit.findOne({ code })
         if (du) packingUnitName = du.name
       }
       let routeAdministrationName
-      if (obj[22] && (obj[22] + '').trim() && obj[22] !== 'NULL') {
-        let code = (obj[22] + '').trim()
+      if (obj[31] && (obj[31] + '').trim() && obj[31] !== 'NULL') {
+        let code = (obj[31] + '').trim()
         let roa = await RouteOfAdministration.findOne({ code })
         if (roa) routeAdministrationName = roa.name
       }
       let frequencyName
-      if (obj[23] && (obj[23] + '').trim() && obj[23] !== 'NULL') {
-        let code = (obj[23] + '').trim()
+      if (obj[32] && (obj[32] + '').trim() && obj[32] !== 'NULL') {
+        let code = (obj[32] + '').trim()
         let fq = await Frequency.findOne({ code })
         if (fq) frequencyName = fq.name
+      }
+      let retPrice
+      if (obj[18] && obj[18] !== 'NULL') {
+        retPrice = Math.ceil(obj[18] * 100)
+      }
+      let buyPrice
+      if (obj[35] && obj[35] !== 'NULL') {
+        buyPrice = Math.ceil(obj[35] * 100)
       }
       let drug = {
         type,
@@ -236,6 +244,8 @@ router.all('/drug', async (req, res) => {
         packingUnitName, // 药品包装单位
         routeAdministrationName, // 用药途径id/默认用法
         frequencyName, // 用药频率/默认频次
+        retPrice,
+        buyPrice,
         created_at: new Date(),
         deleted_at: new Date()
       }
