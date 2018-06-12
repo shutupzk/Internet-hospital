@@ -24,6 +24,9 @@ export * from './dose_unit'
 export * from './frequency'
 export * from './route_of_administration'
 export * from './drug'
+export * from './examination_dictionary'
+export * from './examination_organ_dictionary'
+export * from './examination_type_doctionary'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
