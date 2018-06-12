@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import xlsx from 'node-xlsx'
-import { DoseForm, DoseUnit, Frequency, RouteOfAdministration, Drug, ManuFactory } from '../model'
+import { DoseForm, DoseUnit, Frequency, RouteOfAdministration, Drug, ManuFactory, DrugClass } from '../model'
 const router = express.Router()
 
 router.all('/doseform', async (req, res) => {
@@ -250,6 +250,28 @@ router.all('/drug', async (req, res) => {
       }
       console.log(i)
       await Drug.findOneAndUpdate({ code }, drug, { upsert: true, rawResult: true, new: true })
+    }
+  } catch (e) {
+    return res.json({ err: e.message })
+  }
+  res.json({ ok: 1 })
+})
+
+router.all('/drug_class', async (req, res) => {
+  let filePath = path.join(`${__dirname}`, '../excels/drug_class.xlsx')
+  console.log(filePath)
+  const docs = xlsx.parse(filePath)[0].data
+  try {
+    for (let i = 1; i < docs.length; i++) {
+      const obj = docs[i]
+      if (obj[0]) {
+        let doc = {
+          name: (obj[0]).trim(),
+          created_at: new Date()
+        }
+        console.log(doc)
+        await DrugClass.findOneAndUpdate({ name: doc.name }, doc, { upsert: true, rawResult: true, new: true })
+      }
     }
   } catch (e) {
     return res.json({ err: e.message })
