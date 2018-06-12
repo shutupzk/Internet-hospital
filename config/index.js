@@ -30,9 +30,19 @@ const wechatNativeConfig = {
   wechat_notify_url: 'http://47.93.206.157:3000/payment/NATIVE/notify'
 }
 
+const userWechatConfig = {
+  appid: 'wx13d9d2c1f21960ae',
+  secret: '80a60bf4837fae4ca89f7529325063e1'
+}
+
+const doctorWechatConfig = {
+  appid: 'wx083c2a74f4c1cddd',
+  secret: 'effb3755b9abae7e34a7df8cf8833814'
+}
+
 const SystemParam = {
   chatFinishCountByDoctor: 3,
   chatFinishCountByUser: 20
 }
 
-export { PORT, DB, ImConfig, wechatNativeConfig, TencentIM, SystemParam }
+export { PORT, DB, ImConfig, wechatNativeConfig, TencentIM, SystemParam, userWechatConfig, doctorWechatConfig }
