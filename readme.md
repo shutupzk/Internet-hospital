@@ -816,7 +816,8 @@
           "deptCode": "00001",
           "deptName": "内科",
           "weight": 1
-        }
+        },
+        "serviceTotal": 0
       }
     ],
     "page_info": {
@@ -845,6 +846,7 @@
 | data.items.isHot | Boolean | ✅ |  是否热门| |
 | data.items. openId | String | ✅ |  医生绑定的openid| |
 | data.items.identifier | String | ✅ |  医生通信账号| |
+| data.items.serviceTotal | Number | ✅ |  医生服务人数| |
 | data.items.department | Object | ✅ |  医生所属科室| |
 | data.items.department.id | String | ✅ |  医生所属科室id| |
 | data.items.department.deptName | String | ✅ |  医生所属科室名称| |
@@ -2368,11 +2370,12 @@
 
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
-| doctorId | String | ❌ |  医生id| |
-| patientId | String | ❌ |  患者id| |
-| status | String | ❌ |  状态 01：待支付，02：已取消，03：待执行，04：执行中，05：已过期未退款，06：待执行退款申请，07：已完成，08：过期已退款，09:待执行订单已退款 | |
-| skip |number | ❌ |  查询跳过条数| 0|
-| limit | number | ❌ |  查询限制返回条数| 10 |
+| doctorId | String | ❌ |  医生id 查询医生下的订单| |
+| userId | String | ❌ |  用户id 查询用户下的订单| |
+| patientId | String | ❌ |  患者id 查询就诊人下的订单| |
+| status | Boolean | ❌ |  状态 true 已完结的订单 false 解答中的订单 | |
+| skip |Number | ❌ |  查询跳过条数| 0|
+| limit | Number | ❌ |  查询限制返回条数| 10 |
 
 **应答包示例**
 
@@ -2382,49 +2385,53 @@
   "data": {
     "items": [
       {
-        "id": "5b1d0252dd4335457f187cb9",
-        "images": [
-          "https://a.jpg",
-          "https://b.jpg"
-        ],
+        "id": "5b1e38bea9dd7708dae44bf0",
+        "type": "020101",
+        "images": [],
         "evaluated": false,
-        "consultationNo": "H0-IWOM0XWT1Y93KHXI",
-        "content": "肚子痛",
-        "status": "01",
-        "consultationReason": "发处方",
+        "consultationNo": "H0-IWOLZ8LE1S9BR88R",
+        "content": "垃圾啊发几个； 啊；历史课戴假发；看",
+        "status": "03",
+        "consultationReason": "按时发发发给大丰港",
         "fee": 1,
-        "created_at": "2018-06-10T10:49:54.984Z",
-        "updated_at": "2018-06-10T10:49:54.984Z",
+        "created_at": "2018-06-11T08:54:22.276Z",
+        "updated_at": "2018-06-11T08:54:22.276Z",
+        "paymentId": "5b1e38e6a9dd7708dae44bf1",
+        "payTime": "2018-06-11T08:55:19.592Z",
         "patient": {
-          "_id": "5b1d0123aee9ede033ba754d",
-          "userId": "5b1cbbcfe3d2c87d31bac936",
+          "id": "5b1e217ee77d790f002d46f0",
+          "userId": "5b1e2134e77d790f002d46ef",
           "phone": 13300000002,
           "certificateType": "01",
           "certificateNo": "510000197202288471",
           "name": "张三",
           "birthday": "1984-10-15",
-          "sex": 0,
-          "patientIdNo": "123456765",
-          "created_at": "2018-06-10T10:44:51.958Z",
-          "updated_at": "2018-06-10T10:44:51.958Z",
-          "deleted_at": "2018-06-10T10:52:55.358Z"
+          "sex": 0
         },
         "doctor": {
+          "id": "5b1cc699cbd16bf9d96ae31b",
           "imageAndTextOpen": true,
           "imageAndTextPrice": 1,
           "isHot": true,
-          "_id": "5b1cc699cbd16bf9d96ae31b",
           "doctorSn": "00001",
           "doctorName": "华佗",
           "weight": 1,
-          "password": "e10adc3949ba59abbe56e057f20f883e",
-          "created_at": "2018-06-10T06:35:05.346Z",
-          "updated_at": "2018-06-10T06:35:05.346Z",
           "identifier": "doctor-00001",
-          "openId": "o1XzUwxrGtfuM-jFfOloc0zxB8Fw",
-          "departmentId": "5b1bcc9c72ded1d66685f9c1"
-        }
+          "openId": "45678765431236745634",
+          "departmentId": "5b1bcc9c72ded1d66685f9c1",
+          "avatar": "http://img3.imgtn.bdimg.com/it/u=3057512949,2471002942&fm=27&gp=0.jpg"
+        },
+        "chat": {
+          "id": "5b1e38f7d6c651987b09dc71",
+          "status": true,
+          "patientWithDoctorId": "5b1e38f7d6c651987b09dc6e",
+          "type": "01",
+          "lastMsgContent": "06",
+          "lastMsgTime": "2018-06-11T08:55:39.917Z"
+        },
+        "mainDiagnosis": ""
       }
+      ...
     ],
     "page_info": {
       "skip": 0,
@@ -2445,15 +2452,39 @@
 | items.evaluated | boolean | ✅ |  是否已评价| |
 | items.consultationNo |string | ✅ |  订单编号| |
 | items.content | string | ✅ |  咨询内容| |
-| items.patientId | string | ✅ |  患者id| |
-| items.doctorId | string | ✅ |  医生id| |
 | items.status |string | ✅ |  状态 01：待支付，02：已取消，03：待执行，04：执行中，05：已过期未退款，06：待执行退款申请，07：已完成，08：过期已退款，09:待执行订单已退款 | |
 | items.consultationReason | string | ✅ |  咨询目的| |
 | items.fee |number | ✅ |  咨询费用 （单位: 分）| |
+| items.mainDiagnosis | string | ❌ | 诊断 | |
 | items.created_at | string | ✅ |  创建时间| |
 | items.updated_at | string | ✅ |  修改时间| |
-| items.patient | object | ✅ |  用户信息| |
-| items.doctor | object | ✅ |  医生信息| |
+| items.patient | Object | ✅ |  患者信息| |
+| items.patient.id | string | ✅ |  患者id| |
+| items.patient.userId | string | ✅ |  患者所属用户id| |
+| items.patient.phone | string | ✅ |  患者手机号| |
+| items.patient.certificateType | string | ✅ |  患者证件类型| |
+| items.patient.certificateNo | string | ✅ |  患者证件号| |
+| items.patient.name | string | ✅ |  患者姓名| |
+| items.patient.birthday | string | ✅ |  患者生日| |
+| items.patient.sex | Number | ✅ |  患者性别 0-女，1-男| |
+| items.doctor.id | string | ✅ |  医生id| |
+| items.doctor.imageAndTextOpen | boolean | ✅ |  医生是否开通服务| |
+| items.doctor.imageAndTextPrice | Number | ✅ |  医生服务费用| |
+| items.doctor.isHot | boolean | ✅ |  医生是否热门| |
+| items.doctor.doctorSn | string | ✅ |  医生编码| |
+| items.doctor.doctorName | string | ✅ |  医生姓名| |
+| items.doctor.weight | Number | ✅ |  医生权重| |
+| items.doctor.identifier | string | ✅ |  医生登录用户名| |
+| items.doctor.openId | string | ✅ |  医生openid| |
+| items.doctor.departmentId | string | ✅ |  医生所属科室id| |
+| items.doctor.avatar | string | ✅ |  医生头像| |
+| items.chat | Object | ❌ |  订单回话信息| |
+| items.chat.id | string | ✅ |  订单回话id| |
+| items.chat.status | string | ✅ |  订单回话状态| |
+| items.chat.patientWithDoctorId | string | ✅ |  订单回话用户医生id| |
+| items.chat.type | string | ✅ |  订单回话类型| |
+| items.chat.lastMsgContent | string | ✅ |  订单回话最新一条消息| |
+| items.chat.lastMsgTime | string | ✅ |  订单回话最新时间| |
 | page_info |[object] | ✅ |  返回页码标签| |
 | page_info.skip | number | ✅ |  数据跳过数量| |
 | page_info.limit| number | ✅ |  数据限制的返回条数| |

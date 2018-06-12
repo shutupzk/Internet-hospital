@@ -1,4 +1,4 @@
-import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage } from '../model'
+import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage, Diagnosis } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
 import { createPayment } from './payment'
@@ -57,6 +57,10 @@ export const createConsultationPayment = async (req, res) => {
 
 export const consultationList = async (req, res) => {
   const { doctorId, userId, patientId, status, skip, limit } = req.body
+  console.log('doctorId', doctorId)
+  console.log('userId', userId)
+  console.log('patientId', patientId)
+  console.log('status', status)
 
   try {
     let ops = {
@@ -70,12 +74,30 @@ export const consultationList = async (req, res) => {
       }
       ops.patientId = { $in: patientIds }
     }
-    if (status) ops.status = status
+    if (status === false) {
+      ops.status = {$in: ['03', '04']}
+    } else if (status === true) {
+      ops.status = {$in: ['06', '07', '08', '09']}
+    }
     if (patientId) ops.patientId = patientId
     if (doctorId) ops.doctorId = doctorId
-
+    console.log('ops', ops)
     const consultationList = await Model.findConsultationByOpsWithPage(Consultation, { ops, limit, skip })
-    consultationList.items = formatArrayId(consultationList.items, ['patient', 'doctor'])
+    consultationList.items = formatArrayId(consultationList.items, ['patient', 'doctor', 'chat'])
+    for (let consultation of consultationList.items) {
+      consultation.patient = formatObjId(consultation.patient)
+      consultation.doctor = formatObjId(consultation.doctor)
+      if (consultation.chat) {
+        consultation.chat = formatObjId(consultation.chat)
+      }
+
+      const diagnosis = await Diagnosis.findOne({ consultationId: consultation.id })
+      if (diagnosis) {
+        consultation.mainDiagnosis = diagnosis.mainDiagnosis
+      } else {
+        consultation.mainDiagnosis = ''
+      }
+    }
     return result.success(res, consultationList)
   } catch (e) {
     return result.failed(res, e.message)
