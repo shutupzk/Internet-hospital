@@ -13,7 +13,7 @@ export const patientCreate = async (req, res) => {
   if (!checkPhoneNumber(phone)) return result.failed(res, '手机号格式错误')
 
   if (!birthday) birthday = subBirthday(certificateNo)
-  if (!sex) birthday = subSex(certificateNo)
+  if (!sex) sex = subSex(certificateNo)
   try {
     let user = await User.findById(userId)
     if (!user) return res.json({ code: '-1', msg: '用户不存在' })
