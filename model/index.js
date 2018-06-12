@@ -24,6 +24,7 @@ export * from './dose_unit'
 export * from './frequency'
 export * from './route_of_administration'
 export * from './drug'
+export * from './manu_factory'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
