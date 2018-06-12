@@ -2370,8 +2370,9 @@
 
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
-| doctorId | String | ❌ |  医生id| |
-| patientId | String | ❌ |  患者id| |
+| doctorId | String | ❌ |  医生id 查询医生下的订单| |
+| userId | String | ❌ |  用户id 查询用户下的订单| |
+| patientId | String | ❌ |  患者id 查询就诊人下的订单| |
 | status | Boolean | ❌ |  状态 true 已完结的订单 false 解答中的订单 | |
 | skip |Number | ❌ |  查询跳过条数| 0|
 | limit | Number | ❌ |  查询限制返回条数| 10 |
