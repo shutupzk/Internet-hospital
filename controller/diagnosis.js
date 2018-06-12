@@ -25,6 +25,9 @@ export const diagnosisUpsert = async (req, res) => {
 export const diagnosisQuery = async (req, res) => {
   let { consultationId } = req.body
   if (!consultationId) return result.fail(res, '缺少参数')
-  let data = Diagnosis.findOne({ consultationId })
+  let data = await Diagnosis.findOne({ consultationId }).populate('patientId', 'patientIdNo birthday name sex -_id')
+  data = JSON.parse(JSON.stringify(data))
+  data.patient = data.patientId
+  delete data.patientId
   return result.success(res, data)
 }
