@@ -63,6 +63,7 @@ class Model {
     let items = await Model.find(ops)
       .populate('patientId')
       .populate('doctorId')
+      .populate('chatId')
       .sort(sort)
       .skip(skip)
       .limit(limit)
