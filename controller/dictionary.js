@@ -40,10 +40,11 @@ export const examinationDictionargCreate = async (req, res) => {
 }
 
 export const examinationDictionargList = async (req, res) => {
-  const { keyword, exanminationTypeDictianaryId, limit, skip } = req.body
+  const { keyword, exanminationTypeDictianaryId, limit, skip, isCommon = null } = req.body
   let query = {}
   if (exanminationTypeDictianaryId) query.exanminationTypeDictianaryId = exanminationTypeDictianaryId
   if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
+  if (isCommon != null) query.isCommon = isCommon
   let data = await Model.findByOpsWithPage(ExaminationDictionary, { ops: query, limit, skip })
   return result.success(res, data)
 }
@@ -176,9 +177,10 @@ export const laboratorySampleDictionargList = async (req, res) => {
 }
 
 export const laboratoryDictionargList = async (req, res) => {
-  const { keyword, laboratoryTypeDictionargId, limit, skip } = req.body
+  const { keyword, laboratoryTypeDictionargId, limit, skip, isCommon = null } = req.body
   let query = {}
   if (laboratoryTypeDictionargId) query.laboratoryTypeDictionargId = laboratoryTypeDictionargId
+  if (isCommon != null) query.isCommon = isCommon
   if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
   let data = await Model.findByOpsWithPage(LaboratoryDictionary, { ops: query, limit, skip })
   return result.success(res, data)

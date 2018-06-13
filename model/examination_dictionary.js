@@ -11,6 +11,7 @@ const schema = new Schema(
     code: { type: String, index: true }, // 检查编码
     name: { type: String, index: true }, // 检查名称
     pyCode: { type: String, index: true }, // 拼音编码
+    isCommon: { type: Boolean, default: false },
     radiation: Boolean, // 需要补充填写放射号的检查项目
     chargeTotal: Number, // 检查总费用
     exeDept: String, // 执行科室

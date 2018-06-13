@@ -11,6 +11,7 @@ const schema = new Schema(
     code: { type: String, index: true }, // 检查编码
     name: { type: String, index: true }, // 检查名称
     pyCode: { type: String, index: true }, // 拼音编码
+    isCommon: { type: Boolean, default: false },
     chargeTotal: Number, // 检验总费用
     exeDept: String, // 执行科室
     LaboratoryTypeDictianaryId: { type: ObjectId, ref: 'laboratory_type_dictionary' },
