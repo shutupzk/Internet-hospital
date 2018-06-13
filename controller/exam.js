@@ -88,13 +88,13 @@ export const examQuery = async (req, res) => {
 export const examItemQuery = async (req, res) => {
   const { examId } = req.body
   if (!examId) return result.failed(res, '缺少参数')
-  let list = await ExamItem.find({ examId }).populate('examinationOrganDictionaryids', 'name -_id').populate('examinationDictionaryid', 'name -_id radiation')
+  let list = await ExamItem.find({ examId }).populate('examinationOrganDictionaryIds', 'name -_id').populate('examinationDictionaryId', 'name -_id radiation')
   list = JSON.parse(JSON.stringify(list))
   for (let item of list) {
-    item.examinationOrganDictionarys = item.examinationOrganDictionaryids
-    item.examinationDictionary = item.examinationDictionaryid
-    delete item.examinationOrganDictionaryids
-    delete item.examinationDictionaryid
+    item.examinationOrganDictionarys = item.examinationOrganDictionaryIds
+    item.examinationDictionary = item.examinationDictionaryId
+    delete item.examinationOrganDictionaryIds
+    delete item.examinationDictionaryId
   }
   return result.success(res, list)
 }

@@ -38,6 +38,8 @@ export * from './west_prescription'
 export * from './west_prescription_item'
 export * from './east_prescription'
 export * from './east_prescription_item'
+export * from './labor'
+export * from './labor_item'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
