@@ -36,8 +36,8 @@ export const examCreate = async (req, res) => {
         hasHeavyMetal = null
       } = exam
       let examinationDictionary = await ExaminationDictionary.findById(examinationDictionaryId)
-      if (!examinationDictionary) return res.fail(res, `存在未知检查项 ${examinationDictionaryId}`)
-      if (examinationDictionary.radiation && !liverNormal && !iodineAllergy && !hasHeavyMetal) return res.fail(res, `存在特殊检查项未填写特殊内容 ${examinationDictionaryId}`)
+      if (!examinationDictionary) return result.failed(res, `存在未知检查项 ${examinationDictionaryId}`)
+      if (examinationDictionary.radiation && !liverNormal && !iodineAllergy && !hasHeavyMetal) return result.failed(res, `存在特殊检查项未填写特殊内容 ${examinationDictionaryId}`)
       let examInput = {
         status: 1,
         examNo,

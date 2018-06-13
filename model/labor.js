@@ -13,7 +13,7 @@ const schema = new Schema(
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' }, // 订单id
-    LaboratoryDictionaryNames: [String], // 检查项目名称
+    laboratoryDictionaryNames: [String], // 检查项目名称
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },

@@ -21,6 +21,6 @@ router.all('/west/prescription/item/list', westPrescriptionItemList)
 
 router.all('/labor/create', laborCreate)
 router.all('/labor/list', laborQuery)
-router.all('/exalaborm/item/list', laborItemQuery)
+router.all('/labor/item/list', laborItemQuery)
 
 export default router

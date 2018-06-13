@@ -15,7 +15,7 @@ const schema = new Schema(
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' },
     laboratoryDictionaryId: { type: ObjectId, index: true, ref: 'laboratory_dictionary' }, // 检验项目id
-    laboratorySampleDoctionaryId: { type: ObjectId, index: true, ref: 'laboratory_sample_dictionary' }, // 检验物id
+    laboratorySampleDictionaryId: { type: ObjectId, index: true, ref: 'laboratory_sample_dictionary' }, // 检验物id
     leavingMessage: String, // 留言
     execDept: String, // 执行科室
     created_at: { type: Date, default: Date.now },

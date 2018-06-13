@@ -26,7 +26,7 @@ export const laborCreate = async (req, res) => {
     for (let labor of labors) {
       const { laboratoryDictionaryId, laboratorySampleDictionaryId, leavingMessage = '', execDept = '' } = labor
       let laboratoryDictionary = await LaboratoryDictionary.findById(laboratoryDictionaryId)
-      if (!laboratoryDictionary) return res.fail(res, `存在未知检验项 ${laboratoryDictionaryId}`)
+      if (!laboratoryDictionary) return result.failed(res, `存在未知检验项 ${laboratoryDictionaryId}`)
       let examInput = {
         status: 1,
         laborNo,
