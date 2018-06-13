@@ -11,7 +11,7 @@ export const getOpenId = async (req, res) => {
   let param = {}
   if (type === 'user') param = { ...userWechatConfig }
   if (type === 'doctor') param = { ...doctorWechatConfig }
-  param.code = code
+  param.js_code = code
   let str = ''
   for (let key in param) {
     str += key + '=' + param[key] + '&'
