@@ -137,9 +137,9 @@ export default class WechatPay {
     //   timestamp: Math.floor(Date.now() / 1000) + ''
     // }
     let data = {
-      appid,
-      timestamp: Math.floor(Date.now() / 1000) + '',
-      noncestr: generateNonceString(),
+      appId: appid,
+      timeStamp: Math.floor(Date.now() / 1000) + '',
+      nonceStr: generateNonceString(),
       // partnerid: mch_id,
       // prepayid: prepay_id,
       package: 'prepay_id=' + prepay_id,
