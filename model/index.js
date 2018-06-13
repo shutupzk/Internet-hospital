@@ -31,6 +31,10 @@ export * from './examination_type_doctionary'
 export * from './exam'
 export * from './exam_item'
 export * from './drug_class'
+export * from './west_prescription'
+export * from './west_prescription_item'
+export * from './east_prescription'
+export * from './east_prescription_item'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
@@ -107,15 +111,15 @@ class Model {
     return { items, page_info: { skip, limit, total } }
   }
 
-  async findDrugByOpsWithPage(Model, { ops, limit, skip, sort }) {
+  async findPreByOpsWithPage(Model, { ops, limit, skip, sort }) {
     limit = limit * 1 || 10
     skip = skip * 1 || 0
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
       .populate({
-        path: 'drugClassId',
-        select: '-created_at -deleted_at'
+        path: 'patientId',
+        select: 'name -_id birthday sex'
       })
       .sort(sort)
       .skip(skip)

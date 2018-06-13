@@ -12,8 +12,6 @@ const schema = new Schema(
     drugId: { type: ObjectId, ref: 'drug' }, // 中药id
     onceDose: Number, // 单次剂量
     onceDoseUnitName: String, // 单次剂量单位
-    routeAdministrationName: String, // 用法
-    frequencyName: String, // 用药频率/默认频次
     amount: Number, // 数量
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

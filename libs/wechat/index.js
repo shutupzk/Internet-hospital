@@ -108,17 +108,20 @@ export default class WechatPay {
     }
   }
 
-  async createAppOrder({ body, out_trade_no, total_fee }) {
+  async createAppOrder({ body, out_trade_no, total_fee, openId }) {
     let params = {
       body,
       out_trade_no,
       total_fee,
       spbill_create_ip: this.wechatNativeConfig.wechat_spbill_create_ip,
       notify_url: this.wechatNativeConfig.wechat_notify_url,
-      trade_type: 'APP'
+      // trade_type: 'APP'
+      trade_type: 'JSAPI',
+      openid: openId
     }
     console.log('params ======= ', params, this.wechatNativeConfig)
     const xml = await this.request({ params, tradeType: 'APP' })
+    console.log(xml)
     const json = await parseXML(xml)
     if (json.return_code !== 'SUCCESS' || json.result_code !== 'SUCCESS') {
       throw new Error(json.return_msg)
@@ -128,7 +131,8 @@ export default class WechatPay {
       appid,
       partnerid: mch_id,
       prepayid: prepay_id,
-      package: 'Sign=WXPay',
+      // package: 'Sign=WXPay',
+      package: 'prepay_id=' + prepay_id,
       noncestr: generateNonceString(),
       timestamp: Math.floor(Date.now() / 1000) + ''
     }
