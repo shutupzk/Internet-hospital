@@ -27,7 +27,7 @@ const wechatNativeConfig = {
   pfx: fs.readFileSync(path.join(__dirname, 'wechatkeys/apiclient_cert.p12')), // 微信商户平台证书
   pfxStr: path.join(__dirname, 'wechatkeys/apiclient_cert.p12'),
   wechat_spbill_create_ip: '183.232.39.46',
-  wechat_notify_url: 'https://his.hicare365.com/payment/NATIVE/notify'
+  wechat_notify_url: 'https://his.hicare365.com/payment/NATIVE/notice'
 }
 
 const userWechatConfig = {
