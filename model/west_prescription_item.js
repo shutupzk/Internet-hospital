@@ -8,10 +8,13 @@ let ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    eastPrescriptionId: { type: ObjectId, ref: 'east_prescription' }, // 中药处方id
-    drugId: { type: ObjectId, ref: 'drug' }, // 中药id
+    westPrescriptionId: { type: ObjectId, ref: 'west_prescription' }, // 西药处方id
+    drugId: { type: ObjectId, ref: 'drug' }, // 西药id
     onceDose: Number, // 单次剂量
     onceDoseUnitName: String, // 单次剂量单位
+    routeAdministrationName: String, // 用法
+    frequencyName: String, // 用药频率/默认频次
+    illustration: String, // 医嘱
     amount: Number, // 数量
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
@@ -22,6 +25,6 @@ const schema = new Schema(
   }
 )
 
-const EastPrescriptionItem = mongoose.model('east_prescription_item', schema, 'east_prescription_item')
+const WestPrescriptionItem = mongoose.model('west_prescription_item', schema, 'west_prescription_item')
 
-export { EastPrescriptionItem }
+export { WestPrescriptionItem }

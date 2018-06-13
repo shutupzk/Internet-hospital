@@ -10,7 +10,14 @@ import {
   examinationDictionargList,
   laboratoryTypeDictionargList,
   laboratorySampleDictionargList,
-  laboratoryDictionargList
+  laboratoryDictionargList,
+  drugList,
+  drugClassList,
+  doseUnitList,
+  doseFormList,
+  manuFactoryList,
+  frequencyList,
+  routeAdministrationList
 } from '../controller/dictionary'
 const router = express.Router()
 
@@ -27,5 +34,13 @@ router.all('/examination/organ/list', examinationOrganDictionargList)
 router.all('/laboratory/type/list', laboratoryTypeDictionargList)
 router.all('/laboratory/sample/list', laboratorySampleDictionargList)
 router.all('/laboratory/list', laboratoryDictionargList)
+
+router.all('/drugList', drugList)
+router.all('/drugClassList', drugClassList)
+router.all('/doseUnitList', doseUnitList)
+router.all('/doseFormList', doseFormList)
+router.all('/manuFactoryList', manuFactoryList)
+router.all('/frequencyList', frequencyList)
+router.all('/routeAdministrationList', routeAdministrationList)
 
 export default router

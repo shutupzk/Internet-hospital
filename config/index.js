@@ -21,13 +21,13 @@ const ImConfig = {
 const TencentIM = new IM(ImConfig)
 
 const wechatNativeConfig = {
-  appid: 'wxe291762653c64caa',
-  mch_id: '1490235832', // 微信支付分配的商户号
-  partner_key: 'ndyfyndyfyndyfyndyfy201710171234', // 微信商户平台API密钥
+  appid: 'wx13d9d2c1f21960ae',
+  mch_id: '1491011342', // 微信支付分配的商户号
+  partner_key: '9D2798A5C61845D33B5DBFF55DC8316B', // 微信商户平台API密钥
   pfx: fs.readFileSync(path.join(__dirname, 'wechatkeys/apiclient_cert.p12')), // 微信商户平台证书
   pfxStr: path.join(__dirname, 'wechatkeys/apiclient_cert.p12'),
-  wechat_spbill_create_ip: '47.93.206.157',
-  wechat_notify_url: 'http://47.93.206.157:3000/payment/NATIVE/notify'
+  wechat_spbill_create_ip: '183.232.39.46',
+  wechat_notify_url: 'https://his.hicare365.com/payment/NATIVE/notice'
 }
 
 const userWechatConfig = {

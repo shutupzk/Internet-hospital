@@ -14,8 +14,8 @@ const schema = new Schema(
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' }, // 订单id
     drugNames: [String], // 药品名称
-    route_administration_name: String, // 用法
-    frequency_name: String, // 用药频率/默认频次
+    routeAdministrationName: String, // 用法
+    frequencyName: String, // 用药频率/默认频次
     amount: Number, // 付数
     illustration: String, // 医嘱
     created_at: { type: Date, default: Date.now },

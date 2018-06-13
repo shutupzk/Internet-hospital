@@ -77,7 +77,7 @@ export const consultationList = async (req, res) => {
     if (status === false) {
       ops.status = {$in: ['03', '04']}
     } else if (status === true) {
-      ops.status = {$in: ['06', '07', '08', '09']}
+      ops.status = {$in: ['05', '06', '07', '08', '09']}
     }
     if (patientId) ops.patientId = patientId
     if (doctorId) ops.doctorId = doctorId
