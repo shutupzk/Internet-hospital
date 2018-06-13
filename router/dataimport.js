@@ -335,16 +335,40 @@ router.all('/laboratory', async (req, res) => {
     for (let i = 3; i < docs.length; i++) {
       const obj = docs[i]
       if (obj[0]) {
-        let laboratorySampleCode = obj[2]
         let doc = {
           name: (obj[0]).trim(),
-          pyCode: (obj[2]).trim(),
+          code: i + '',
+          pyCode: (obj[3]).trim(),
           chargeTotal: 10000,
-          exeDept: '检验科',
+          exeDept: '门诊三楼',
           created_at: new Date()
         }
-        const laboratorySample = await LaboratorySampleDictionary.findOne({code: laboratorySampleCode})
-        if(laboratorySample) doc.LaboratoryTypeDictianaryId = 
+        console.log(doc)
+        await LaboratoryDictionary.findOneAndUpdate({ name: doc.name }, doc, { upsert: true, rawResult: true, new: true })
+      }
+    }
+  } catch (e) {
+    return res.json({ err: e.message })
+  }
+  res.json({ ok: 1 })
+})
+
+router.all('/laboratory_common', async (req, res) => {
+  let filePath = path.join(`${__dirname}`, '../excels/laboratory_common.xlsx')
+  console.log(filePath)
+  const docs = xlsx.parse(filePath)[0].data
+  try {
+    for (let i = 1; i < 18; i++) {
+      const obj = docs[i]
+      if (obj[3]) {
+        let doc = {
+          name: (obj[3]).trim(),
+          code: obj[2],
+          chargeTotal: 10000,
+          isCommon: true,
+          exeDept: '门诊三楼',
+          created_at: new Date()
+        }
         console.log(doc)
         await LaboratoryDictionary.findOneAndUpdate({ name: doc.name }, doc, { upsert: true, rawResult: true, new: true })
       }
