@@ -2499,7 +2499,7 @@
 | items.doctor.avatar | string | ✅ |  医生头像| |
 | items.chat | Object | ❌ |  订单回话信息| |
 | items.chat.id | string | ✅ |  订单回话id| |
-| items.chat.status | string | ✅ |  订单回话状态| |
+| items.chat.status | boolean | ✅ |  订单回话状态| |
 | items.chat.patientWithDoctorId | string | ✅ |  订单回话用户医生id| |
 | items.chat.type | string | ✅ |  订单回话类型| |
 | items.chat.lastMsgContent | string | ✅ |  订单回话最新一条消息| |
