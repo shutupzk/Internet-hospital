@@ -30,6 +30,7 @@ export * from './examination_organ_dictionary'
 export * from './examination_type_doctionary'
 export * from './exam'
 export * from './exam_item'
+export * from './drug_class'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
