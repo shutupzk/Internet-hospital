@@ -127,14 +127,23 @@ export default class WechatPay {
       throw new Error(json.return_msg)
     }
     const { appid, mch_id, prepay_id } = json
+    // let data = {
+    //   appid,
+    //   partnerid: mch_id,
+    //   prepayid: prepay_id,
+    //   package: 'Sign=WXPay',
+    //   // package: 'prepay_id=' + prepay_id,
+    //   noncestr: generateNonceString(),
+    //   timestamp: Math.floor(Date.now() / 1000) + ''
+    // }
     let data = {
       appid,
-      partnerid: mch_id,
-      prepayid: prepay_id,
-      // package: 'Sign=WXPay',
-      package: 'prepay_id=' + prepay_id,
+      timestamp: Math.floor(Date.now() / 1000) + '',
       noncestr: generateNonceString(),
-      timestamp: Math.floor(Date.now() / 1000) + ''
+      // partnerid: mch_id,
+      // prepayid: prepay_id,
+      package: 'prepay_id=' + prepay_id,
+      signType: 'MD5'
     }
     const sign = getSign(data, this.wechatNativeConfig)
     data.sign = sign
