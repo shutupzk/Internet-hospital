@@ -23,6 +23,6 @@ const schema = new Schema(
   }
 )
 
-const Exam = mongoose.model('exam', schema, 'exam')
+const WestPrescription = mongoose.model('west_prescription', schema, 'west_prescription')
 
-export { Exam }
+export { WestPrescription }
