@@ -13,6 +13,7 @@ const schema = new Schema(
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' }, // 订单id
+    overDaysReason: String,
     drugNames: [String], // 药品名称
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
