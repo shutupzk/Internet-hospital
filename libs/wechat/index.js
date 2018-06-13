@@ -108,7 +108,7 @@ export default class WechatPay {
     }
   }
 
-  async createAppOrder({ body, out_trade_no, total_fee }) {
+  async createAppOrder({ body, out_trade_no, total_fee, openId }) {
     let params = {
       body,
       out_trade_no,
@@ -116,7 +116,8 @@ export default class WechatPay {
       spbill_create_ip: this.wechatNativeConfig.wechat_spbill_create_ip,
       notify_url: this.wechatNativeConfig.wechat_notify_url,
       // trade_type: 'APP'
-      trade_type: 'JSAPI'
+      trade_type: 'JSAPI',
+      openid: openId
     }
     console.log('params ======= ', params, this.wechatNativeConfig)
     const xml = await this.request({ params, tradeType: 'APP' })

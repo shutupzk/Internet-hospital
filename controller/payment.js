@@ -1,4 +1,4 @@
-import { Payment, Consultation } from '../model'
+import { Payment, Consultation, Patient } from '../model'
 import { createTransactionNo } from '../libs/utils'
 import { wechatNativeConfig } from '../config'
 import { chatPatientWithDoctorCreate } from './chat'
@@ -10,9 +10,14 @@ export const createPayment = async (req, res) => {
   const { consultationId } = req.body
   const consultation = await Consultation.findById(consultationId)
   if (!consultation) throw new Error('未找到指定订单')
+  const { patientId } = consultation
+  const patient = await Patient.findById(patientId).populate('userId')
+  console.log('patient ======', patient)
+  const { openId } = patient.userId
+  console.log('openId =====', openId)
   const outTradeNo = createTransactionNo()
 
-  let orderInfo = await wechatPay.createAppOrder({ body: '咨询费', out_trade_no: outTradeNo, total_fee: consultation.fee })
+  let orderInfo = await wechatPay.createAppOrder({ body: '咨询费', out_trade_no: outTradeNo, total_fee: consultation.fee, openId })
 
   let insertDoc = {
     totalFee: consultation.fee,
