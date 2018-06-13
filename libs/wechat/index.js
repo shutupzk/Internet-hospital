@@ -115,7 +115,8 @@ export default class WechatPay {
       total_fee,
       spbill_create_ip: this.wechatNativeConfig.wechat_spbill_create_ip,
       notify_url: this.wechatNativeConfig.wechat_notify_url,
-      trade_type: 'APP'
+      // trade_type: 'APP'
+      trade_type: 'JSAPI'
     }
     console.log('params ======= ', params, this.wechatNativeConfig)
     const xml = await this.request({ params, tradeType: 'APP' })
