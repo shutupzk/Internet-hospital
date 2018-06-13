@@ -142,7 +142,6 @@ class Model {
       .limit(limit)
     return { items, page_info: { skip, limit, total } }
   }
-
 }
 
 const model = new Model()

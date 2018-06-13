@@ -117,7 +117,20 @@
 >>
 >>12.6 检查申请子表
 
-
+>13 查询字典模块
+>>13.1 查询药品
+>>
+>>13.2 查询药品类型
+>>
+>>13.3 查询单位字典
+>>
+>>13.4 查询剂型
+>>
+>>13.5 查询生产厂商
+>>
+>>13.6 查询频率字典
+>>
+>>13.7 查询用药途径字典
 
 <br>
 <br>
@@ -3219,3 +3232,480 @@
 | hasHeavyMetal |Number | ❌ |  体内是否有金属 （-1：否  1：是）|
 | examinationOrganDictionarys |[Object] | ❌ |  检查脏器|
 | examinationDictionary |[Object] | ✅ |  检查项目信息|
+
+<br>
+
+
+13. 字典模块
+--------
+
+###13.1 查询药品
+
+```
+请求地址：/dictionary/drugList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "金",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1feaded6c651987b10dcf5",
+        "code": "853249",
+        "name": "金银花",
+        "buyPrice": null,
+        "retPrice": 27000,
+        "dosage": 1000,
+        "dosageUnitName": null,
+        "doseFormName": null,
+        "frequencyName": null,
+        "licenseNo": null,
+        "manuFactoryName": null,
+        "onceDose": null,
+        "onceDoseUnitName": null,
+        "packingUnitName": null,
+        "pyCode": "JYHV.",
+        "routeAdministrationName": null,
+        "specification": "kg",
+        "type": 1,
+        "created_at": "2018-06-12T15:46:38.951Z",
+        "deleted_at": null,
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 107
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  药品id| |
+| items.code | string | ✅ |  药品编码| |
+| items.name | string | ✅ |  药品名称| |
+| items.buyPrice | Number |  ❌ | 药品成本价| |
+| items.retPrice | Number | ✅ |  药品零售价| |
+| items.dosage | Number |  ❌ |  剂量| |
+| items.dosageUnitName | string |  ❌ |  剂量单位| |
+| items.doseFormName | string |  ❌ |  剂型| |
+| items.frequencyName | string |  ❌ |  用药频率| |
+| items.licenseNo | string |  ❌ |  国药准字、文号| |
+| items.manuFactoryName | string | ❌ |  生产厂商| |
+| items.onceDose | string |  ❌ |  单次剂量| |
+| items.onceDoseUnitName | string |  ❌ |  单次剂量单位| |
+| items.packingUnitName | string |  ❌ |  药品包装单位| |
+| items.pyCode | string | ✅ |  拼音码| |
+| items.routeAdministrationName | string |  ❌ |  用药途径/默认用法| |
+| items.specification | string | ✅ |  规格| |
+| items.type | string | ✅ |  类型 0-西药 1-中药| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.2 查询药品类型
+
+```
+请求地址：/dictionary/drugClassList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "中",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1ff268d6c651987b10f47c",
+        "name": "中成药",
+        "created_at": "2018-06-12T16:18:48.647Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 3
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  药品类型id| |
+| items.name | string | ✅ |  药品类型名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.3 查询单位字典
+
+```
+请求地址：/dictionary/doseUnitList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "公",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc621eb3c5341c319a685",
+        "code": "GJ",
+        "name": "公斤",
+        "pyCode": "KG",
+        "created_at": "2018-06-12T13:09:53.949Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  单位id| |
+| items.code | string | ✅ |  单位编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  单位名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.4 查询剂型
+
+```
+请求地址：/dictionary/doseFormList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "冲",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc61beb3c5341c319a639",
+        "code": "71",
+        "name": "冲剂",
+        "pyCode": "CJ",
+        "created_at": "2018-06-12T13:09:47.183Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  剂型id| |
+| items.code | string | ✅ |  剂型编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  剂型名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.5 查询生产厂商
+
+```
+请求地址：/dictionary/manuFactoryList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "冲",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fd5f0d6c651987b0ad276",
+        "code": "24003",
+        "name": "腾冲东方红制药厂",
+        "pyCode": "TCDFHZYC",
+        "created_at": "2018-06-12T14:17:20.297Z",
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  生产厂商id| |
+| items.code | string | ✅ |  生产厂商编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  生产厂商名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+###13.6 查询频率字典
+
+```
+请求地址：/dictionary/frequencyList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "次",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc5bb182c9c4169c3cadc",
+        "code": "QD10",
+        "name": "1次/日 (10am)",
+        "pyCode": "QD10    ",
+        "created_at": "2018-06-12T13:08:11.667Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 98
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  频率id| |
+| items.code | string | ✅ |  频率编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  频率名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.7 查询用药途径字典
+
+```
+请求地址：/dictionary/routeAdministrationList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "次",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc5c3182c9c4169c3cb9b",
+        "code": "164",
+        "name": "膀胱冲洗",
+        "pyCode": "PGCX",
+        "created_at": "2018-06-12T13:08:19.883Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 10
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  用药途径id| |
+| items.code | string | ✅ |  用药途径编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  用药途径名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
