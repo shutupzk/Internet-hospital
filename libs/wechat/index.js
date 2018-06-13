@@ -119,6 +119,7 @@ export default class WechatPay {
     }
     console.log('params ======= ', params, this.wechatNativeConfig)
     const xml = await this.request({ params, tradeType: 'APP' })
+    console.log(xml)
     const json = await parseXML(xml)
     if (json.return_code !== 'SUCCESS' || json.result_code !== 'SUCCESS') {
       throw new Error(json.return_msg)
@@ -128,7 +129,8 @@ export default class WechatPay {
       appid,
       partnerid: mch_id,
       prepayid: prepay_id,
-      package: 'Sign=WXPay',
+      // package: 'Sign=WXPay',
+      package: 'prepay_id=' + prepay_id,
       noncestr: generateNonceString(),
       timestamp: Math.floor(Date.now() / 1000) + ''
     }
