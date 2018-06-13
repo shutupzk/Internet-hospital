@@ -24,17 +24,17 @@ export const laborCreate = async (req, res) => {
 
     let inputArray = []
     for (let labor of labors) {
-      const { laboratoryDictionaryid, laboratorySampleDictionaryid, leavingMessage = '', execDept = '' } = labor
-      let laboratoryDictionary = await LaboratoryDictionary.findById(laboratoryDictionaryid)
-      if (!laboratoryDictionary) return res.fail(res, `存在未知检验项 ${laboratoryDictionaryid}`)
+      const { laboratoryDictionaryId, laboratorySampleDictionaryId, leavingMessage = '', execDept = '' } = labor
+      let laboratoryDictionary = await LaboratoryDictionary.findById(laboratoryDictionaryId)
+      if (!laboratoryDictionary) return res.fail(res, `存在未知检验项 ${laboratoryDictionaryId}`)
       let examInput = {
         status: 1,
         laborNo,
         doctorId,
         patientId,
         consultationId: _id,
-        laboratoryDictionaryid,
-        laboratorySampleDictionaryid,
+        laboratoryDictionaryId,
+        laboratorySampleDictionaryId,
         leavingMessage,
         execDept: execDept || laboratoryDictionary.exeDept
       }

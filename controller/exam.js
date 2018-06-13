@@ -25,8 +25,8 @@ export const examCreate = async (req, res) => {
     let inputArray = []
     for (let exam of exams) {
       const {
-        examinationDictionaryid,
-        examinationOrganDictionaryids = [],
+        examinationDictionaryId,
+        examinationOrganDictionaryIds = [],
         leavingMessage = '',
         execDept = '',
         height = '',
@@ -35,18 +35,17 @@ export const examCreate = async (req, res) => {
         iodineAllergy = null,
         hasHeavyMetal = null
       } = exam
-      let examinationDictionary = await ExaminationDictionary.findById(examinationDictionaryid)
-      if (!examinationDictionary) return res.fail(res, `存在未知检查项 ${examinationDictionaryid}`)
-      if (examinationDictionary.radiation && !liverNormal && !iodineAllergy && !hasHeavyMetal) return res.fail(res, `存在特殊检查项未填写特殊内容 ${examinationDictionaryid}`)
+      let examinationDictionary = await ExaminationDictionary.findById(examinationDictionaryId)
+      if (!examinationDictionary) return res.fail(res, `存在未知检查项 ${examinationDictionaryId}`)
+      if (examinationDictionary.radiation && !liverNormal && !iodineAllergy && !hasHeavyMetal) return res.fail(res, `存在特殊检查项未填写特殊内容 ${examinationDictionaryId}`)
       let examInput = {
         status: 1,
         examNo,
         doctorId,
         patientId,
         consultationId: _id,
-        examinationDictionaryid,
-        examinationDictionaryName: examinationDictionary.name,
-        examinationOrganDictionaryids,
+        examinationDictionaryId,
+        examinationOrganDictionaryIds,
         leavingMessage,
         execDept: execDept || examinationDictionary.exeDept,
         height,

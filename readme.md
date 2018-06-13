@@ -105,17 +105,15 @@
 >>11.3 诊断查询
 
 >12 检查模块
->>12.1 查询检查类型字典
+>>12.1 查询检查项目字典
 >>
->>12.2 查询检查项目字典
+>>12.2 查询检查脏器字典
 >>
->>12.3 查询检查脏器字典
+>>12.3 开检查
 >>
->>12.4 开检查
+>>12.4 检查申请记录主表表
 >>
->>12.5 检查申请记录主表表
->>
->>12.6 检查申请子表
+>>12.5 检查申请子表
 
 >13 查询字典模块
 >>13.1 查询药品
@@ -131,6 +129,17 @@
 >>13.6 查询频率字典
 >>
 >>13.7 查询用药途径字典
+
+>14 检验模块
+>>12.1 查询检验项目字典
+>>
+>>12.2 查询检验物字典
+>>
+>>12.3 开检验
+>>
+>>12.4 检验申请记录主表表
+>>
+>>12.5 检验申请子表
 
 <br>
 <br>
@@ -2819,60 +2828,7 @@
 12. 检查模块
 --------
 
-###12.1 查询检查项目类型字典
-
-
-```
-请求地址：/dictionary/examination/type/list
-```
-
-**请求包示例**
-
-```
-{
-    "keyword": "超声",
-}
-```
-**请求包参数说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
- 
-
-**应答包示例**
-
-```
-{
-  "code": 200,
-  "data": [
-    {
-      "_id": "59a8e85c0a084310686fdd28",
-      "code": "66",
-      "name": "特需超声多普勒",
-      "pyCode": "TXCSDPL"
-    },
-    {
-      "_id": "59a8e85c0a084310686fdccc",
-      "code": "01",
-      "name": "超声多普勒",
-      "pyCode": "CSDPL"
-    }
-  ],
-  "msg": "操作成功"
-}
-```
-**应答包参数说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| code | String | ✅ |  编码| |
-| name | String | ✅ |  名称| |
-| pyCode | [String] | ✅ |  拼音编码|  |
-
-
-<br>
-###12.2 查询检查项目字典
+###12.1 查询检查项目字典
 
 
 ```
@@ -2891,7 +2847,7 @@
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
 | keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
-| exanminationTypeDictianaryId | String | ❌ |  检查项目类型id| |
+| isCommon |Boolean | ❌ |  是否常开检验| false |
 | limit | String | ❌ |  查询限制条数| |
 | skip | String | ❌ | 查询跳过条数 | |
  
@@ -2949,7 +2905,7 @@
 | chargeTotal | String | ✅ |  费用（单位：分）|  |
 
 <br>
-###12.3 查询脏器字典
+###12.2 查询脏器字典
 
 
 ```
@@ -2987,7 +2943,7 @@
 | pyCode | [String] | ✅ |  拼音编码| |
 
 <br>
-###12.4 开检查
+###12.3 开检查
 
 
 
@@ -3002,8 +2958,8 @@
     "consultationId": "5b1cd449cb062d004316ca12",
     "exams": [
       {
-         examinationDictionaryid: '5b1f9b0c0061c4711526f321',
-         examinationOrganDictionaryids: [
+         examinationDictionaryId: '5b1f9b0c0061c4711526f321',
+         examinationOrganDictionaryIds: [
             '59ad1a32113df95e358b9f43', 
             '59ad1a32113df95e358b9f43'
          ],
@@ -3026,8 +2982,8 @@
 | :-: | :-: | :-:  | :--: | :--: |
 | consultationId | String | ✅ |  咨询id| |
 | exams | String | ✅ |  检查项目组 （JSON数组字符串）| |
-| examinationDictionaryid | String | ✅ |  检查项目id）| |
-| examinationOrganDictionaryids | [String] | ❌ |  脏器字典 id组|
+| examinationDictionaryId | String | ✅ |  检查项目id）| |
+| examinationOrganDictionaryIds | [String] | ❌ |  脏器字典 id组|
 | leavingMessage | String | ❌ |  留言|
 | height | String | ❌ |  身高|
 | weight | String | ❌ |  体重|
@@ -3066,7 +3022,7 @@
 
  
  <br>
-###12.5 检查申请记录表
+###12.4 检查申请记录表
 
 ```
 请求地址：/treatment/exam/list
@@ -3135,7 +3091,7 @@
 | diagnosis | String | ✅ |  主诊断| |
 
  <br>
-###12.6 检查申请子表
+###12.5 检查申请子表
 ```
 请求地址：/treatment/exam/item/list
 ```
@@ -3707,5 +3663,323 @@
 | page_info.total | number | ✅ |  总数| | 
 
 <br>
+
+
+14. 检验模块
+--------
+
+###14.1 查询检验项目字典
+
+
+```
+请求地址：/dictionary/laboratory/list
+```
+
+**请求包示例**
+
+```
+{
+    "keyword": "ct",
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
+|isCommon |Boolean | ❌ |  是否常开| |
+| limit | String | ❌ |  查询限制条数| |
+| skip | String | ❌ | 查询跳过条数 | |
+ 
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "_id": "5b1f9cc10061c4711526f325",
+        "name": "头CTA+颅脑CTP(限神内外介入)",
+        "code": "10004",
+        "pyCode": "XEXBZWX1",
+        "radiation": true,
+        "exeDept": "门诊二楼",
+        "chargeTotal": 9000,
+        "created_at": "2018-06-12T10:13:21.174Z",
+        "updated_at": "2018-06-12T10:13:21.174Z"
+      },
+      {
+        "_id": "5b1f9b0c0061c4711526f321",
+        "name": "腹部CT(增强)-肝脏",
+        "code": "10001",
+        "pyCode": "FBZQCTGZ",
+        "radiation": true,
+        "exeDept": "门诊一楼",
+        "chargeTotal": 12000,
+        "created_at": "2018-06-12T10:06:04.877Z",
+        "updated_at": "2018-06-12T10:06:04.877Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| name | String | ✅ |  检查项目名称| |
+| code | String | ✅ |  检查项目编码| |
+| pyCode | String | ✅ |  拼音编码|  |
+| isCommon |Boolean | ❌ |  是否常开检验| false |
+| exeDept | String | ❌ |  执行科室|  |
+| chargeTotal | String | ✅ |  费用（单位：分）|  |
+
+<br>
+###14.2 查询检验物字典
+
+
+```
+请求地址：/dictionary/laboratory/sample/list
+```
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "5b213576d6c651987b11ac15",
+      "code": "A007",
+      "name": "血清",
+      "pyCode": "XQ"
+    },
+    {
+      "_id": "5b213576d6c651987b11ac17",
+      "code": "A008",
+      "name": "全血",
+      "pyCode": "QX"
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  编码| |
+| name | String | ✅ |  名称| |
+| pyCode | [String] | ✅ |  拼音编码| |
+
+<br>
+###12.3 开检验
+
+
+
+```
+请求地址：/treatment/labor/create
+```
+
+**请求包示例**
+
+```
+{
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "labors": [
+      {
+         laboratoryDictionaryId: '5b1f9b0c0061c4711526f321',
+         laboratorySampleDictionaryId: '59ad1a32113df95e358b9f43',
+         leavingMessage: '检查一下',
+      },
+      {
+         examinationDictionaryid: '5b1f9b9d0061c4711526f322'
+         laboratorySampleDictionaryId: '59ad1a32113df95e358b9f43',
+      }
+   ]
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  咨询id| |
+| labors | String | ✅ |  检验项目组 （JSON数组字符串）| |
+| labors.laboratoryDictionaryId | String | ✅ |  检验项目id）| |
+| laboratorySampleDictionaryId | String |  ✅|  检验物字典id|
+| leavingMessage | String | ❌ |  留言|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "laboratoryDictionaryNames": [
+      "检验1",
+      "检验2"
+    ],
+    "_id": "5b1fd26826d9727fc4966ee8",
+    "laborNo": "H1-IWOLWZO72GTMLVCT",
+    "status": 1,
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "created_at": "2018-06-12T14:02:16.906Z"
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laboratoryDictionaryNames | String | ✅ |  检验项目名称| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+
+ 
+ <br>
+###12.4 检验申请记录表
+
+```
+请求地址：/treatment/labor/list
+```
+
+**请求包示例**
+
+```
+{
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| patientId | String | ❌ |  患者id| |
+| doctorId | String | ❌ |  | 医生id|
+| consultationId | String | ❌ |  订单id| |
+| limit | String | ❌ |  查询限制条数| 10|
+| skip | String | ❌ | 查询跳过条数 | 0|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "laboratoryDictionaryNames": [
+          "检验1",
+          "检验2"
+        ],
+        "_id": "5b1fd26826d9727fc4966ee8",
+        "laborNo": "H1-IWOLWZO72GTMLVCT",
+        "status": 1,
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "consultationId": "5b1cd449cb062d004316ca12",
+        "created_at": "2018-06-12T14:02:16.906Z",
+        "patient": {
+          "name": "查康",
+          "birthday": "1992-12-28",
+          "sex": 1
+        },
+        "diagnosis": ""
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laboratoryDictionaryNames | String | ✅ |  检验项目名称| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| diagnosis | String | ✅ |  主诊断| |
+
+ <br>
+###12.5 检验申请子表
+```
+请求地址：/treatment/labor/item/list
+```
+
+**请求包示例**
+
+```
+{
+    "laborId": "5b1fd26826d9727fc4966ee8",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laborId | String | ❌ |  检验记录id| |
+
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "5b1fd26826d9727fc4966ee9",
+      "status": 1,
+      "laborNo": "H1-IWOLWZO72GTMLVCT",
+      "doctorId": "5b1cc699cbd16bf9d96ae31b",
+      "patientId": "5b1cbc00e3d2c87d31bac937",
+      "consultationId": "5b1cd449cb062d004316ca12",
+      "leavingMessage": "检查一下",
+      "execDept": "门诊一楼",
+      "laborId": "5b1fd26826d9727fc4966ee8",
+      "created_at": "2018-06-12T14:02:16.917Z",
+      "laboratorySampleDictionary":{
+          "name": "血"
+      },
+      "aboratoryDictionary": {
+        "name": "检验",
+        "radiation": true
+      }
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| status | Number | ✅ |  状态 1:, 待缴费，2: 待执行 ，3：已执行, 4：已失效| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| execDept | String | ✅ |  执行科室|
+| leavingMessage | String | ❌ |  留言|
+| laboratorySampleDictionary |[Object] | ✅|  检验物|
+| aboratoryDictionary |[Object] | ✅ |  检验项目信息|
+
+<br>
+
+
 
 
