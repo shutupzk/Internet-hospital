@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import xlsx from 'node-xlsx'
-import { DoseForm, DoseUnit, Frequency, RouteOfAdministration, Drug, ManuFactory, DrugClass } from '../model'
+import { DoseForm, DoseUnit, Frequency, RouteOfAdministration, Drug, ManuFactory, DrugClass, LaboratoryTypeDictionary, LaboratoryDictionary, LaboratorySampleDictionary } from '../model'
 const router = express.Router()
 
 router.all('/doseform', async (req, res) => {
@@ -271,6 +271,82 @@ router.all('/drug_class', async (req, res) => {
         }
         console.log(doc)
         await DrugClass.findOneAndUpdate({ name: doc.name }, doc, { upsert: true, rawResult: true, new: true })
+      }
+    }
+  } catch (e) {
+    return res.json({ err: e.message })
+  }
+  res.json({ ok: 1 })
+})
+
+router.all('/laboratory_type', async (req, res) => {
+  let filePath = path.join(`${__dirname}`, '../excels/laboratoryProjectType.xlsx')
+  console.log(filePath)
+  const docs = xlsx.parse(filePath)[0].data
+  try {
+    for (let i = 3; i < docs.length; i++) {
+      const obj = docs[i]
+      if (obj[0] && obj[1]) {
+        let doc = {
+          code: (obj[0]).trim(),
+          name: (obj[1]).trim(),
+          pyCode: (obj[2]).trim(),
+          created_at: new Date()
+        }
+        console.log(doc)
+        await LaboratoryTypeDictionary.findOneAndUpdate({ code: doc.code }, doc, { upsert: true, rawResult: true, new: true })
+      }
+    }
+  } catch (e) {
+    return res.json({ err: e.message })
+  }
+  res.json({ ok: 1 })
+})
+
+router.all('/laboratory_sample', async (req, res) => {
+  let filePath = path.join(`${__dirname}`, '../excels/laboratorySample.xlsx')
+  console.log(filePath)
+  const docs = xlsx.parse(filePath)[0].data
+  try {
+    for (let i = 1; i < docs.length; i++) {
+      const obj = docs[i]
+      if (obj[0] && obj[1]) {
+        let doc = {
+          code: (obj[0]).trim(),
+          name: (obj[1]).trim(),
+          pyCode: (obj[2]).trim(),
+          created_at: new Date()
+        }
+        console.log(doc)
+        await LaboratorySampleDictionary.findOneAndUpdate({ code: doc.code }, doc, { upsert: true, rawResult: true, new: true })
+      }
+    }
+  } catch (e) {
+    return res.json({ err: e.message })
+  }
+  res.json({ ok: 1 })
+})
+
+router.all('/laboratory', async (req, res) => {
+  let filePath = path.join(`${__dirname}`, '../excels/laboratory.xlsx')
+  console.log(filePath)
+  const docs = xlsx.parse(filePath)[0].data
+  try {
+    for (let i = 3; i < docs.length; i++) {
+      const obj = docs[i]
+      if (obj[0]) {
+        let laboratorySampleCode = obj[2]
+        let doc = {
+          name: (obj[0]).trim(),
+          pyCode: (obj[2]).trim(),
+          chargeTotal: 10000,
+          exeDept: '检验科',
+          created_at: new Date()
+        }
+        const laboratorySample = await LaboratorySampleDictionary.findOne({code: laboratorySampleCode})
+        if(laboratorySample) doc.LaboratoryTypeDictianaryId = 
+        console.log(doc)
+        await LaboratoryDictionary.findOneAndUpdate({ name: doc.name }, doc, { upsert: true, rawResult: true, new: true })
       }
     }
   } catch (e) {
