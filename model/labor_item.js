@@ -3,27 +3,21 @@ const Schema = mongoose.Schema
 let ObjectId = Schema.Types.ObjectId
 
 /**
- * 开检查
+ * 检验子表
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    examId: { type: ObjectId, index: true, ref: 'exam' }, // 检查id
+    laborId: { type: ObjectId, index: true, ref: 'labor' }, // 检验id
     status: Number, // '1:, 待缴费，2: 待执行 ，3：已执行, 4：已失效
-    examNo: String, // 检查编号
+    laborNo: String, // 检验编号
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
     consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' },
-    examinationDictionaryId: { type: ObjectId, index: true, ref: 'examination_dictionary' },
-    examinationOrganDictionaryIds: [{ type: ObjectId, index: true, ref: 'examination_organ_dictionary' }],
+    laboratoryDictionaryId: { type: ObjectId, index: true, ref: 'laboratory_dictionary' }, // 检验项目id
+    laboratorySampleDoctionaryId: { type: ObjectId, index: true, ref: 'laboratory_sample_dictionary' }, // 检验物id
     leavingMessage: String, // 留言
     execDept: String, // 执行科室
-    height: String, // 身高(cm)
-    weight: String, // 体重(kg)
-    radiationDeptSn: String, // 放射科号
-    liverNormal: Number, // -1-否, 0-不详, 1-是  肝功能
-    iodineAllergy: Number, // -1-否, 0-不详, 1-是  碘过敏
-    hasHeavyMetal: Number, // -1-无, 1-有  是否有重金属
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },
@@ -32,6 +26,6 @@ const schema = new Schema(
   }
 )
 
-const ExamItem = mongoose.model('exam_item', schema, 'exam_item')
+const LaborItem = mongoose.model('labor_item', schema, 'labor_item')
 
-export { ExamItem }
+export { LaborItem }
