@@ -30,6 +30,9 @@ export * from './examination_organ_dictionary'
 export * from './examination_type_doctionary'
 export * from './exam'
 export * from './exam_item'
+export * from './laboratory_dictionary'
+export * from './laboratory_sample_dictionary'
+export * from './laboratory_type_dictionary'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {
@@ -64,9 +67,9 @@ class Model {
     if (!sort) sort = { created_at: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
-      .populate({path: 'patientId', select: '-created_at -updated_at'})
-      .populate({path: 'doctorId', select: '-created_at -updated_at -password'})
-      .populate({path: 'chatId', select: '-created_at -updated_at'})
+      .populate({ path: 'patientId', select: '-created_at -updated_at' })
+      .populate({ path: 'doctorId', select: '-created_at -updated_at -password' })
+      .populate({ path: 'chatId', select: '-created_at -updated_at' })
       .sort(sort)
       .skip(skip)
       .limit(limit)

@@ -1,4 +1,12 @@
-import Model, { DiagnosisDictionary, ExaminationDictionary, ExaminationOrganDictionary, ExaminationTypeDictionary } from '../model'
+import Model, {
+  DiagnosisDictionary,
+  ExaminationDictionary,
+  ExaminationOrganDictionary,
+  ExaminationTypeDictionary,
+  LaboratoryDictionary,
+  LaboratorySampleDictionary,
+  LaboratoryTypeDictionary
+} from '../model'
 import result from './result'
 
 export const diagnosisDictionaryCreate = async (req, res) => {
@@ -56,5 +64,27 @@ export const examinationTypeDictionargList = async (req, res) => {
   let query = {}
   if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
   let data = await ExaminationTypeDictionary.find(query, ['_id', 'name', 'code', 'pyCode'])
+  return result.success(res, data)
+}
+
+export const laboratoryTypeDictionargList = async (req, res) => {
+  const { keyword } = req.body
+  let query = {}
+  if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
+  let data = await LaboratoryTypeDictionary.find(query, ['_id', 'name', 'code', 'pyCode'])
+  return result.success(res, data)
+}
+
+export const laboratorySampleDictionargList = async (req, res) => {
+  let data = await LaboratorySampleDictionary.find({}, ['_id', 'name', 'code', 'pyCode'])
+  return result.success(res, data)
+}
+
+export const laboratoryDictionargList = async (req, res) => {
+  const { keyword, laboratoryTypeDictionargId, limit, skip } = req.body
+  let query = {}
+  if (laboratoryTypeDictionargId) query.laboratoryTypeDictionargId = laboratoryTypeDictionargId
+  if (keyword) query['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
+  let data = await Model.findByOpsWithPage(LaboratoryDictionary, { ops: query, limit, skip })
   return result.success(res, data)
 }
