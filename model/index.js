@@ -126,6 +126,23 @@ class Model {
       .limit(limit)
     return { items, page_info: { skip, limit, total } }
   }
+
+  async findDrugByOpsWithPage(Model, { ops, limit, skip, sort }) {
+    limit = limit * 1 || 10
+    skip = skip * 1 || 0
+    if (!sort) sort = { created_at: -1 }
+    let total = await Model.count(ops)
+    let items = await Model.find(ops)
+      .populate({
+        path: 'drugClassId',
+        select: '-created_at -deleted_at'
+      })
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+    return { items, page_info: { skip, limit, total } }
+  }
+
 }
 
 const model = new Model()
