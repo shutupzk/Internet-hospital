@@ -26,7 +26,7 @@ export const prescriptionCreate = async (req, res) => {
   }
 }
 
-export const westPrescriptionList = async(req, res) => {
+export const westPrescriptionList = async (req, res) => {
   const { patientId, doctorId, consultationId, skip, limit } = req.body
   let ops = {}
   if (patientId) ops.patientId = patientId
@@ -45,7 +45,7 @@ export const westPrescriptionList = async(req, res) => {
   return result.success(res, list)
 }
 
-export const eastPrescriptionList = async(req, res) => {
+export const eastPrescriptionList = async (req, res) => {
   const { patientId, doctorId, consultationId, skip, limit } = req.body
   let ops = {}
   if (patientId) ops.patientId = patientId
@@ -109,7 +109,7 @@ export const westPrescriptionCreate = async ({ westPrescription, doctorId, patie
     const drug = await Drug.findById(drugId)
     if (!drug) throw new Error('西药处方条目 药品未不存在 drugId: ' + drugId)
     if (drug.type === 1) throw new Error('西药处方条目 药品类型为中药 drugId: ' + drugId)
-    array.push({ drugId, onceDose, onceDoseUnitName, routeAdministrationName, frequencyName, illustration })
+    array.push({ drugId, onceDose, onceDoseUnitName, routeAdministrationName, frequencyName, illustration, amount })
     drugNames.push(drug.name)
   }
   let westPrescriptionId
