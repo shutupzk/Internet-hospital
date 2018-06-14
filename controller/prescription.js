@@ -18,6 +18,7 @@ export const prescriptionCreate = async (req, res) => {
     const { doctorId, patientId } = consultation
     westPrescriptionId = await westPrescriptionCreate({ westPrescription, doctorId, patientId, consultationId, wPrescriptionNo })
     eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
+    return result.success(res)
   } catch (e) {
     if (westPrescriptionId) WestPrescription.deleteOne({ _id: westPrescriptionId })
     if (eastPrescriptionId) EastPrescription.deleteOne({ _id: eastPrescriptionId })
