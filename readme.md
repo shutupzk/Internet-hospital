@@ -8,6 +8,7 @@
 | 修定日期 | 修改内容 | 修改人 | 
 | :-: | :-: | :-:  | 
 |2018-06-13 | 添加检查模块 |  | 
+|2018-06-13 | 添加检验模块 |  | 
 
 接口列表
 --------
@@ -105,19 +106,41 @@
 >>11.3 诊断查询
 
 >12 检查模块
->>12.1 查询检查类型字典
+>>12.1 查询检查项目字典
 >>
->>12.2 查询检查项目字典
+>>12.2 查询检查脏器字典
 >>
->>12.3 查询检查脏器字典
+>>12.3 开检查
 >>
->>12.4 开检查
+>>12.4 检查申请记录主表表
 >>
->>12.5 检查申请记录主表表
->>
->>12.6 检查申请子表
+>>12.5 检查申请子表
 
+>13 查询字典模块
+>>13.1 查询药品
+>>
+>>13.2 查询药品类型
+>>
+>>13.3 查询单位字典
+>>
+>>13.4 查询剂型
+>>
+>>13.5 查询生产厂商
+>>
+>>13.6 查询频率字典
+>>
+>>13.7 查询用药途径字典
 
+>14 检验模块
+>>12.1 查询检验项目字典
+>>
+>>12.2 查询检验物字典
+>>
+>>12.3 开检验
+>>
+>>12.4 检验申请记录主表表
+>>
+>>12.5 检验申请子表
 
 <br>
 <br>
@@ -2806,60 +2829,7 @@
 12. 检查模块
 --------
 
-###12.1 查询检查项目类型字典
-
-
-```
-请求地址：/dictionary/examination/type/list
-```
-
-**请求包示例**
-
-```
-{
-    "keyword": "超声",
-}
-```
-**请求包参数说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
- 
-
-**应答包示例**
-
-```
-{
-  "code": 200,
-  "data": [
-    {
-      "_id": "59a8e85c0a084310686fdd28",
-      "code": "66",
-      "name": "特需超声多普勒",
-      "pyCode": "TXCSDPL"
-    },
-    {
-      "_id": "59a8e85c0a084310686fdccc",
-      "code": "01",
-      "name": "超声多普勒",
-      "pyCode": "CSDPL"
-    }
-  ],
-  "msg": "操作成功"
-}
-```
-**应答包参数说明**
-
-| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
-| :-: | :-: | :-:  | :--: | :--: |
-| code | String | ✅ |  编码| |
-| name | String | ✅ |  名称| |
-| pyCode | [String] | ✅ |  拼音编码|  |
-
-
-<br>
-###12.2 查询检查项目字典
+###12.1 查询检查项目字典
 
 
 ```
@@ -2878,7 +2848,7 @@
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
 | keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
-| exanminationTypeDictianaryId | String | ❌ |  检查项目类型id| |
+| isCommon |Boolean | ❌ |  是否常开检验| false |
 | limit | String | ❌ |  查询限制条数| |
 | skip | String | ❌ | 查询跳过条数 | |
  
@@ -2936,7 +2906,7 @@
 | chargeTotal | String | ✅ |  费用（单位：分）|  |
 
 <br>
-###12.3 查询脏器字典
+###12.2 查询脏器字典
 
 
 ```
@@ -2974,7 +2944,7 @@
 | pyCode | [String] | ✅ |  拼音编码| |
 
 <br>
-###12.4 开检查
+###12.3 开检查
 
 
 
@@ -2989,8 +2959,8 @@
     "consultationId": "5b1cd449cb062d004316ca12",
     "exams": [
       {
-         examinationDictionaryid: '5b1f9b0c0061c4711526f321',
-         examinationOrganDictionaryids: [
+         examinationDictionaryId: '5b1f9b0c0061c4711526f321',
+         examinationOrganDictionaryIds: [
             '59ad1a32113df95e358b9f43', 
             '59ad1a32113df95e358b9f43'
          ],
@@ -3013,8 +2983,8 @@
 | :-: | :-: | :-:  | :--: | :--: |
 | consultationId | String | ✅ |  咨询id| |
 | exams | String | ✅ |  检查项目组 （JSON数组字符串）| |
-| examinationDictionaryid | String | ✅ |  检查项目id）| |
-| examinationOrganDictionaryids | [String] | ❌ |  脏器字典 id组|
+| examinationDictionaryId | String | ✅ |  检查项目id）| |
+| examinationOrganDictionaryIds | [String] | ❌ |  脏器字典 id组|
 | leavingMessage | String | ❌ |  留言|
 | height | String | ❌ |  身高|
 | weight | String | ❌ |  体重|
@@ -3053,7 +3023,7 @@
 
  
  <br>
-###12.5 检查申请记录表
+###12.4 检查申请记录表
 
 ```
 请求地址：/treatment/exam/list
@@ -3122,7 +3092,7 @@
 | diagnosis | String | ✅ |  主诊断| |
 
  <br>
-###12.6 检查申请子表
+###12.5 检查申请子表
 ```
 请求地址：/treatment/exam/item/list
 ```
@@ -3219,3 +3189,798 @@
 | hasHeavyMetal |Number | ❌ |  体内是否有金属 （-1：否  1：是）|
 | examinationOrganDictionarys |[Object] | ❌ |  检查脏器|
 | examinationDictionary |[Object] | ✅ |  检查项目信息|
+
+<br>
+
+
+13. 字典模块
+--------
+
+###13.1 查询药品
+
+```
+请求地址：/dictionary/drugList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "金",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1feaded6c651987b10dcf5",
+        "code": "853249",
+        "name": "金银花",
+        "buyPrice": null,
+        "retPrice": 27000,
+        "dosage": 1000,
+        "dosageUnitName": null,
+        "doseFormName": null,
+        "frequencyName": null,
+        "licenseNo": null,
+        "manuFactoryName": null,
+        "onceDose": null,
+        "onceDoseUnitName": null,
+        "packingUnitName": null,
+        "pyCode": "JYHV.",
+        "routeAdministrationName": null,
+        "specification": "kg",
+        "type": 1,
+        "created_at": "2018-06-12T15:46:38.951Z",
+        "deleted_at": null,
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 107
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  药品id| |
+| items.code | string | ✅ |  药品编码| |
+| items.name | string | ✅ |  药品名称| |
+| items.buyPrice | Number |  ❌ | 药品成本价| |
+| items.retPrice | Number | ✅ |  药品零售价| |
+| items.dosage | Number |  ❌ |  剂量| |
+| items.dosageUnitName | string |  ❌ |  剂量单位| |
+| items.doseFormName | string |  ❌ |  剂型| |
+| items.frequencyName | string |  ❌ |  用药频率| |
+| items.licenseNo | string |  ❌ |  国药准字、文号| |
+| items.manuFactoryName | string | ❌ |  生产厂商| |
+| items.onceDose | string |  ❌ |  单次剂量| |
+| items.onceDoseUnitName | string |  ❌ |  单次剂量单位| |
+| items.packingUnitName | string |  ❌ |  药品包装单位| |
+| items.pyCode | string | ✅ |  拼音码| |
+| items.routeAdministrationName | string |  ❌ |  用药途径/默认用法| |
+| items.specification | string | ✅ |  规格| |
+| items.type | string | ✅ |  类型 0-西药 1-中药| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.2 查询药品类型
+
+```
+请求地址：/dictionary/drugClassList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "中",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1ff268d6c651987b10f47c",
+        "name": "中成药",
+        "created_at": "2018-06-12T16:18:48.647Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 3
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  药品类型id| |
+| items.name | string | ✅ |  药品类型名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.3 查询单位字典
+
+```
+请求地址：/dictionary/doseUnitList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "公",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc621eb3c5341c319a685",
+        "code": "GJ",
+        "name": "公斤",
+        "pyCode": "KG",
+        "created_at": "2018-06-12T13:09:53.949Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  单位id| |
+| items.code | string | ✅ |  单位编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  单位名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.4 查询剂型
+
+```
+请求地址：/dictionary/doseFormList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "冲",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc61beb3c5341c319a639",
+        "code": "71",
+        "name": "冲剂",
+        "pyCode": "CJ",
+        "created_at": "2018-06-12T13:09:47.183Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  剂型id| |
+| items.code | string | ✅ |  剂型编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  剂型名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.5 查询生产厂商
+
+```
+请求地址：/dictionary/manuFactoryList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "冲",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fd5f0d6c651987b0ad276",
+        "code": "24003",
+        "name": "腾冲东方红制药厂",
+        "pyCode": "TCDFHZYC",
+        "created_at": "2018-06-12T14:17:20.297Z",
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  生产厂商id| |
+| items.code | string | ✅ |  生产厂商编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  生产厂商名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+###13.6 查询频率字典
+
+```
+请求地址：/dictionary/frequencyList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "次",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc5bb182c9c4169c3cadc",
+        "code": "QD10",
+        "name": "1次/日 (10am)",
+        "pyCode": "QD10    ",
+        "created_at": "2018-06-12T13:08:11.667Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 98
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  频率id| |
+| items.code | string | ✅ |  频率编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  频率名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+###13.7 查询用药途径字典
+
+```
+请求地址：/dictionary/routeAdministrationList
+```
+**请求包示例**
+
+```
+ {
+    "keyword": "次",
+ }
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字| |
+|skip | String | ❌ |  查询关键字| |
+|limit | String | ❌ |  查询关键字| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b1fc5c3182c9c4169c3cb9b",
+        "code": "164",
+        "name": "膀胱冲洗",
+        "pyCode": "PGCX",
+        "created_at": "2018-06-12T13:08:19.883Z"
+      }
+      ...
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 10
+    }
+  },
+  "msg": "操作成功"
+}
+
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| items | [object] | ✅ |  返回数据节点 | |
+| items.id | string | ✅ |  用药途径id| |
+| items.code | string | ✅ |  用药途径编码| |
+| items.pyCode | string | ✅ |  拼音简码| |
+| items.name | string | ✅ |  用药途径名称| |
+| page_info | object | ✅ |  页签节点| |
+| page_info.skip |number | ✅ | 跳过条数 | |
+| page_info.limit | number | ✅ |  返回数据限制条数| | 
+| page_info.total | number | ✅ |  总数| | 
+
+<br>
+
+
+14. 检验模块
+--------
+
+###14.1 查询检验项目字典
+
+
+```
+请求地址：/dictionary/laboratory/list
+```
+
+**请求包示例**
+
+```
+{
+    "keyword": "ct",
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| keyword | String | ❌ |  查询关键字（匹配 name 或 pyCode）| |
+|isCommon |Boolean | ❌ |  是否常开| |
+| limit | String | ❌ |  查询限制条数| |
+| skip | String | ❌ | 查询跳过条数 | |
+ 
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "_id": "5b1f9cc10061c4711526f325",
+        "name": "头CTA+颅脑CTP(限神内外介入)",
+        "code": "10004",
+        "pyCode": "XEXBZWX1",
+        "radiation": true,
+        "exeDept": "门诊二楼",
+        "chargeTotal": 9000,
+        "created_at": "2018-06-12T10:13:21.174Z",
+        "updated_at": "2018-06-12T10:13:21.174Z"
+      },
+      {
+        "_id": "5b1f9b0c0061c4711526f321",
+        "name": "腹部CT(增强)-肝脏",
+        "code": "10001",
+        "pyCode": "FBZQCTGZ",
+        "radiation": true,
+        "exeDept": "门诊一楼",
+        "chargeTotal": 12000,
+        "created_at": "2018-06-12T10:06:04.877Z",
+        "updated_at": "2018-06-12T10:06:04.877Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| name | String | ✅ |  检查项目名称| |
+| code | String | ✅ |  检查项目编码| |
+| pyCode | String | ✅ |  拼音编码|  |
+| isCommon |Boolean | ❌ |  是否常开检验| false |
+| exeDept | String | ❌ |  执行科室|  |
+| chargeTotal | String | ✅ |  费用（单位：分）|  |
+
+<br>
+###14.2 查询检验物字典
+
+
+```
+请求地址：/dictionary/laboratory/sample/list
+```
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "5b213576d6c651987b11ac15",
+      "code": "A007",
+      "name": "血清",
+      "pyCode": "XQ"
+    },
+    {
+      "_id": "5b213576d6c651987b11ac17",
+      "code": "A008",
+      "name": "全血",
+      "pyCode": "QX"
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  编码| |
+| name | String | ✅ |  名称| |
+| pyCode | [String] | ✅ |  拼音编码| |
+
+<br>
+###12.3 开检验
+
+
+
+```
+请求地址：/treatment/labor/create
+```
+
+**请求包示例**
+
+```
+{
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "labors": [
+      {
+         laboratoryDictionaryId: '5b1f9b0c0061c4711526f321',
+         laboratorySampleDictionaryId: '59ad1a32113df95e358b9f43',
+         leavingMessage: '检查一下',
+      },
+      {
+         examinationDictionaryid: '5b1f9b9d0061c4711526f322'
+         laboratorySampleDictionaryId: '59ad1a32113df95e358b9f43',
+      }
+   ]
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  咨询id| |
+| labors | String | ✅ |  检验项目组 （JSON数组字符串）| |
+| labors.laboratoryDictionaryId | String | ✅ |  检验项目id）| |
+| laboratorySampleDictionaryId | String |  ✅|  检验物字典id|
+| leavingMessage | String | ❌ |  留言|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "laboratoryDictionaryNames": [
+      "检验1",
+      "检验2"
+    ],
+    "_id": "5b1fd26826d9727fc4966ee8",
+    "laborNo": "H1-IWOLWZO72GTMLVCT",
+    "status": 1,
+    "doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+    "consultationId": "5b1cd449cb062d004316ca12",
+    "created_at": "2018-06-12T14:02:16.906Z"
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laboratoryDictionaryNames | String | ✅ |  检验项目名称| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+
+ 
+ <br>
+###12.4 检验申请记录表
+
+```
+请求地址：/treatment/labor/list
+```
+
+**请求包示例**
+
+```
+{
+    "patientId": "5b1cbc00e3d2c87d31bac937",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| patientId | String | ❌ |  患者id| |
+| doctorId | String | ❌ |  | 医生id|
+| consultationId | String | ❌ |  订单id| |
+| limit | String | ❌ |  查询限制条数| 10|
+| skip | String | ❌ | 查询跳过条数 | 0|
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "laboratoryDictionaryNames": [
+          "检验1",
+          "检验2"
+        ],
+        "_id": "5b1fd26826d9727fc4966ee8",
+        "laborNo": "H1-IWOLWZO72GTMLVCT",
+        "status": 1,
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "consultationId": "5b1cd449cb062d004316ca12",
+        "created_at": "2018-06-12T14:02:16.906Z",
+        "patient": {
+          "name": "查康",
+          "birthday": "1992-12-28",
+          "sex": 1
+        },
+        "diagnosis": ""
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laboratoryDictionaryNames | String | ✅ |  检验项目名称| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| diagnosis | String | ✅ |  主诊断| |
+
+ <br>
+###12.5 检验申请子表
+```
+请求地址：/treatment/labor/item/list
+```
+
+**请求包示例**
+
+```
+{
+    "laborId": "5b1fd26826d9727fc4966ee8",
+}
+```
+
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| laborId | String | ❌ |  检验记录id| |
+
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "_id": "5b1fd26826d9727fc4966ee9",
+      "status": 1,
+      "laborNo": "H1-IWOLWZO72GTMLVCT",
+      "doctorId": "5b1cc699cbd16bf9d96ae31b",
+      "patientId": "5b1cbc00e3d2c87d31bac937",
+      "consultationId": "5b1cd449cb062d004316ca12",
+      "leavingMessage": "检查一下",
+      "execDept": "门诊一楼",
+      "laborId": "5b1fd26826d9727fc4966ee8",
+      "created_at": "2018-06-12T14:02:16.917Z",
+      "laboratorySampleDictionary":{
+          "name": "血"
+      },
+      "aboratoryDictionary": {
+        "name": "检验",
+        "radiation": true
+      }
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| status | Number | ✅ |  状态 1:, 待缴费，2: 待执行 ，3：已执行, 4：已失效| |
+| laborNo | String | ✅ |  检验单号| |
+| status |Number | ✅ |  状态 1:, 已开具，2:已撤回| |
+| execDept | String | ✅ |  执行科室|
+| leavingMessage | String | ❌ |  留言|
+| laboratorySampleDictionary |[Object] | ✅|  检验物|
+| aboratoryDictionary |[Object] | ✅ |  检验项目信息|
+
+<br>
+
+
+
+
