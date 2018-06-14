@@ -170,7 +170,7 @@ async function sendImMsg(chat, chatMessage) {
   try {
     const { id, userAccount, systemAccount, doctorAccount, patient, doctor, system } = chat
     let { direction, type, image, audio, text } = chatMessage
-    if (text) {
+    if (text && type === '01') {
       text = text.replace(/"/g, `&touq;`)
     }
 
