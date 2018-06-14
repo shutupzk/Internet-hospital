@@ -1,5 +1,6 @@
-import { WestPrescriptionModel, WestPrescriptionModelItem, EastPrescriptionModel, EastPrescriptionModelItem, Doctor, Drug } from '../model'
+import Model, { WestPrescriptionModel, WestPrescriptionModelItem, EastPrescriptionModel, EastPrescriptionModelItem, Doctor, Drug } from '../model'
 import result from './result'
+import { formatArrayId } from '../util'
 
 export const westPrescriptionModelCreate = async (req, res) => {
   let { name, type, doctorId, items = [] } = req.body
@@ -64,7 +65,7 @@ export const eastPrescriptionModelCreate = async (req, res) => {
 }
 
 export const westPrescriptionModelList = async (req, res) => {
-  let { type, doctorId, keyword, offset, limit } = req.body
+  let { type, doctorId, keyword, skip, limit } = req.body
   if (!doctorId) return result.failed(res, '参数错误')
   let ops = {}
   if (!type) {
@@ -78,4 +79,59 @@ export const westPrescriptionModelList = async (req, res) => {
   if (keyword) {
     ops.name = { $regex: keyword, $options: 'i' }
   }
+  let data = await Model.findByOpsWithPage(WestPrescriptionModel, { ops, limit, skip, sort: { _id: -1 } })
+  let items = formatArrayId(data.items)
+  return result.success(res, { items, page_info: data.page_info })
+}
+
+export const eastPrescriptionModelList = async (req, res) => {
+  let { type, doctorId, keyword, skip, limit } = req.body
+  if (!doctorId) return result.failed(res, '参数错误')
+  let ops = {}
+  if (!type) {
+    ops['$or'] = [{ type: '0' }, { doctorId, type: 1 }]
+  } else {
+    ops.type = type
+    if (type === '1') {
+      ops.doctorId = doctorId
+    }
+  }
+  if (keyword) {
+    ops.name = { $regex: keyword, $options: 'i' }
+  }
+  let data = await Model.findByOpsWithPage(EastPrescriptionModel, { ops, limit, skip, sort: { _id: -1 } })
+  let items = formatArrayId(data.items)
+  return result.success(res, { items, page_info: data.page_info })
+}
+
+export const westPrescriptionModelItemList = async (req, res) => {
+  const { westPrescriptionModelId } = req.body
+  if (!westPrescriptionModelId) return result.failed(res, '参数错误')
+  let items = await WestPrescriptionModelItem.find({ westPrescriptionModelId }).populate('drugId')
+  let array = []
+  for (let item of items) {
+    let obj = { ...item }
+    obj.id = item._id
+    delete obj._id
+    obj.drug = item.drugId
+    delete obj.drugId
+    array.push(array)
+  }
+  return result.success(res, array)
+}
+
+export const eastPrescriptionModelItemList = async (req, res) => {
+  const { eastPrescriptionModelId } = req.body
+  if (!eastPrescriptionModelId) return result.failed(res, '参数错误')
+  let items = await EastPrescriptionModelItem.find({ eastPrescriptionModelId }).populate('drugId')
+  let array = []
+  for (let item of items) {
+    let obj = { ...item }
+    obj.id = item._id
+    delete obj._id
+    obj.drug = item.drugId
+    delete obj.drugId
+    array.push(array)
+  }
+  return result.success(res, array)
 }
