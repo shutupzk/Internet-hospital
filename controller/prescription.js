@@ -35,7 +35,7 @@ export const westPrescriptionList = async(req, res) => {
   let list = await Model.findPreByOpsWithPage(WestPrescription, { ops, skip, limit })
   list = JSON.parse(JSON.stringify(list))
   for (let item of list.items) {
-    item.patient = item.patientId
+    item.patient = { id: item.patientId._id, name: item.patientId.name }
     item.id = item._id
     delete item.patientId
     delete item._id
@@ -54,7 +54,7 @@ export const eastPrescriptionList = async(req, res) => {
   let list = await Model.findPreByOpsWithPage(EastPrescription, { ops, skip, limit })
   list = JSON.parse(JSON.stringify(list))
   for (let item of list.items) {
-    item.patient = item.patientId
+    item.patient = { id: item.patientId._id, name: item.patientId.name }
     item.id = item._id
     delete item.patientId
     delete item._id
@@ -122,7 +122,7 @@ export const westPrescriptionCreate = async ({ westPrescription, doctorId, patie
 }
 
 export const eastPrescriptionCreate = async ({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo }) => {
-  let { routeAdministrationName, frequencyName, amount, illustration, items = [] } = eastPrescription
+  let { overDaysReason, routeAdministrationName, frequencyName, amount, illustration, items = [] } = eastPrescription
   if (!routeAdministrationName) throw new Error('中药处方 用法（用药途径）不能为空')
   if (!frequencyName) throw new Error('中药处方 用药频率 不能为空')
   if (!amount) throw new Error('中药处方 付数 不能为空')
@@ -147,6 +147,7 @@ export const eastPrescriptionCreate = async ({ eastPrescription, doctorId, patie
       doctorId,
       patientId,
       consultationId,
+      overDaysReason,
       prescriptionNo: CPrescriptionNo,
       drugNames,
       routeAdministrationName,

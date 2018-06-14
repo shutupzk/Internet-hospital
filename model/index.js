@@ -128,7 +128,7 @@ class Model {
     let items = await Model.find(ops)
       .populate({
         path: 'patientId',
-        select: 'name -_id birthday sex'
+        select: 'name _id birthday sex'
       })
       .sort(sort)
       .skip(skip)

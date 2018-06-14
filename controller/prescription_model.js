@@ -57,7 +57,7 @@ export const eastPrescriptionModelCreate = async (req, res) => {
       if (drug.type === 0) throw new Error('中药处方条目 药品类型为西药 drugId: ' + drugId)
       await EastPrescriptionModelItem.create({ drugId, onceDose, onceDoseUnitName, amount, eastPrescriptionModelId })
     }
-    return result.failed(res)
+    return result.success(res)
   } catch (e) {
     if (eastPrescriptionModelId) EastPrescriptionModel.deleteOne({ _id: eastPrescriptionModelId })
     return result.failed(res, e.message)
