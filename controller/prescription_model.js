@@ -1,6 +1,6 @@
 import Model, { WestPrescriptionModel, WestPrescriptionModelItem, EastPrescriptionModel, EastPrescriptionModelItem, Doctor, Drug } from '../model'
 import result from './result'
-import { formatArrayId } from '../util'
+import { formatArrayId, formatObjId } from '../util'
 
 export const westPrescriptionModelCreate = async (req, res) => {
   let { name, type, doctorId, items = [] } = req.body
@@ -69,7 +69,7 @@ export const westPrescriptionModelList = async (req, res) => {
   if (!doctorId) return result.failed(res, '参数错误')
   let ops = {}
   if (!type) {
-    ops['$or'] = [{ type: '0' }, { doctorId, type: 1 }]
+    ops['$or'] = [{ type: '0' }, { doctorId, type: '1' }]
   } else {
     ops.type = type
     if (type === '1') {
@@ -89,7 +89,7 @@ export const eastPrescriptionModelList = async (req, res) => {
   if (!doctorId) return result.failed(res, '参数错误')
   let ops = {}
   if (!type) {
-    ops['$or'] = [{ type: '0' }, { doctorId, type: 1 }]
+    ops['$or'] = [{ type: '0' }, { doctorId, type: '1' }]
   } else {
     ops.type = type
     if (type === '1') {
@@ -107,15 +107,15 @@ export const eastPrescriptionModelList = async (req, res) => {
 export const westPrescriptionModelItemList = async (req, res) => {
   const { westPrescriptionModelId } = req.body
   if (!westPrescriptionModelId) return result.failed(res, '参数错误')
-  let items = await WestPrescriptionModelItem.find({ westPrescriptionModelId }).populate('drugId')
+  let items = await WestPrescriptionModelItem.find({ westPrescriptionModelId }).populate({path: 'drugId', select: '_id name'})
   let array = []
   for (let item of items) {
-    let obj = { ...item }
+    let obj = { ...item._doc }
     obj.id = item._id
     delete obj._id
-    obj.drug = item.drugId
+    obj.drug = formatObjId(item.drugId)
     delete obj.drugId
-    array.push(array)
+    array.push(obj)
   }
   return result.success(res, array)
 }
@@ -123,15 +123,15 @@ export const westPrescriptionModelItemList = async (req, res) => {
 export const eastPrescriptionModelItemList = async (req, res) => {
   const { eastPrescriptionModelId } = req.body
   if (!eastPrescriptionModelId) return result.failed(res, '参数错误')
-  let items = await EastPrescriptionModelItem.find({ eastPrescriptionModelId }).populate('drugId')
+  let items = await EastPrescriptionModelItem.find({ eastPrescriptionModelId }).populate({path: 'drugId', select: '_id name'})
   let array = []
   for (let item of items) {
-    let obj = { ...item }
+    let obj = { ...item._doc }
     obj.id = item._id
     delete obj._id
-    obj.drug = item.drugId
+    obj.drug = formatObjId(item.drugId)
     delete obj.drugId
-    array.push(array)
+    array.push(obj)
   }
   return result.success(res, array)
 }
