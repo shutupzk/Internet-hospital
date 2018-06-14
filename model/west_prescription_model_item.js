@@ -3,12 +3,12 @@ const Schema = mongoose.Schema
 let ObjectId = Schema.Types.ObjectId
 
 /**
- * 西药处方item
+ * 西药处方模板item
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    westPrescriptionId: { type: ObjectId, ref: 'west_prescription' }, // 西药处方id
+    westPrescriptionModelId: { type: ObjectId, ref: 'west_prescription_model' }, // 西药处方模板id
     drugId: { type: ObjectId, ref: 'drug' }, // 西药id
     onceDose: Number, // 单次剂量
     onceDoseUnitName: String, // 单次剂量单位
@@ -25,6 +25,6 @@ const schema = new Schema(
   }
 )
 
-const WestPrescriptionItem = mongoose.model('west_prescription_item', schema, 'west_prescription_item')
+const WestPrescriptionModelItem = mongoose.model('west_prescription_model_item', schema, 'west_prescription_model_item')
 
-export { WestPrescriptionItem }
+export { WestPrescriptionModelItem }
