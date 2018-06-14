@@ -72,7 +72,9 @@ export const eastPrescriptionItemList = async (req, res) => {
   for (let item of list) {
     let drug = { id: item.drugId._id, name: item.drugId.name }
     item.drug = drug
+    item.id = item._id
     delete item.drugId
+    delete item._id
   }
   return result.success(res, list)
 }
@@ -85,7 +87,9 @@ export const westPrescriptionItemList = async (req, res) => {
   for (let item of list) {
     let drug = { id: item.drugId._id, name: item.drugId.name }
     item.drug = drug
+    item.id = item._id
     delete item.drugId
+    delete item._id
   }
   return result.success(res, list)
 }
