@@ -15,7 +15,7 @@ router.all('/exam/item/list', examItemQuery)
 
 router.all('/prescription/create', prescriptionCreate)
 router.all('/east/prescription/list', eastPrescriptionList)
-router.all('/west/prescription/item/list', eastPrescriptionItemList)
+router.all('/east/prescription/item/list', eastPrescriptionItemList)
 router.all('/west/prescription/list', westPrescriptionList)
 router.all('/west/prescription/item/list', westPrescriptionItemList)
 
