@@ -24,7 +24,7 @@ export const diagnosisUpsert = async (req, res) => {
 
 export const diagnosisQuery = async (req, res) => {
   let { consultationId } = req.body
-  if (!consultationId) return result.fail(res, '缺少参数')
+  if (!consultationId) return result.failed(res, '缺少参数')
   try {
     let data = await Diagnosis.findOne({ consultationId }).populate('patientId', 'patientIdNo birthday name sex -_id')
     if (!data) return result.success(res)
