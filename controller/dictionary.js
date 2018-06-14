@@ -77,8 +77,9 @@ export const examinationTypeDictionargList = async (req, res) => {
 }
 
 export const drugList = async (req, res) => {
-  const { keyword, skip, limit } = req.body
+  const { type = null, keyword, skip, limit } = req.body
   let ops = {}
+  if (type != null) ops.type = type
   if (keyword) {
     ops['$or'] = [{ name: { $regex: keyword, $options: 'i' } }, { code: { $regex: keyword, $options: 'i' } }, { pyCode: { $regex: keyword, $options: 'i' } }]
   }

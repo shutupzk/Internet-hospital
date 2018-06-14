@@ -233,7 +233,7 @@ export const consultationDetail = async (req, res) => {
     let consultationDetail = await Consultation.findById(consultationId)
       .populate({ path: 'doctorId', select: '-_id -password -created_at -updated_at', populate: { path: 'departmentId', select: 'deptName -_id' } })
       .populate({ path: 'patientId', select: '-_id -created_at -updated_at' })
-      .populate({ path: 'paymentId', select: '-_id -orderInfo -payNotifyData' })
+      .populate({ path: 'paymentId', select: '-_id -orderInfo -payNotifyData -consultationId' })
     consultationDetail = formatObjId(consultationDetail, ['doctor', 'patient', 'payment'])
     consultationDetail.doctor = formatObjId(consultationDetail.doctor, ['departmentId'])
     return result.success(res, consultationDetail)

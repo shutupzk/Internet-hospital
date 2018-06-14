@@ -132,15 +132,15 @@
 >>13.7 查询用药途径字典
 
 >14 检验模块
->>12.1 查询检验项目字典
+>>14.1 查询检验项目字典
 >>
->>12.2 查询检验物字典
+>>14.2 查询检验物字典
 >>
->>12.3 开检验
+>>14.3 开检验
 >>
->>12.4 检验申请记录主表表
+>>14.4 检验申请记录主表表
 >>
->>12.5 检验申请子表
+>>14.5 检验申请子表
 
 <br>
 <br>
@@ -2641,6 +2641,124 @@
 | orderInfo | object | ✅ |  微信相关信息，前端用以吊起微信| |
 
 <br>
+<h3>10.6 订单详情
+
+```
+请求地址：/consultation/detail
+```
+**请求包示例**
+
+```
+ {
+    "consultationId": "5b2249fde9b0d6603c22bcfd",
+ }
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ |  订单id| |
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "id": "5b2249fde9b0d6603c22bcfd",
+    "type": "020101",
+    "images": [
+      "http://tmp/wx13d9d2c1f21960ae.o6zAJs8i4Q_ijI-u2wlo8r5VURUo.rUjZxA79uDL7271fc1ad1987252f3726b83e0fa6f1d1.png"
+    ],
+    "evaluated": false,
+    "consultationNo": "H0-IWOLTIWY1FHZW50O",
+    "content": "ceshi",
+    "status": "07",
+    "consultationReason": "在线复诊",
+    "fee": 1,
+    "created_at": "2018-06-14T10:57:01.777Z",
+    "updated_at": "2018-06-14T10:57:01.777Z",
+    "chatId": "5b224a10d6c651987b12a985",
+    "payTime": "2018-06-14T10:57:20.639Z",
+    "doctor": {
+      "imageAndTextOpen": true,
+      "imageAndTextPrice": 1,
+      "isHot": true,
+      "doctorSn": "00001",
+      "doctorName": "华佗",
+      "weight": 1,
+      "identifier": "doctor-00001",
+      "avatar": "http://img3.imgtn.bdimg.com/it/u=3057512949,2471002942&fm=27&gp=0.jpg",
+      "openId": "oK2DM4tJisLQqOBG8YUnqHfkjHYM"
+    },
+    "patient": {
+      "userId": "5b2122f797755d1185ffa5ab",
+      "phone": 15788888888,
+      "certificateType": "01",
+      "certificateNo": "150302198903078975",
+      "name": "测试3",
+      "birthday": "2018-06-14",
+      "sex": 1
+    },
+    "payment": {
+      "totalFee": 1,
+      "outTradeNo": "20180614185707414011218302877",
+      "status": "TRADE_SUCCESS",
+      "created_at": "2018-06-14T10:57:07.643Z",
+      "updated_at": "2018-06-14T10:57:20.616Z",
+      "tradeNo": "4200000147201806142881078050"
+    }
+  },
+  "msg": "操作成功"
+}
+```
+
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| data |object | ✅ |  返回的数组结构体| |
+| data.id |string | ✅ |  订单id| |
+| data.images |[string] | ✅ |  上传的咨询图片| |
+| data.evaluated | boolean | ✅ |  是否已评价| |
+| data.consultationNo |string | ✅ |  订单编号| |
+| data.content | string | ✅ |  咨询内容| |
+| data.status |string | ✅ |  状态 01：待支付，02：已取消，03：待执行，04：执行中，05：已过期未退款，06：待执行退款申请，07：已完成，08：过期已退款，09:待执行订单已退款 | |
+| data.consultationReason | string | ✅ |  咨询目的| |
+| data.fee |number | ✅ |  咨询费用 （单位: 分）| |
+| data.mainDiagnosis | string | ❌ | 诊断 | |
+| data.payTime | string | ✅ |  支付时间| |
+| data.chatId | string | ✅ |  回话id| |
+| data.created_at | string | ✅ |  创建时间| |
+| data.updated_at | string | ✅ |  修改时间| |
+| data.patient | Object | ✅ |  患者信息| |
+| data.patient.id | string | ✅ |  患者id| |
+| data.patient.userId | string | ✅ |  患者所属用户id| |
+| data.patient.phone | string | ✅ |  患者手机号| |
+| data.patient.certificateType | string | ✅ |  患者证件类型| |
+| data.patient.certificateNo | string | ✅ |  患者证件号| |
+| data.patient.name | string | ✅ |  患者姓名| |
+| data.patient.birthday | string | ✅ |  患者生日| |
+| data.patient.sex | Number | ✅ |  患者性别 0-女，1-男| |
+| data.doctor.imageAndTextOpen | boolean | ✅ |  医生是否开通服务| |
+| data.doctor.imageAndTextPrice | Number | ✅ |  医生服务费用| |
+| data.doctor.isHot | boolean | ✅ |  医生是否热门| |
+| data.doctor.doctorSn | string | ✅ |  医生编码| |
+| data.doctor.doctorName | string | ✅ |  医生姓名| |
+| data.doctor.weight | Number | ✅ |  医生权重| |
+| data.doctor.identifier | string | ✅ |  医生登录用户名| |
+| data.doctor.openId | string | ✅ |  医生openid| |
+| data.doctor.departmentId | string | ✅ |  医生所属科室id| |
+| data.doctor.avatar | string | ✅ |  医生头像| |
+| data.payment | Object | ✅ |  订单支付信息| |
+| data.payment.tradeNo | string | ✅ |（微信）订单号| |
+| data.payment.totalFee | Number | ✅ |  订单支付费用| |
+| data.payment.outTradeNo | string | ✅ |  系统单号| |
+| data.payment.status | string | ✅ |  订单状态 待支付:WAIT_FOR_PAY,已支付:TRADE_SUCCESS,已退款:REFUND_SUCCESS| |
+| data.payment.created_at | string | ✅ | 创建时间| |
+| data.payment.updated_at | string | ✅ |  更新时间| |
+
+<br>
 <br>
 <br>
 <br>
@@ -3206,6 +3324,7 @@
 ```
  {
     "keyword": "金",
+    "type": 0
  }
 ```
 
@@ -3214,6 +3333,7 @@
 | 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
 | :-: | :-: | :-:  | :--: | :--: |
 | keyword | String | ❌ |  查询关键字| |
+| type | Number | ❌ |  类型 0-西药 1-中药| |
 |skip | String | ❌ |  查询关键字| |
 |limit | String | ❌ |  查询关键字| |
 
@@ -3782,7 +3902,7 @@
 | pyCode | [String] | ✅ |  拼音编码| |
 
 <br>
-###12.3 开检验
+###14.3 开检验
 
 
 
@@ -3849,7 +3969,7 @@
 
  
  <br>
-###12.4 检验申请记录表
+###14.4 检验申请记录表
 
 ```
 请求地址：/treatment/labor/list
@@ -3918,7 +4038,7 @@
 | diagnosis | String | ✅ |  主诊断| |
 
  <br>
-###12.5 检验申请子表
+###14.5 检验申请子表
 ```
 请求地址：/treatment/labor/item/list
 ```
