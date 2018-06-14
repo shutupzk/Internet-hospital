@@ -169,7 +169,11 @@ export const sendMessage = async ({ chatId, consultationId, type, text, image, a
 async function sendImMsg(chat, chatMessage) {
   try {
     const { id, userAccount, systemAccount, doctorAccount, patient, doctor, system } = chat
-    const { direction, type, image, audio, text } = chatMessage
+    let { direction, type, image, audio, text } = chatMessage
+    if (text) {
+      text = text.replace(/"/g, `&touq;`)
+    }
+
     let From_Account, To_Account, Title, Content, lastMsgContent
     if (direction === 'user->doctor') {
       From_Account = userAccount
@@ -188,10 +192,13 @@ async function sendImMsg(chat, chatMessage) {
       To_Account = doctorAccount
       Title = system.name
     }
-
-    let Text = JSON.stringify(chatMessage)
+    let Text = { ...chatMessage._doc, text }
+    Text.id = Text._id
+    delete Text._id
+    Text = JSON.stringify(Text)
     if (type === '01') {
       if (text) Content = text
+      console.log('Content ====== ', Content)
       if (image) Content = '[图片]'
       if (audio) Content = '[语音]'
       lastMsgContent = Content
