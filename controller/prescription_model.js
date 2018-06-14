@@ -5,7 +5,7 @@ import { formatArrayId } from '../util'
 export const westPrescriptionModelCreate = async (req, res) => {
   let { name, type, doctorId, items = [] } = req.body
   if (!name || !type || !items.length) return result.failed(res, '参数错误')
-  if (type !== '0' || type !== '1') return result.failed(res, 'type 只能为 0（通用）， 1（个人） ')
+  if (type !== '0' && type !== '1') return result.failed(res, 'type 只能为 0（通用）， 1（个人） ')
   if (type === '1' && !doctorId) return result.failed(res, '个人模板请 选择 doctorId ')
   let westPrescriptionModelId
   try {
@@ -27,7 +27,7 @@ export const westPrescriptionModelCreate = async (req, res) => {
       if (drug.type === 1) throw new Error('西药处方条目 药品类型为中药 drugId: ' + drugId)
       await WestPrescriptionModelItem.create({ drugId, onceDose, onceDoseUnitName, routeAdministrationName, frequencyName, illustration, amount, westPrescriptionModelId })
     }
-    return result.failed(res)
+    return result.success(res)
   } catch (e) {
     if (westPrescriptionModelId) WestPrescriptionModel.deleteOne({ _id: westPrescriptionModelId })
     return result.failed(res, e.message)
@@ -37,7 +37,7 @@ export const westPrescriptionModelCreate = async (req, res) => {
 export const eastPrescriptionModelCreate = async (req, res) => {
   let { name, type, doctorId, routeAdministrationName, frequencyName, amount, illustration, items = [] } = req.body
   if (!name || !type || !items.length || !routeAdministrationName || !frequencyName || !amount) return result.failed(res, '参数错误')
-  if (type !== '0' || type !== '1') return result.failed(res, 'type 只能为 0（通用）， 1（个人） ')
+  if (type !== '0' && type !== '1') return result.failed(res, 'type 只能为 0（通用）， 1（个人） ')
   if (type === '1' && !doctorId) return result.failed(res, '个人模板请 选择 doctorId ')
   let eastPrescriptionModelId
   try {

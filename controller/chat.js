@@ -4,7 +4,8 @@ import result from './result'
 const POPULATE = [
   { path: 'patientWithDoctorId', select: '_id', populate: [{ path: 'doctorId', populate: [{ path: 'departmentId' }] }, { path: 'patientId', select: '_id name' }, { path: 'userId' }] },
   { path: 'systemWithUserId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] },
-  { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] }
+  { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name' }] },
+  { path: 'consultationId' }
 ]
 
 export const chatCreate = async (req, res) => {
@@ -100,7 +101,7 @@ export const chatDetail = async (req, res) => {
   }
 }
 
-export const chatPatientWithDoctorCreate = async ({ patientId, doctorId }) => {
+export const chatPatientWithDoctorCreate = async ({ patientId, doctorId, _id }) => {
   if (!patientId || !doctorId) throw new Error('参数错误')
   try {
     let created_at = new Date()
@@ -113,7 +114,7 @@ export const chatPatientWithDoctorCreate = async ({ patientId, doctorId }) => {
     const patientWithDoctor = (await PatientWithDoctor.findOneAndUpdate({ patientId, doctorId }, { userId, patientId, doctorId, created_at, updated_at }, { upsert: true, rawResult: true, new: true }))
       .value
     const patientWithDoctorId = patientWithDoctor._id
-    const chat = (await Chat.findOneAndUpdate({ patientWithDoctorId }, { type: '01', patientWithDoctorId, status: true, created_at, updated_at }, { upsert: true, rawResult: true, new: true })).value
+    const chat = (await Chat.findOneAndUpdate({ patientWithDoctorId }, { type: '01', patientWithDoctorId, status: true, created_at, updated_at, consultationId: _id }, { upsert: true, rawResult: true, new: true })).value
     return chat
   } catch (e) {
     console.log(e)
@@ -188,6 +189,10 @@ export const formatChat = (chat, needAccount) => {
   let { type, status, lastMsgContent = '', lastMsgTime = null } = obj
   let newObj = { id: obj._id, type, status, lastMsgContent, lastMsgTime }
   delete newObj._id
+  console.log('newObj ====', newObj)
+  if (obj.consultationId) {
+    newObj.consultation = { id: obj.consultationId._id, status: obj.status }
+  }
 
   let key = ''
   if (newObj.type === '01') key = 'patientWithDoctorId'

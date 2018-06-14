@@ -19,6 +19,15 @@ import {
   frequencyList,
   routeAdministrationList
 } from '../controller/dictionary'
+import {
+  westPrescriptionModelCreate,
+  westPrescriptionModelList,
+  westPrescriptionModelItemList,
+  eastPrescriptionModelCreate,
+  eastPrescriptionModelList,
+  eastPrescriptionModelItemList
+} from '../controller/prescription_model'
+
 const router = express.Router()
 
 router.all('/diagnosis/create', diagnosisDictionaryCreate)
@@ -42,5 +51,12 @@ router.all('/doseFormList', doseFormList)
 router.all('/manuFactoryList', manuFactoryList)
 router.all('/frequencyList', frequencyList)
 router.all('/routeAdministrationList', routeAdministrationList)
+
+router.all('/west/prescription/model/create', westPrescriptionModelCreate)
+router.all('/west/prescription/model/list', westPrescriptionModelList)
+router.all('/west/prescription/model/item/list', westPrescriptionModelItemList)
+router.all('/east/prescription/model/create', eastPrescriptionModelCreate)
+router.all('/east/prescription/model/list', eastPrescriptionModelList)
+router.all('/east/prescription/model/item/list', eastPrescriptionModelItemList)
 
 export default router

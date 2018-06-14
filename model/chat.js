@@ -13,6 +13,7 @@ const schema = new Schema(
     systemWithUserId: { type: ObjectId, index: true, ref: 'system_with_user' }, // 系统与用户的对话
     systemWithDoctorId: { type: ObjectId, index: true, ref: 'system_with_doctor' }, // 统统与医生的对话
     systemWithPatientId: { type: ObjectId, index: true, ref: 'system_with_patient' }, // 系统与患者的对话
+    consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 最后一条订单id
     status: { type: Boolean, default: true }, // 会话状态
     lastMsgContent: String,
     lastMsgTime: Date,
