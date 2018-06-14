@@ -142,6 +142,18 @@
 >>
 >>14.5 检验申请子表
 
+>15 处方模块
+>>15.1 开处方
+>>
+>>15.2 中药处方列表
+>>
+>>15.3 中药处方详情
+>>
+>>15.4 西药处方列表
+>>
+>>15.5 西药处方详情
+>>
+
 <br>
 <br>
 <br>
@@ -4101,6 +4113,292 @@
 
 <br>
 
+<br>
+<br>
+<br>
+
+15. 处方模块
+--------
+
+###15.1 开处方
 
 
+```
+请求地址：/treatment/prescription/create
+```
 
+**请求包示例**
+
+```
+{
+  consultationId: '5b226c8ee9b0d6603c22bd08',
+  eastPrescription: {
+    routeAdministrationName: '口服<饭前>',
+    frequencyName: '1次/日(7pm)',
+    amount: 6,
+    illustration: '好好吃',
+    items: [
+      {
+        drugId: '5b1fe8eed6c651987b0f85c2',
+        onceDose: 1,
+        onceDoseUnitName: 'g',
+        amount: 6
+      },
+      {
+        drugId: '5b1fe909d6c651987b0f986d',
+        onceDose: 1,
+        onceDoseUnitName: 'g',
+        amount: 6
+      }
+    ]
+  },
+  westPrescription: {
+    overDaysReason: '',
+    items: [
+      {
+        drugId: '5b1fe757d6c651987b0e64a7',
+        onceDose: 1,
+        onceDoseUnitName: '片',
+        routeAdministrationName: '口服<饭前>',
+        frequencyName: '1次/日(7pm)',
+        illustration: '无',
+        amount: 6
+      },
+      {
+        drugId: '5b1fe757d6c651987b0e64c6',
+        onceDose: 1,
+        onceDoseUnitName: '片',
+        routeAdministrationName: '口服<饭前>',
+        frequencyName: '1次/日(7pm)',
+        illustration: '无',
+        amount: 6
+      }
+    ]
+  }
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| consultationId | String | ✅ | 订单id | |
+| eastPrescription |Object | ❌ |  中药处方（西药处方和中药处方不能同时为空） | |
+| eastPrescription.overDaysReason | String | ❌ | 天数超限原因 | |
+| eastPrescription.routeAdministrationName |String | ✅ | 用法 | |
+| eastPrescription.frequencyName | String | ✅ | 用药频率 | |
+| eastPrescription.amount | Number | ✅ | 付数 | |
+| eastPrescription.illustration | String | ✅ | 医嘱 | |
+| eastPrescription.items | Array | ✅ | 药品数组 | |
+| eastPrescription.items.drugId | String | ✅ | 药品id | |
+| eastPrescription.items.onceDose | String | ✅ | 单次用量 | |
+| eastPrescription.items.onceDoseUnitName | String | ✅ | 单次用量单位 | |
+| eastPrescription.items.amount | String | ✅ | 总量 | |
+| westPrescription | Object | ❌ | 西药处方（西药处方和中药处方不能同时为空） | |
+| westPrescription.overDaysReason | Object | ❌ | 天数超限原因 | |
+| westPrescription.items | Array | ✅ | 药品数组 | |
+| westPrescription.items.drugId | String | ✅ | 药品id | |
+| westPrescription.items.onceDose | String | ✅ | 单次用量 | |
+| westPrescription.items.onceDoseUnitName | String | ✅ | 单次用量单位 | |
+| westPrescription.items.routeAdministrationName | String | ✅ | 用法 | |
+| westPrescription.items.frequencyName | String | ✅ | 用药频率 | |
+| westPrescription.items.illustration | String | ❌ | 医嘱 | |
+| westPrescription.items.amount | Number | ✅ | 总量 | |
+ 
+
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+
+
+<br>
+###15.2 中药处方列表
+
+
+```
+请求地址：/treatment/east/prescription/list
+```
+
+**请求包示例**
+
+```
+{
+  patientId: '5b2246229381d04449a74fec'
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| patientId | String | ❌ | 患者id | |
+| doctorId | String | ❌ |  医生id | |
+| consultationId | String | ❌ | 订单id | |
+| skip | Number | ❌ | 开始条数| |
+| limit | Number | ❌ | 条数 | |
+ 
+
+**应答包示例**
+
+```
+{
+    "code": 200,
+    "data": {
+        "items": [
+            {
+                "drugNames": [
+                    "夜交藤",
+                    "干姜"
+                ],
+                "status": 1,
+                "doctorId": "5b1cc699cbd16bf9d96ae31b",
+                "consultationId": "5b226c8ee9b0d6603c22bd08",
+                "prescriptionNo": "CP-IWOLT6QX22ZWNML8",
+                "routeAdministrationName": "口服<饭前>",
+                "frequencyName": "1次/日(7pm)",
+                "amount": 6,
+                "illustration": "好好吃",
+                "created_at": "2018-06-14T15:19:50.942Z",
+                "updated_at": "2018-06-14T15:19:50.942Z",
+                "patient": {
+                    "id": "5b2246229381d04449a74fec",
+                    "name": "测试3"
+                },
+                "id": "5b228796797f786bfd23c654",
+                "diagnosis": ""
+            },
+            {
+                "drugNames": [
+                    "金银花",
+                    "醋鸡内金"
+                ],
+                "status": 1,
+                "doctorId": "5b1cc699cbd16bf9d96ae31b",
+                "consultationId": "5b2249fde9b0d6603c22bcfd",
+                "prescriptionNo": "CP-IWOLT8LS1IIVMFUK",
+                "routeAdministrationName": "含服",
+                "frequencyName": "1次/日(11pm)",
+                "amount": 2,
+                "illustration": "中药说明",
+                "created_at": "2018-06-14T14:39:44.054Z",
+                "updated_at": "2018-06-14T14:39:44.054Z",
+                "patient": {
+                    "id": "5b2246229381d04449a74fec",
+                    "name": "测试3"
+                },
+                "id": "5b227e3092cafd6751e4e6fd",
+                "diagnosis": ""
+            }
+        ],
+        "page_info": {
+            "skip": 0,
+            "limit": 10,
+            "total": 2
+        }
+    },
+    "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| id | String | ✅ |  处方id | |
+| drugNames | Array | ✅ |  药品名称 | |
+| status | Int | ✅ |  1:, 已开具，2:已撤回 | |
+| doctorId | String | ✅ |  医生id | |
+| consultationId | String | ✅ |  订单id | |
+| prescriptionNo | String | ✅ |  处方编号 | |
+| routeAdministrationName | String | ✅ |  用法 | |
+| frequencyName | String | ✅ |  用药平率 | |
+| amount | Int | ✅ |  总量 | |
+| illustration | String | ✅ |  医嘱 | |
+| created_at | String | ✅ | 创建时间 | |
+| updated_at | String | ✅ | 修改时间 | |
+| patient | Object | ✅ | 患者 | |
+| patient.id | Object | ✅ | 患者id | |
+| patient.name | Object | ✅ | 患者姓名 | |
+| diagnosis | Object | ✅ | 医嘱 | |
+
+
+<br>
+###15.3 中药处方药品详情
+
+
+```
+请求地址：/treatment/east/prescription/item/list
+```
+
+**请求包示例**
+
+```
+{
+  eastPrescriptionId: '5b228796797f786bfd23c654'
+}
+```
+**请求包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| eastPrescriptionId | String | ❌ | 中药处方id | |
+ 
+
+**应答包示例**
+
+```
+{
+    "code": 200,
+    "data": [
+        {
+            "onceDose": 1,
+            "onceDoseUnitName": "g",
+            "amount": 6,
+            "eastPrescriptionId": "5b228796797f786bfd23c654",
+            "created_at": "2018-06-14T15:19:50.956Z",
+            "updated_at": "2018-06-14T15:19:50.956Z",
+            "drug": {
+                "id": "5b1fe8eed6c651987b0f85c2",
+                "name": "夜交藤"
+            },
+            "id": "5b228796797f786bfd23c655"
+        },
+        {
+            "onceDose": 1,
+            "onceDoseUnitName": "g",
+            "amount": 6,
+            "eastPrescriptionId": "5b228796797f786bfd23c654",
+            "created_at": "2018-06-14T15:19:50.970Z",
+            "updated_at": "2018-06-14T15:19:50.970Z",
+            "drug": {
+                "id": "5b1fe909d6c651987b0f986d",
+                "name": "干姜"
+            },
+            "id": "5b228796797f786bfd23c656"
+        }
+    ],
+    "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| id | String | ✅ |  条目id | |
+| onceDose | Int | ✅ | 单次用量 | |
+| onceDoseUnitName | String | ✅ | 单次用量单位 | |
+| amount | Int | ✅ |  总量 | |
+| eastPrescriptionId | String | ✅ |  中药处方id | ||
+| created_at | String | ✅ | 创建时间 | |
+| updated_at | String | ✅ | 修改时间 | |
+| drug | Object | ✅ | 药品 | |
+| drug.id | Object | ✅ | 药品id | |
+| drug.name | Object | ✅ | 药品名称 | |
