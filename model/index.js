@@ -40,6 +40,10 @@ export * from './east_prescription'
 export * from './east_prescription_item'
 export * from './labor'
 export * from './labor_item'
+export * from './west_prescription_model'
+export * from './west_prescription_model_item'
+export * from './east_prescription_model'
+export * from './east_prescription_model_item'
 
 class Model {
   async findByOpsWithPage(Model, { ops, limit, skip, sort }) {

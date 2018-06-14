@@ -11,11 +11,21 @@ import { evaluateQuesionCreate, evaluateQuesionList } from '../controller/evalua
 import { chatMessageCreate, chatMessageList, consultationChatMessageCreate, retractChatMessage } from '../controller/chat_message'
 import { quickReplyCreate, quickReplyDelete, quickReplyList } from '../controller/quick_reply'
 import { doctorCollectionCreate, doctorCollectionDelete, doctorCollectionList } from '../controller/doctor_collection'
-
+import qiniu from 'qiniu'
 const router = express.Router()
 
 router.all('/test', (req, res) => {
   res.json({ ok: '1' })
+})
+
+router.all('/qiniu/fileUploadToken', (req, res) => {
+  let key = req.query.key || req.body.key || null
+  if (!key) return res.json({ code: '-1', msg: '缺少参数 key ' })
+  const accessKey = 'BahggXaDR-ythXuGJ-XtswvSbOFr2TJgh9o0Kaf8'
+  const secretKey = '7yhMkIoubG-P0NQ5G4QfpECGUJg1AdPAH0O-wj3w'
+  const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+  let putPolicy = new qiniu.rs.PutPolicy({ scope: 'haici:' + key })
+  res.json({ code: '200', msg: '操作成功', token: putPolicy.uploadToken(mac), expires: putPolicy.expires })
 })
 
 router.all('/getOpenId', getOpenId)

@@ -3,18 +3,14 @@ const Schema = mongoose.Schema
 let ObjectId = Schema.Types.ObjectId
 
 /**
- * 西药处方
+ * 西药处方模板
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    status: Number, // 1:, 已开具，2:已撤回
-    prescriptionNo: String, // 处方编号
+    name: String,
+    type: String, // 0通用，1，个人
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
-    patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
-    consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' }, // 订单id
-    overDaysReason: String,
-    drugNames: [String], // 药品名称
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
@@ -24,6 +20,6 @@ const schema = new Schema(
   }
 )
 
-const WestPrescription = mongoose.model('west_prescription', schema, 'west_prescription')
+const WestPrescriptionModel = mongoose.model('west_prescription_model', schema, 'west_prescription_model')
 
-export { WestPrescription }
+export { WestPrescriptionModel }
