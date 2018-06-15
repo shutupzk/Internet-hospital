@@ -30,7 +30,7 @@ export const prescriptionCreate = async (req, res) => {
         consultationId,
         type: '02',
         text: {
-          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '西药处方'
+          mainDiagnosis: diagnosis && diagnosis.mainDiagnosis ? diagnosis.mainDiagnosis : '西药处方'
         },
         direction: 'doctor->user',
         westPrescriptionId
@@ -42,7 +42,7 @@ export const prescriptionCreate = async (req, res) => {
         consultationId,
         type: '05',
         text: {
-          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '中药处方'
+          mainDiagnosis: diagnosis && diagnosis.mainDiagnosis ? diagnosis.mainDiagnosis : '中药处方'
         },
         direction: 'doctor->user',
         eastPrescriptionId

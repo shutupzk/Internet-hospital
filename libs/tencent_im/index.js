@@ -34,6 +34,7 @@ export default class TencentIM {
 
   // 请求方法
   async request({ json, api, method = 'POST' }) {
+    console.log(json)
     const url = BASE_URL + this.joinConfig(api)
     let options = {
       method,
