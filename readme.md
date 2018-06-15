@@ -153,6 +153,13 @@
 >>
 >>15.5 西药处方详情
 >>
+>>15.6 西药处方模板列表
+>>
+>>15.7 西药处方模板详情
+>>
+>>15.8 中药处方模板列表
+>>
+>>15.9 中药处方模板详情
 
 <br>
 <br>
@@ -4325,9 +4332,9 @@
 | created_at | String | ✅ | 创建时间 | |
 | updated_at | String | ✅ | 修改时间 | |
 | patient | Object | ✅ | 患者 | |
-| patient.id | Object | ✅ | 患者id | |
-| patient.name | Object | ✅ | 患者姓名 | |
-| diagnosis | Object | ✅ | 医嘱 | |
+| patient.id | String | ✅ | 患者id | |
+| patient.name | String | ✅ | 患者姓名 | |
+| diagnosis | String | ✅ | 医嘱 | |
 
 
 <br>
@@ -4400,5 +4407,471 @@
 | created_at | String | ✅ | 创建时间 | |
 | updated_at | String | ✅ | 修改时间 | |
 | drug | Object | ✅ | 药品 | |
-| drug.id | Object | ✅ | 药品id | |
-| drug.name | Object | ✅ | 药品名称 | |
+| drug.id | String | ✅ | 药品id | |
+| drug.name | String | ✅ | 药品名称 | |
+<br>
+
+
+<h3>15.4 西药处方列表
+
+```
+请求地址：/treatment/west/prescription/list
+```
+**请求包示例**
+
+```
+{
+	"consultationId": "5b2249fde9b0d6603c22bcfd",
+    "skip": "0",
+    "limit": "10"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| doctorId | String | ✅ | 医生id | |
+| patientId | String | ✅ | 就诊人id | |
+| consultationId | String | ✅ | 订单id | |
+| skip | Nunber | ❌ |  从 第 skip 条 开始 | 0 |
+| limit | Nunber | ❌ |  拿多少条 | 10 |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+    	 "id": "5b227e2f92cafd6751e4e6fa",
+    	 "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "diagnosis": "",
+        "drugNames": [
+          "复方金钱草颗粒",
+          "如意金黄散"
+        ],
+        "prescriptionNo": "WP-IWOLT8LS1ZLMXP8Y",
+        "consultationId": "5b2249fde9b0d6603c22bcfd",
+        "overDaysReason": "没有",
+        "patient": {
+          "id": "5b2246229381d04449a74fec",
+          "name": "测试3"
+        },
+        "created_at": "2018-06-14T14:39:43.953Z",
+        "updated_at": "2018-06-14T14:39:43.954Z",
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Object | ✅ |  返回值 | |
+| data.items | Array | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  西药处方id | |
+| data.items.doctorId | String | ✅ |  医生id | |
+| data.items.diagnosis | String | ✅ |  诊断 | |
+| data.items.drugNames | [String] | ✅ |  处方下的药品名称 | |
+| data.items.prescriptionNo | String | ✅ |  处方单号 | |
+| data.items.consultationId | String | ✅ |  订单id | |
+| data.items.overDaysReason | String | ✅ |  天数超限原因 | |
+| data.items.patient | Object | ✅ |  处方所属就诊人信息 | |
+| data.items.patient.id | String | ✅ |  处方所属就诊人id | |
+| data.items.patient.name | String | ✅ |  处方所属就诊人姓名 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.page_info | Object | ✅ |  分页信息 | |
+| data.page_info.skip |number | ✅ | 跳过条数 | |
+| data.page_info.limit | number | ✅ |  返回数据限制条数| | 
+| data.page_info.total | number | ✅ |  总数| | 
+--
+<br>
+
+
+<h3>15.5 西药处方详情
+
+```
+请求地址：/treatment/west/prescription/item/list
+```
+**请求包示例**
+
+```
+{
+	"westPrescriptionId": "5b227e2f92cafd6751e4e6fa"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| westPrescriptionId | String | ✅ | 西药处方id | |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "id": "5b227e2f92cafd6751e4e6fb",
+      "onceDose": 1,
+      "onceDoseUnitName": "粒",
+      "routeAdministrationName": "口服<饭前>",
+      "frequencyName": "1次/日 (2pm)",
+      "illustration": "用药说明",
+      "amount": 6,
+      "westPrescriptionId": "5b227e2f92cafd6751e4e6fa",
+      "created_at": "2018-06-14T14:39:43.998Z",
+      "updated_at": "2018-06-14T14:39:43.998Z",
+      "drug": {
+        "id": "5b1feac3d6c651987b10cb62",
+        "name": "复方金钱草颗粒"
+      }
+    }
+    ...
+  ],
+  "msg": "操作成功"
+}```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Array | ✅ |  返回值 | |
+| data.items | Object | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  西药处方itemid | |
+| data.items.westPrescriptionId | String | ✅ |  西药处方item所属处方id | |
+| data.items.amount | String | ✅ |  处方药品数量 | |
+| data.items.illustration | String | ✅ |  医嘱 | |
+| data.items.onceDose | Number | ✅ |  单次剂量 | |
+| data.items.onceDoseUnitName | String | ✅ |  单次剂量单位 | |
+| data.items.routeAdministrationName | String | ✅ |  用法 | |
+| data.items.frequencyName | String | ✅ |  用药频率/默认频次 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.items.drug | Object | ✅ | 处方所选药品信息 | |
+| data.items.drug.id | String | ✅ | 处方所选药品id| |
+| data.items.drug.name | String | ✅ | 处方所选药品名称| |
+--
+<br>
+
+<h3>15.6 西药处方模板列表
+
+```
+请求地址：/dictionary/west/prescription/model/list
+```
+**请求包示例**
+
+```
+{
+	"doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "skip": "0",
+    "limit": "10"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| doctorId | String | ✅ | 医生id | |
+| keyword | String | ❌ | 搜索关键字 | |
+| type | String | ❌ | 0 通用 1 个人 | |
+| skip | Nunber | ❌ |  从 第 skip 条 开始 | 0 |
+| limit | Nunber | ❌ |  拿多少条 | 10 |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b223a4e4c0a165ed41ef9fa",
+        "name": "治心痛",
+        "type": "0",
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "created_at": "2018-06-14T09:50:06.161Z",
+        "updated_at": "2018-06-14T09:50:06.161Z"
+      },
+      {
+        "id": "5b22399db1cf4e5e3a39f411",
+        "name": "测试",
+        "type": "0",
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "created_at": "2018-06-14T09:47:09.552Z",
+        "updated_at": "2018-06-14T09:47:09.552Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 2
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Object | ✅ |  返回值 | |
+| data.items | Array | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  西药处方模板id | |
+| data.items.doctorId | String | ✅ |  医生id | |
+| data.items.name | String | ✅ |  模板名称 | |
+| data.items.type | String | ✅ |  是否通用 0 通用 1 个人 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.page_info | Object | ✅ |  分页信息 | |
+| data.page_info.skip |number | ✅ | 跳过条数 | |
+| data.page_info.limit | number | ✅ |  返回数据限制条数| | 
+| data.page_info.total | number | ✅ |  总数| | 
+--
+<br>
+
+
+<h3>15.7 西药处方模板详情
+
+```
+请求地址：/dictionary/west/prescription/model/item/list
+```
+**请求包示例**
+
+```
+{
+	"westPrescriptionModelId": "5b223a4e4c0a165ed41ef9fa"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| westPrescriptionModelId | String | ✅ | 西药处方模板id | |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "onceDose": 1,
+      "onceDoseUnitName": "片",
+      "routeAdministrationName": "口服<饭前>",
+      "frequencyName": "1次/日(7pm)",
+      "illustration": "无",
+      "amount": 6,
+      "westPrescriptionModelId": "5b223a4e4c0a165ed41ef9fa",
+      "created_at": "2018-06-14T09:50:06.227Z",
+      "updated_at": "2018-06-14T09:50:06.227Z",
+      "id": "5b223a4e4c0a165ed41ef9fb",
+      "drug": {
+        "id": "5b1fe757d6c651987b0e64a7",
+        "name": "心痛定(硝苯地平)"
+      }
+    }
+    ...
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Array | ✅ |  返回值 | |
+| data.items | Object | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  处方模板itemid | |
+| data.items.westPrescriptionModelId | String | ✅ |  处方模板id | |
+| data.items.amount | String | ✅ |  处方药品数量 | |
+| data.items.illustration | String | ✅ |  医嘱 | |
+| data.items.onceDose | Number | ✅ |  单次剂量 | |
+| data.items.onceDoseUnitName | String | ✅ |  单次剂量单位 | |
+| data.items.routeAdministrationName | String | ✅ |  用法 | |
+| data.items.frequencyName | String | ✅ |  用药频率/默认频次 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.items.drug | Object | ✅ | 处方所选药品信息 | |
+| data.items.drug.id | String | ✅ | 处方所选药品id| |
+| data.items.drug.name | String | ✅ | 处方所选药品名称| |
+--
+<br>
+
+
+<h3>15.8 中药处方模板列表
+
+```
+请求地址：/dictionary/east/prescription/model/list
+```
+**请求包示例**
+
+```
+{
+	"doctorId": "5b1cc699cbd16bf9d96ae31b",
+    "skip": "0",
+    "limit": "10"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| doctorId | String | ✅ | 医生id | |
+| keyword | String | ❌ | 搜索关键字 | |
+| type | String | ❌ | 0 通用 1 个人 | |
+| skip | Nunber | ❌ |  从 第 skip 条 开始 | 0 |
+| limit | Nunber | ❌ |  拿多少条 | 10 |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "id": "5b228b24734a316d59615533",
+        "name": "脱发",
+        "type": "0",
+        "doctorId": "5b1cc699cbd16bf9d96ae31b",
+        "routeAdministrationName": "口服<饭前>",
+        "frequencyName": "1次/日(7pm)",
+        "amount": 6,
+        "illustration": "好好吃",
+        "created_at": "2018-06-14T15:35:00.843Z",
+        "updated_at": "2018-06-14T15:35:00.843Z"
+      }
+    ],
+    "page_info": {
+      "skip": 0,
+      "limit": 10,
+      "total": 1
+    }
+  },
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Object | ✅ |  返回值 | |
+| data.items | Array | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  中药处方模板id | |
+| data.items.doctorId | String | ✅ |  医生id | |
+| data.items.name | String | ✅ |  模板名称 | |
+| data.items.type | String | ✅ |  是否通用 0 通用 1 个人 | |
+| data.items.routeAdministrationName | String | ✅ |  处方用药用法 | |
+| data.items.frequencyName | String | ✅ |  用药频率 | |
+| data.items.amount | String | ✅ |  数量 | |
+| data.items.illustration | String | ✅ |  医嘱 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.page_info | Object | ✅ |  分页信息 | |
+| data.page_info.skip |number | ✅ | 跳过条数 | |
+| data.page_info.limit | number | ✅ |  返回数据限制条数| | 
+| data.page_info.total | number | ✅ |  总数| | 
+--
+<br>
+
+
+<h3>15.9 中药处方模板详情
+
+```
+请求地址：/dictionary/west/prescription/model/item/list
+```
+**请求包示例**
+
+```
+{
+	"eastPrescriptionModelId": "5b228b24734a316d59615533"
+}
+```
+
+**请求包字段说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| eastPrescriptionModelId | String | ✅ | 中药处方模板id | |
+--
+**应答包示例**
+
+```
+{
+  "code": 200,
+  "data": [
+    {
+      "onceDose": 1,
+      "onceDoseUnitName": "g",
+      "amount": 6,
+      "eastPrescriptionModelId": "5b228b24734a316d59615533",
+      "created_at": "2018-06-14T15:35:00.895Z",
+      "updated_at": "2018-06-14T15:35:00.895Z",
+      "id": "5b228b24734a316d59615534",
+      "drug": {
+        "id": "5b1fe8eed6c651987b0f85c2",
+        "name": "夜交藤"
+      }
+    },
+    {
+      "onceDose": 1,
+      "onceDoseUnitName": "g",
+      "amount": 6,
+      "eastPrescriptionModelId": "5b228b24734a316d59615533",
+      "created_at": "2018-06-14T15:35:00.934Z",
+      "updated_at": "2018-06-14T15:35:00.934Z",
+      "id": "5b228b24734a316d59615535",
+      "drug": {
+        "id": "5b1fe909d6c651987b0f986d",
+        "name": "干姜"
+      }
+    }
+  ],
+  "msg": "操作成功"
+}
+```
+**应答包参数说明**
+
+| 参数名称 | 参数类型 | 是否必须 | 说明 | 默认值 |
+| :-: | :-: | :-:  | :--: | :--: |
+| code | String | ✅ |  返回码， 200 成功| |
+| msg | String | ✅ |  返回信息 | |
+| data | Array | ✅ |  返回值 | |
+| data.items | Object | ✅ |  列表内容 | |
+| data.items.id | String | ✅ |  处方模板itemid | |
+| data.items.eastPrescriptionModelId | String | ✅ |  中药处方模板id | |
+| data.items.amount | String | ✅ |  处方药品数量 | |
+| data.items.onceDose | Number | ✅ |  单次剂量 | |
+| data.items.onceDoseUnitName | String | ✅ |  单次剂量单位 | |
+| data.items.created_at | Date | ✅ | 创建时间 | |
+| data.items.updated_at | Date | ✅ | 修改时间 | |
+| data.items.drug | Object | ✅ | 处方所选药品信息 | |
+| data.items.drug.id | String | ✅ | 处方所选药品id| |
+| data.items.drug.name | String | ✅ | 处方所选药品名称| |
+--
+<br>
