@@ -61,6 +61,7 @@ export const consultationChatMessageCreate = async (req, res) => {
         consultationId
       }
       sendMessage(firstMsg)
+      await Consultation.updateOne({ _id: consultationId }, { status: '04' })
     }
 
     let chatMessage = await sendMessage(req.body)
