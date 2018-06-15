@@ -66,6 +66,7 @@ export const laborCreate = async (req, res) => {
       // for (let message of messages) {
       //   sendMessage({ ...message, laboraId: labor._id })
       // }
+      console.log('labaor message ===', messages[0])
       sendMessage({ ...messages[0], laboraId: labor._id })
     }
     return result.success(res, labor)
