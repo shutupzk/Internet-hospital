@@ -58,3 +58,11 @@ export const changPayment = async (tradeNo, outTradeNo, message) => {
     consultationSendStartMessage(paymemt.consultationId)
   }
 }
+
+export const refundPayment = async ({ outTradeNo, refundFee, outRefundNo }) => {
+  const out_refund_no = outRefundNo || outTradeNo
+  let paymemt = await Payment.findOne({ outTradeNo })
+  if (!paymemt) throw new Error('未找到指定支付订单')
+  let total_fee = refundFee || paymemt.totalFee
+  await wechatPay.refundApp({ out_refund_no, total_fee, refund_desc: 'normal refund', out_trade_no: outTradeNo })
+}

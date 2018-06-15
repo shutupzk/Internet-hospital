@@ -1,7 +1,7 @@
-import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage, Diagnosis } from '../model'
+import Model, { Consultation, Doctor, Patient, PatientWithDoctor, Chat, ChatMessage, Diagnosis, Payment } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
-import { createPayment } from './payment'
+import { createPayment, refundPayment } from './payment'
 import { formatArrayId, formatObjId } from '../util'
 import moment from 'moment'
 import { sendMessages } from './chat_message'
@@ -75,9 +75,9 @@ export const consultationList = async (req, res) => {
       ops.patientId = { $in: patientIds }
     }
     if (status === false) {
-      ops.status = {$in: ['03', '04']}
+      ops.status = { $in: ['03', '04'] }
     } else if (status === true) {
-      ops.status = {$in: ['05', '06', '07', '08', '09']}
+      ops.status = { $in: ['05', '06', '07', '08', '09'] }
     }
     if (patientId) ops.patientId = patientId
     if (doctorId) ops.doctorId = doctorId
@@ -106,7 +106,7 @@ export const consultationList = async (req, res) => {
 
 export const updateConsultation = async (req, res) => {
   try {
-    const { consultationId, status } = req.body
+    let { consultationId, status } = req.body
     if (!consultationId || !status) return result.failed(res, '缺少参数')
     const consultation = await Consultation.findOne({ _id: consultationId })
     if (!consultation) return result.failed(res, '未找到指定的订单')
@@ -145,6 +145,7 @@ export const updateConsultation = async (req, res) => {
           }
         ]
         sendMessages(smMessage)
+        status = await refundConsultation(consultationId, status)
       }
     } else if (status === '07') {
       if (consultation.status !== '04') return result.failed(res, '当前状态不能完成订单')
@@ -288,5 +289,21 @@ export const consultationDetail = async (req, res) => {
     return result.success(res, consultationDetail)
   } catch (e) {
     return result.failed(res, e.message)
+  }
+}
+
+export const refundConsultation = async (consultationId, status) => {
+  try {
+    const refundMap = { '05': '08', '06': '09' }
+    if (Object.keys(refundMap).indexOf(status) === -1) throw new Error('未识别的退费状态')
+    const consultation = await Consultation.findById(consultationId)
+    if (!consultation) throw new Error('为找到指定的')
+    let payment = await Payment.findById(consultation.paymentId)
+    if (!payment) throw new Error('为找到指定的支付订单')
+    const { outTradeNo } = payment
+    await refundPayment({ outTradeNo })
+    return refundMap[status]
+  } catch (e) {
+    return status
   }
 }
