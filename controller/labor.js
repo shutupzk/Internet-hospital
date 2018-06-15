@@ -63,9 +63,10 @@ export const laborCreate = async (req, res) => {
     for (let it of inputArray) it.laborId = labor._id
     await LaborItem.create(inputArray)
     if (messages.length) {
-      for (let message of messages) {
-        sendMessage({ ...message, laboraId: labor._id })
-      }
+      // for (let message of messages) {
+      //   sendMessage({ ...message, laboraId: labor._id })
+      // }
+      sendMessage({ ...messages[0], laboraId: labor._id })
     }
     return result.success(res, labor)
   } catch (e) {
