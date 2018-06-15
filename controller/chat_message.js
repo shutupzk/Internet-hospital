@@ -148,7 +148,7 @@ export const sendMessages = async (messages = []) => {
   }
 }
 
-export const sendMessage = async ({ chatId, consultationId, type, text, image, audio, direction, prescriptionId, examId, laboraId }) => {
+export const sendMessage = async ({ chatId, consultationId, type, text, image, audio, direction, westPrescriptionId, eastPrescriptionId, examId, laboraId }) => {
   if (!chatId || !type || !direction) throw new Error('参数错误')
   if (!text && !image && !audio) throw new Error('发送内容不能为空')
   let chatOrigin = await Chat.findById(chatId).populate([
@@ -161,7 +161,7 @@ export const sendMessage = async ({ chatId, consultationId, type, text, image, a
     { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name identifier' }, { path: 'doctorId', select: 'doctorSn identifier' }] }
   ])
   let chat = formatChat(chatOrigin, true)
-  let chatMessage = await ChatMessage.create({ chatId, consultationId, type, text, image, audio, direction, prescriptionId, examId, laboraId })
+  let chatMessage = await ChatMessage.create({ chatId, consultationId, type, text, image, audio, direction, westPrescriptionId, eastPrescriptionId, examId, laboraId })
   sendImMsg(chat, chatMessage)
   return chatMessage
 }
