@@ -1,6 +1,7 @@
 import Model, { Exam, ExamItem, Consultation, ExaminationDictionary, Diagnosis } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
+import { sendMessage } from './chat_message'
 
 export const examCreate = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const examCreate = async (req, res) => {
     let consultation = await Consultation.findById(consultationId)
     if (!consultation) return result.failed(res, '未找到指定的订单')
     exams = JSON.parse(exams)
-    const { _id, patientId, doctorId } = consultation
+    const { _id, patientId, doctorId, chatId } = consultation
     const examNo = `H1${createTradeNo()}`
 
     let examdoc = {
@@ -23,6 +24,7 @@ export const examCreate = async (req, res) => {
     }
 
     let inputArray = []
+    let messages = []
     for (let exam of exams) {
       const {
         examinationDictionaryId,
@@ -55,12 +57,27 @@ export const examCreate = async (req, res) => {
         hasHeavyMetal
       }
       inputArray.push(examInput)
+      messages.push({
+        chatId,
+        consultationId: _id,
+        type: '03',
+        text: {
+          examName: examinationDictionary.name
+        },
+        direction: 'doctor->user'
+      })
       examdoc.examinationDictionaryNames.push(examinationDictionary.name)
     }
 
     let exam = await Exam.create(examdoc)
     for (let it of inputArray) it.examId = exam._id
     await ExamItem.create(inputArray)
+    if (messages.length) {
+      // for (let message of messages) {
+      //   sendMessage({ ...message, examId: exam._id })
+      // }
+      sendMessage({ ...messages[0], examId: exam._id })
+    }
     return result.success(res, exam)
   } catch (e) {
     return result.failed(res, e.message)
@@ -87,7 +104,9 @@ export const examQuery = async (req, res) => {
 export const examItemQuery = async (req, res) => {
   const { examId } = req.body
   if (!examId) return result.failed(res, '缺少参数')
-  let list = await ExamItem.find({ examId }).populate('examinationOrganDictionaryIds', 'name -_id').populate('examinationDictionaryId', 'name -_id radiation')
+  let list = await ExamItem.find({ examId })
+    .populate('examinationOrganDictionaryIds', 'name -_id')
+    .populate('examinationDictionaryId', 'name -_id radiation')
   list = JSON.parse(JSON.stringify(list))
   for (let item of list) {
     item.examinationOrganDictionarys = item.examinationOrganDictionaryIds
