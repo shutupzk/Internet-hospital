@@ -86,7 +86,7 @@ export const laborQuery = async (req, res) => {
   for (let item of list.items) {
     item.patient = item.patientId
     delete item.patientId
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId: item.consultationId })
     item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)

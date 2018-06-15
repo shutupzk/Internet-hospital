@@ -70,7 +70,7 @@ export const westPrescriptionList = async (req, res) => {
     item.id = item._id
     delete item.patientId
     delete item._id
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId: item.consultationId })
     item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)
@@ -89,7 +89,7 @@ export const eastPrescriptionList = async (req, res) => {
     item.id = item._id
     delete item.patientId
     delete item._id
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId: item.consultationId })
     item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)
