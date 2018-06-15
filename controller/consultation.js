@@ -121,11 +121,58 @@ export const updateConsultation = async (req, res) => {
       if (chat) {
         await Chat.updateOne({ _id: chat._id }, { status: false })
       }
+      if (consultation.status === '03' && status === '06') {
+        // 患者取消是发送消息
+        let consultationId = consultation._id
+        let chatId = chat._id
+        let endTime = moment().format('MM月DD日 HH:mm')
+        let smMessage = [
+          {
+            type: '06',
+            text: {
+              doctorMsg: {
+                type: '咨询结束',
+                text: `患者已于${endTime}分取消订单。`
+              },
+              userMsg: {
+                type: '咨询结束',
+                text: `您已取消订单。`
+              }
+            },
+            direction: 'user->doctor',
+            chatId,
+            consultationId
+          }
+        ]
+        sendMessages(smMessage)
+      }
     } else if (status === '07') {
       if (consultation.status !== '04') return result.failed(res, '当前状态不能完成订单')
       if (chat) {
         await Chat.updateOne({ _id: chat._id }, { status: false })
       }
+      let consultationId = consultation._id
+      let chatId = chat._id
+      let endTime = moment().format('MM月DD日 HH:mm')
+      let smMessage = [
+        {
+          type: '06',
+          text: {
+            doctorMsg: {
+              type: '咨询结束',
+              text: `患者已于${endTime}结束了本次咨询。`
+            },
+            userMsg: {
+              type: '咨询结束',
+              text: `您已于${endTime}结束了本次咨询`
+            }
+          },
+          direction: 'user->doctor',
+          chatId,
+          consultationId
+        }
+      ]
+      sendMessages(smMessage)
     } else if (status === '10') {
       // 退款（管理后台）
       if (consultation.status !== '03' && consultation.status !== '04' && consultation.status !== '05' && consultation.status !== '07') return result.failed(res, '当前状态不能取消')
