@@ -62,7 +62,7 @@ class Model {
   async findDoctorByOpsWithPage(Model, { ops, limit, skip, sort }) {
     limit = limit * 1 || 10
     skip = skip * 1 || 0
-    if (!sort) sort = { created_at: -1 }
+    if (!sort) sort = { weight: -1 }
     let total = await Model.count(ops)
     let items = await Model.find(ops)
       .populate({ path: 'departmentId', select: '-created_at -updated_at -deleted_at' })
