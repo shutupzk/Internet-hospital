@@ -107,7 +107,7 @@ export const eastPrescriptionModelList = async (req, res) => {
 export const westPrescriptionModelItemList = async (req, res) => {
   const { westPrescriptionModelId } = req.body
   if (!westPrescriptionModelId) return result.failed(res, '参数错误')
-  let items = await WestPrescriptionModelItem.find({ westPrescriptionModelId }).populate({path: 'drugId', select: '_id name'})
+  let items = await WestPrescriptionModelItem.find({ westPrescriptionModelId }).populate({path: 'drugId', select: '_id name specification'})
   let array = []
   for (let item of items) {
     let obj = { ...item._doc }
@@ -123,7 +123,7 @@ export const westPrescriptionModelItemList = async (req, res) => {
 export const eastPrescriptionModelItemList = async (req, res) => {
   const { eastPrescriptionModelId } = req.body
   if (!eastPrescriptionModelId) return result.failed(res, '参数错误')
-  let items = await EastPrescriptionModelItem.find({ eastPrescriptionModelId }).populate({path: 'drugId', select: '_id name'})
+  let items = await EastPrescriptionModelItem.find({ eastPrescriptionModelId }).populate({path: 'drugId', select: '_id name specification'})
   let array = []
   for (let item of items) {
     let obj = { ...item._doc }
