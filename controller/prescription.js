@@ -23,7 +23,7 @@ export const prescriptionCreate = async (req, res) => {
     if (eastPrescription) {
       eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
     }
-    let diagnosis = await Diagnosis.find({ consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId })
     if (westPrescriptionId) {
       sendMessage({
         chatId,
