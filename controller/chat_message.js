@@ -206,23 +206,27 @@ async function sendImMsg(chat, chatMessage) {
       lastMsgContent = Content
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '06') {
-      lastMsgContent = type
       if (text && text.userMsg) {
         Content = text.userMsg.text
+        lastMsgContent = text.userMsg.text
         await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
       if (text && text.doctorMsg) {
         Content = text.doctorMsg.text
+        lastMsgContent = text.doctorMsg.text
         await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
     } else if (type === '02' || type === '05') {
       Content = '收到一条处方消息'
+      lastMsgContent = Content
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '03') {
       Content = '收到一条检查消息'
+      lastMsgContent = Content
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '04') {
       Content = '收到一条检验消息'
+      lastMsgContent = Content
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     }
     await Chat.updateOne({ _id: id }, { lastMsgContent, lastMsgTime: new Date() })
