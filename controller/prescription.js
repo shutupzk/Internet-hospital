@@ -153,6 +153,7 @@ export const westPrescriptionCreate = async ({ westPrescription, doctorId, patie
     for (let item of array) {
       await WestPrescriptionItem.create({ ...item, westPrescriptionId })
     }
+    return westPrescriptionId
   } catch (e) {
     if (westPrescriptionId) WestPrescription.deleteOne({ _id: westPrescriptionId })
     throw e
