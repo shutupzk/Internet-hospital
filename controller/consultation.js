@@ -122,7 +122,7 @@ export const updateConsultation = async (req, res) => {
         await Chat.updateOne({ _id: chat._id }, { status: false })
       }
     } else if (status === '07') {
-      if (consultation.status !== '04') return result.failed(res, '当前状态不能取消')
+      if (consultation.status !== '04') return result.failed(res, '当前状态不能完成订单')
       if (chat) {
         await Chat.updateOne({ _id: chat._id }, { status: false })
       }
@@ -132,6 +132,8 @@ export const updateConsultation = async (req, res) => {
       if (chat) {
         await Chat.updateOne({ _id: chat._id }, { status: false })
       }
+    } else {
+      return result.failed(res, '传入的状态无效')
     }
     Consultation.updateOne({ _id: consultationId }, { status })
     let resData = await Consultation.findOne({ _id: consultationId })
