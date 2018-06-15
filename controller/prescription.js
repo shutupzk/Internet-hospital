@@ -1,6 +1,7 @@
 import Model, { EastPrescription, EastPrescriptionItem, WestPrescription, WestPrescriptionItem, Consultation, Drug, Diagnosis } from '../model'
 import result from './result'
 import { createTradeNo } from '../util'
+import { sendMessage } from './chat_message'
 
 export const prescriptionCreate = async (req, res) => {
   let { consultationId, eastPrescription, westPrescription } = req.body
@@ -15,9 +16,35 @@ export const prescriptionCreate = async (req, res) => {
     const CPrescriptionNo = `CP${createTradeNo()}`
     const consultation = await Consultation.findById(consultationId)
     if (!consultation) return result.failed(res, '订单不存在')
-    const { doctorId, patientId } = consultation
+    const { doctorId, patientId, chatId } = consultation
     westPrescriptionId = await westPrescriptionCreate({ westPrescription, doctorId, patientId, consultationId, wPrescriptionNo })
     eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
+    let diagnosis = await Diagnosis.find({ consultationId })
+    if (westPrescriptionId) {
+      sendMessage({
+        chatId,
+        consultationId,
+        type: '02',
+        text: {
+          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '西药处方'
+        },
+        direction: 'doctor->user',
+        westPrescriptionId
+      })
+    }
+    if (eastPrescriptionId) {
+      sendMessage({
+        chatId,
+        consultationId,
+        type: '05',
+        text: {
+          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '中药处方'
+        },
+        direction: 'doctor->user',
+        eastPrescriptionId
+      })
+    }
+
     return result.success(res)
   } catch (e) {
     if (westPrescriptionId) WestPrescription.deleteOne({ _id: westPrescriptionId })

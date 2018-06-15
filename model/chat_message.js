@@ -9,13 +9,14 @@ const ObjectId = Schema.Types.ObjectId
 const schema = new Schema(
   {
     chatId: { type: ObjectId, index: true, ref: 'chat' }, // 会话id
-    type: String, // 01: 图文，02： 处方, 03: 检查 04 检验， 06: 咨询申明
+    type: String, // 01: 图文，02： 西药处方, 03: 检查 04 检验，05：中药处方 06: 咨询申明
     text: Object, // 文字
     image: String, // 图片
     audio: String, // 语音
     direction: String, // user->doctor, doctor->user, system->user, system->doctor
     isRetract: Boolean, // 是否撤回
-    prescriptionId: { type: ObjectId, index: true, ref: 'perscription' }, // 检验id
+    westPrescriptionId: { type: ObjectId, index: true, ref: 'west_prescription' }, // 西药处方id
+    eastPrescriptionId: { type: ObjectId, index: true, ref: 'east_prescription' }, // 中药处方id
     examId: { type: ObjectId, index: true, ref: 'exam' }, // 检查id
     laboraId: { type: ObjectId, index: true, ref: 'labora' }, // 处方id
     consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 订单id
