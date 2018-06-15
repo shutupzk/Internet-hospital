@@ -23,14 +23,14 @@ export const prescriptionCreate = async (req, res) => {
     if (eastPrescription) {
       eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
     }
-    let diagnosis = await Diagnosis.find({ consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId })
     if (westPrescriptionId) {
       sendMessage({
         chatId,
         consultationId,
         type: '02',
         text: {
-          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '西药处方'
+          mainDiagnosis: diagnosis && diagnosis.mainDiagnosis ? diagnosis.mainDiagnosis : '西药处方'
         },
         direction: 'doctor->user',
         westPrescriptionId
@@ -42,7 +42,7 @@ export const prescriptionCreate = async (req, res) => {
         consultationId,
         type: '05',
         text: {
-          mainDiagnosis: diagnosis ? diagnosis.mainDiagnosis : '中药处方'
+          mainDiagnosis: diagnosis && diagnosis.mainDiagnosis ? diagnosis.mainDiagnosis : '中药处方'
         },
         direction: 'doctor->user',
         eastPrescriptionId
@@ -70,7 +70,7 @@ export const westPrescriptionList = async (req, res) => {
     item.id = item._id
     delete item.patientId
     delete item._id
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId: item.consultationId })
     item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)
@@ -89,7 +89,7 @@ export const eastPrescriptionList = async (req, res) => {
     item.id = item._id
     delete item.patientId
     delete item._id
-    let diagnosis = await Diagnosis.find({ consultationId: item.consultationId })
+    let diagnosis = await Diagnosis.findOne({ consultationId: item.consultationId })
     item.diagnosis = (diagnosis && diagnosis.mainDiagnosis) || ''
   }
   return result.success(res, list)
@@ -153,6 +153,7 @@ export const westPrescriptionCreate = async ({ westPrescription, doctorId, patie
     for (let item of array) {
       await WestPrescriptionItem.create({ ...item, westPrescriptionId })
     }
+    return westPrescriptionId
   } catch (e) {
     if (westPrescriptionId) WestPrescription.deleteOne({ _id: westPrescriptionId })
     throw e

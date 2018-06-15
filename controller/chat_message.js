@@ -162,6 +162,7 @@ export const sendMessage = async ({ chatId, consultationId, type, text, image, a
     { path: 'systemWithDoctorId', select: '_id', populate: [{ path: 'systemId', select: '_id code name identifier' }, { path: 'doctorId', select: 'doctorSn identifier' }] }
   ])
   let chat = formatChat(chatOrigin, true)
+  console.log('text ======', text)
   let chatMessage = await ChatMessage.create({ chatId, consultationId, type, text, image, audio, direction, westPrescriptionId, eastPrescriptionId, examId, laboraId })
   sendImMsg(chat, chatMessage)
   return chatMessage
@@ -214,6 +215,15 @@ async function sendImMsg(chat, chatMessage) {
         Content = text.doctorMsg.text
         await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
       }
+    } else if (type === '02' || type === '05') {
+      Content = '收到一条处方消息'
+      await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+    } else if (type === '03') {
+      Content = '收到一条检查消息'
+      await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
+    } else if (type === '04') {
+      Content = '收到一条检验消息'
+      await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     }
     await Chat.updateOne({ _id: id }, { lastMsgContent, lastMsgTime: new Date() })
   } catch (e) {
