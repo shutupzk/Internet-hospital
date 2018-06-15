@@ -44,30 +44,11 @@ function formatDate(data) {
     for (let key in data) {
       data[key] = formatDate(data[key])
     }
-  } else if (data && isNaN(data) && !isNaN(Date.parse(data))) {
-    data = moment(data).format('YYYY-MM-DD HH:mm:ss')
+  } else if (data && isNaN(data * 1) && !isNaN(Date.parse(data))) {
+    // console.log(moment.i(data))
+    data = moment(Date.parse(data)).format('YYYY-MM-DD HH:mm:ss')
   }
   return data
-
-  // if (data instanceof Array && data.length) {
-  //   console.log('iii ===', JSON.stringify(data))
-  //   for (let obj of data) {
-  //     console.log(!(data instanceof Array || data instanceof Object))
-  //     formatDate(obj)
-  //   }
-  // } else if (data instanceof Object) {
-  //   for (let key in data) {
-  //     if (data[key] instanceof Array || data[key] instanceof Object) {
-  //       formatDate(data[key])
-  //     } else {
-  //       // console.log(key, data[key], data[key] instanceof Object)
-  //       if (!JSON.stringify(data[key]) === '{}' && data[key] && isNaN(data[key]) && !isNaN(Date.parse(data[key]))) {
-  //         console.log(' =====')
-  //         data[key] = moment(data[key]).format('YYYY-MM-DD HH:mm:ss')
-  //       }
-  //     }
-  //   }
-  // }
 }
 
 export default Result
