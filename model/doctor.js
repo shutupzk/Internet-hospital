@@ -16,7 +16,7 @@ const schema = new Schema(
     departmentId: { type: ObjectId, ref: 'department' }, // 所属科室
     weight: Number, // 医生权重
     avatar: String, // 医生头像地址
-    imageAndTextOpen: {type: Boolean, default: false}, // 是否开通图文问诊
+    imageAndTextOpen: {type: Boolean, default: true}, // 是否开通图文问诊
     imageAndTextPrice: {type: Number, default: 0}, // 图文问诊费用
     description: String, // 医生描述
     doctorType: String, // 医生类型
