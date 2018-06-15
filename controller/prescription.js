@@ -123,6 +123,9 @@ export const westPrescriptionItemList = async (req, res) => {
 
 export const westPrescriptionCreate = async ({ westPrescription, doctorId, patientId, consultationId, wPrescriptionNo }) => {
   const { overDaysReason, items = [] } = westPrescription
+  console.log('woverDaysReason', overDaysReason)
+  console.log('iwtems', items)
+  console.log('======================')
   if (items.length === 0) throw new Error('西药处方条目 不能为空')
   let array = []
   let drugNames = []
@@ -154,6 +157,8 @@ export const westPrescriptionCreate = async ({ westPrescription, doctorId, patie
 
 export const eastPrescriptionCreate = async ({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo }) => {
   let { overDaysReason, routeAdministrationName, frequencyName, amount, illustration, items = [] } = eastPrescription
+  console.log('eoverDaysReason====', overDaysReason)
+  console.log('ewtems====', items)
   if (!routeAdministrationName) throw new Error('中药处方 用法（用药途径）不能为空')
   if (!frequencyName) throw new Error('中药处方 用药频率 不能为空')
   if (!amount) throw new Error('中药处方 付数 不能为空')
