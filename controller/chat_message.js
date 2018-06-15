@@ -218,15 +218,15 @@ async function sendImMsg(chat, chatMessage) {
       }
     } else if (type === '02' || type === '05') {
       Content = '收到一条处方消息'
-      lastMsgContent = Content
+      lastMsgContent = '[处方]'
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '03') {
       Content = '收到一条检查消息'
-      lastMsgContent = Content
+      lastMsgContent = '[检查]'
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     } else if (type === '04') {
       Content = '收到一条检验消息'
-      lastMsgContent = Content
+      lastMsgContent = '[检验]'
       await TencentIM.sendmsg({ From_Account, To_Account, Text, Title, Desc: Content, Ext: Content })
     }
     await Chat.updateOne({ _id: id }, { lastMsgContent, lastMsgTime: new Date() })
