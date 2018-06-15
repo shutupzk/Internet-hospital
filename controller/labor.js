@@ -1,6 +1,7 @@
-import Model, { Labor, LaborItem, LaboratoryDictionary, Diagnosis, Consultation } from '../model'
+import Model, { Labor, LaborItem, LaboratoryDictionary, Diagnosis, Consultation, LaboratorySampleDictionary } from '../model'
 import result from './result'
 import { createTradeNo } from '../libs/utils'
+import { sendMessage } from './chat_message'
 
 export const laborCreate = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const laborCreate = async (req, res) => {
     let consultation = await Consultation.findById(consultationId)
     if (!consultation) return result.failed(res, '未找到指定的订单')
     labors = JSON.parse(labors)
-    const { _id, patientId, doctorId } = consultation
+    const { _id, patientId, doctorId, chatId } = consultation
     const laborNo = `H2${createTradeNo()}`
 
     let doc = {
@@ -23,10 +24,16 @@ export const laborCreate = async (req, res) => {
     }
 
     let inputArray = []
+    let messages = []
     for (let labor of labors) {
       const { laboratoryDictionaryId, laboratorySampleDictionaryId, leavingMessage = '', execDept = '' } = labor
       let laboratoryDictionary = await LaboratoryDictionary.findById(laboratoryDictionaryId)
       if (!laboratoryDictionary) return result.failed(res, `存在未知检验项 ${laboratoryDictionaryId}`)
+      let sampleName = ''
+      if (laboratorySampleDictionaryId) {
+        let laboratorySampleDictionary = await LaboratorySampleDictionary.findById(laboratorySampleDictionaryId)
+        if (laboratorySampleDictionary) sampleName = laboratorySampleDictionary.name
+      }
       let examInput = {
         status: 1,
         laborNo,
@@ -39,12 +46,27 @@ export const laborCreate = async (req, res) => {
         execDept: execDept || laboratoryDictionary.exeDept
       }
       inputArray.push(examInput)
+      messages.push({
+        chatId,
+        consultationId: _id,
+        type: '04',
+        text: {
+          laborName: laboratoryDictionary.name,
+          sampleName
+        },
+        direction: 'doctor->user'
+      })
       doc.laboratoryDictionaryNames.push(laboratoryDictionary.name)
     }
 
     let labor = await Labor.create(doc)
     for (let it of inputArray) it.laborId = labor._id
     await LaborItem.create(inputArray)
+    if (messages.length) {
+      for (let message of messages) {
+        sendMessage({ ...message, laboraId: labor._id })
+      }
+    }
     return result.success(res, labor)
   } catch (e) {
     return result.failed(res, e.message)
