@@ -46,7 +46,7 @@ function formatDate(data) {
     }
   } else if (data && isNaN(data * 1) && !isNaN(Date.parse(data))) {
     // console.log(moment.i(data))
-    if (data.length !== 10) {
+    if (data.length <= 10) {
       data = moment(Date.parse(data)).format('YYYY-MM-DD HH:mm:ss')
     }
   }
