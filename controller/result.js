@@ -24,29 +24,50 @@ Result.failed = function(res, msg, code) {
 Result.success = function(res, data) {
   return res.json({
     code: 200,
-    data: formatDate(data),
+    data: formatDate(parseData(data)),
     msg: '操作成功'
   })
 }
 
+function parseData (data) {
+  if (!data) return data
+  let json = JSON.parse(JSON.stringify(data))
+  return json
+}
+
 function formatDate(data) {
-  if (data instanceof Array) {
-    console.log('iii')
+  if (data instanceof Array && data.length) {
     for (let obj of data) {
-      formatDate(obj)
+      obj = formatDate(obj)
     }
-  } else if (data instanceof Object) {
+  } else if (data instanceof Object && JSON.stringify(data) !== '{}') {
     for (let key in data) {
-      if (data[key] instanceof Array || data[key] instanceof Object) {
-        formatDate(data[key])
-      } else {
-        if (data[key] && isNaN(data[key]) && !isNaN(Date.parse(data[key]))) {
-          data[key] = moment(data[key]).format('YYYY-MM-DD HH:mm:ss')
-        }
-      }
+      data[key] = formatDate(data[key])
     }
+  } else if (data && isNaN(data) && !isNaN(Date.parse(data))) {
+    data = moment(data).format('YYYY-MM-DD HH:mm:ss')
   }
   return data
+
+  // if (data instanceof Array && data.length) {
+  //   console.log('iii ===', JSON.stringify(data))
+  //   for (let obj of data) {
+  //     console.log(!(data instanceof Array || data instanceof Object))
+  //     formatDate(obj)
+  //   }
+  // } else if (data instanceof Object) {
+  //   for (let key in data) {
+  //     if (data[key] instanceof Array || data[key] instanceof Object) {
+  //       formatDate(data[key])
+  //     } else {
+  //       // console.log(key, data[key], data[key] instanceof Object)
+  //       if (!JSON.stringify(data[key]) === '{}' && data[key] && isNaN(data[key]) && !isNaN(Date.parse(data[key]))) {
+  //         console.log(' =====')
+  //         data[key] = moment(data[key]).format('YYYY-MM-DD HH:mm:ss')
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 export default Result
