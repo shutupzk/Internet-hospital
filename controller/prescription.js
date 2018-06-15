@@ -17,8 +17,12 @@ export const prescriptionCreate = async (req, res) => {
     const consultation = await Consultation.findById(consultationId)
     if (!consultation) return result.failed(res, '订单不存在')
     const { doctorId, patientId, chatId } = consultation
-    westPrescriptionId = await westPrescriptionCreate({ westPrescription, doctorId, patientId, consultationId, wPrescriptionNo })
-    eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
+    if (westPrescription) {
+      westPrescriptionId = await westPrescriptionCreate({ westPrescription, doctorId, patientId, consultationId, wPrescriptionNo })
+    }
+    if (eastPrescription) {
+      eastPrescriptionId = await eastPrescriptionCreate({ eastPrescription, doctorId, patientId, consultationId, CPrescriptionNo })
+    }
     let diagnosis = await Diagnosis.find({ consultationId })
     if (westPrescriptionId) {
       sendMessage({
