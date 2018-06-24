@@ -13,9 +13,9 @@ const schema = new Schema(
     examNo: String, // 检查编号
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
     patientId: { type: ObjectId, index: true, ref: 'patient' }, // 患者id
-    consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' },
-    examinationDictionaryId: { type: ObjectId, index: true, ref: 'examination_dictionary' },
-    examinationOrganDictionaryIds: [{ type: ObjectId, index: true, ref: 'examination_organ_dictionary' }],
+    consultationId: { type: ObjectId, inexamdex: true, ref: 'consultation' }, // 订单id
+    examinationDictionaryId: { type: ObjectId, index: true, ref: 'examination_dictionary' }, // 检查字典id
+    examinationOrganDictionaryIds: [{ type: ObjectId, index: true, ref: 'examination_organ_dictionary' }], // 脏器id
     leavingMessage: String, // 留言
     execDept: String, // 执行科室
     height: String, // 身高(cm)

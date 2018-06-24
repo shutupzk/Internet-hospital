@@ -8,7 +8,7 @@ let ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    name: String,
+    name: String, // 模板名称
     type: String, // 0通用，1，个人
     doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
     created_at: { type: Date, default: Date.now },

@@ -7,12 +7,12 @@ let Schema = mongoose.Schema
  */
 const schema = new Schema(
   {
-    openId: { type: String, index: true, unique: true },
-    avatar: String,
-    name: String,
+    openId: { type: String, index: true, unique: true }, // 微信openid
+    avatar: String, // 头像
+    name: String, // 姓名
     sex: Number, // 性别  0-女，1-男
-    phone: String,
-    identifier: String, // im identifier
+    phone: String, // 手机号
+    identifier: String, // im（云通信） identifier
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
