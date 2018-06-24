@@ -15,7 +15,7 @@ const schema = new Schema(
     radiation: Boolean, // 需要补充填写放射号的检查项目
     chargeTotal: Number, // 检查总费用
     exeDept: String, // 执行科室
-    exanminationTypeDictianaryId: { type: ObjectId, ref: 'examination_type_dictionary' },
+    exanminationTypeDictianaryId: { type: ObjectId, ref: 'examination_type_dictionary' }, // 检查类型id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
