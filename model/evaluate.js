@@ -12,9 +12,9 @@ const schema = new Schema(
     anonymous: Boolean, // 是否匿名
     isShield: { type: Boolean, default: false }, // 是否屏蔽
     content: String, // 评价内容
-    consultationId: { type: ObjectId, ref: 'consultation' },
-    doctorId: { type: ObjectId, ref: 'doctor' },
-    userId: { type: ObjectId, ref: 'user' },
+    consultationId: { type: ObjectId, ref: 'consultation' }, // 订单id
+    doctorId: { type: ObjectId, ref: 'doctor' }, // 医生id
+    userId: { type: ObjectId, ref: 'user' }, // 用户id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }

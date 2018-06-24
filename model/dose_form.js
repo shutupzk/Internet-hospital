@@ -2,14 +2,14 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 /**
- * 单位字典
+ * 剂型
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    code: String,
-    name: String,
-    pyCode: String,
+    code: String, // 编码
+    name: String, // 剂型名称
+    pyCode: String, // 拼音简码
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },

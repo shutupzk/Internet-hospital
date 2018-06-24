@@ -7,8 +7,8 @@ const Schema = mongoose.Schema
  */
 const schema = new Schema(
   {
-    name: String,
-    pyCode: String,
+    name: String, // 药品类型名称
+    pyCode: String, // 拼音简码
     created_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
   },

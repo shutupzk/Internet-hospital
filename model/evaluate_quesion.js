@@ -2,12 +2,12 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 /**
- * 订单评价问题
+ * 订单评价问题/标签
  * @type {Schema}
  */
 const schema = new Schema(
   {
-    quesion: String,
+    quesion: String, // 标签/问题名称、内容
     type: String, // '01, 打分评价， 02，文字评价'
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
