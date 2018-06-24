@@ -8,9 +8,9 @@ const ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    doctorId: { type: ObjectId, index: true, ref: 'doctor' },
-    patientId: { type: ObjectId, index: true, ref: 'patient' },
-    consultationId: { type: ObjectId, index: true, ref: 'consultation' },
+    doctorId: { type: ObjectId, index: true, ref: 'doctor' }, // 医生id
+    patientId: { type: ObjectId, index: true, ref: 'patient' }, // 就诊人id
+    consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 订单id
     mainDiagnosis: { type: String, index: true }, // 医生主诊断
     secondDiagnosis: { type: [String] }, // 副诊断
     chiefComplaint: String, // 主诉

@@ -8,9 +8,9 @@ let ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    value: String,
-    evaluateId: { type: ObjectId, ref: 'evaluate' },
-    evaluateQuesionId: { type: ObjectId, ref: 'evaluate_quesion' },
+    value: String, // '01, 打分评价时的分数 02，文字评价时的评价内容
+    evaluateId: { type: ObjectId, ref: 'evaluate' }, // 评价id
+    evaluateQuesionId: { type: ObjectId, ref: 'evaluate_quesion' }, // 评价标签id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }

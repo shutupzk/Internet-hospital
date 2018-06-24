@@ -8,8 +8,8 @@ let ObjectId = Schema.Types.ObjectId
  */
 const schema = new Schema(
   {
-    doctorId: { type: ObjectId, ref: 'doctor' },
-    userId: { type: ObjectId, ref: 'user' },
+    doctorId: { type: ObjectId, ref: 'doctor' }, // 医生id
+    userId: { type: ObjectId, ref: 'user' }, // 用户id
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
