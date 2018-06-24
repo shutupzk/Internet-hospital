@@ -15,8 +15,8 @@ const schema = new Schema(
     systemWithPatientId: { type: ObjectId, index: true, ref: 'system_with_patient' }, // 系统与患者的对话
     consultationId: { type: ObjectId, index: true, ref: 'consultation' }, // 最后一条订单id
     status: { type: Boolean, default: true }, // 会话状态
-    lastMsgContent: String,
-    lastMsgTime: Date,
+    lastMsgContent: String, // 回话的最新一条消息
+    lastMsgTime: Date, // 回话的最新一条消息的时间
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date }
